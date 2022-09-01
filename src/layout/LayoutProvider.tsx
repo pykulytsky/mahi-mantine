@@ -1,22 +1,16 @@
 import { Outlet } from "react-router-dom";
-import { AppShell, Box } from "@mantine/core";
+import { AppShell, Box, ScrollArea } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { useState } from "react";
 import Header from "./Header";
-import { Scrollbars } from "react-custom-scrollbars-2";
+import Sidebar from "./Sidebar";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AppProvider() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { height } = useViewportSize();
 
   const HEADER_HEIGHT = 50;
-
-  const renderThumb = ({ style, ...props }) => {
-    const thumbStyle = {
-      backgroundColor: "#c1c2c5",
-      borderRadius: 5,
-      cursor: 'grabbing'
-    };
-    return <div style={{ ...style, ...thumbStyle }} {...props} />;
-  };
 
   return (
     <AppShell
@@ -38,12 +32,25 @@ export default function AppProvider() {
           headerHeight={HEADER_HEIGHT}
         />
       }
+      navbar={
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ x: -200 }}
+              animate={{ x: 0 }}
+              transition={{ ease: "easeInOut", duration: 0.5 }}
+            >
+              <Sidebar height={height - HEADER_HEIGHT} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      }
     >
-      <Scrollbars autoHide renderThumbVertical={renderThumb}>
-        <Box sx={{paddingTop: 16}}>
+      <ScrollArea style={{ height: height - HEADER_HEIGHT }}>
+        <Box sx={{ paddingTop: 16 }}>
           <Outlet />
         </Box>
-      </Scrollbars>
+      </ScrollArea>
     </AppShell>
   );
 }

@@ -1,11 +1,5 @@
-import {
-  createStyles,
-  Header,
-  Container,
-  Burger,
-} from "@mantine/core";
+import { createStyles, Header, Container, Burger } from "@mantine/core";
 import { DefaultProps } from "@mantine/core";
-
 
 const useStyles = createStyles((theme, headerHeight: number) => ({
   root: {

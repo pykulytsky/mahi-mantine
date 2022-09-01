@@ -1,5 +1,5 @@
-import { ActionIcon, useMantineColorScheme, Title } from '@mantine/core';
-import { IconSun, IconMoonStars } from '@tabler/icons';
+import { useMantineColorScheme, Title, Button } from '@mantine/core';
+import ColorSchemeSwitch from '../components/core/ColorSchemeSwitch';
 
 export default function About() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -7,14 +7,9 @@ export default function About() {
 
   return (
     <>
-    <ActionIcon
-      variant="outline"
-      color={dark ? 'yellow' : 'blue'}
-      onClick={() => toggleColorScheme()}
-      title="Toggle color scheme"
-    >
-      {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
-    </ActionIcon>
+    <ColorSchemeSwitch />
+    <Button>test</Button>
+    <Button variant='default'>test</Button>
     <Title>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut, doloremque.</Title>
     <Title>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut, doloremque.</Title>
     <Title>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut, doloremque.</Title>
