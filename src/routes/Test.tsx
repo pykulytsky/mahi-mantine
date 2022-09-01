@@ -1,5 +1,7 @@
+import { Title } from "@mantine/core"
+
 export default function Test() {
   return (
-    <h1>This is test page!</h1>
+    <Title>This is test page!</Title>
   )
 }
