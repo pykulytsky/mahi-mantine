@@ -4,8 +4,12 @@ import {
   createStyles,
   Container,
   Text,
+  Group,
+  ActionIcon,
 } from "@mantine/core";
 import { motion } from "framer-motion";
+import { DotsSixVertical } from "phosphor-react";
+import { useHover } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -18,6 +22,9 @@ const useStyles = createStyles((theme) => ({
       boxShadow: theme.shadows.sm,
     },
   },
+  dragControlUnvisible: {
+    opacity: 0
+  },
 }));
 
 interface TaskProps extends DefaultProps {
@@ -28,7 +35,8 @@ interface TaskProps extends DefaultProps {
 }
 
 export default function Task(props: TaskProps) {
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
+  const { hovered, ref } = useHover();
   return (
     <motion.div
       variants={{
@@ -43,8 +51,35 @@ export default function Task(props: TaskProps) {
       initial="hidden"
       animate="show"
     >
-      <Container p="sm" className={classes.root} fluid>
-        <Checkbox size="md" label={<Text>{props.name}</Text>} />
+      <Container ref={ref} p="sm" className={classes.root} fluid>
+        <Group spacing="xs">
+          <ActionIcon
+            sx={{
+              width: "1%",
+            }}
+            className={cx({ [classes.dragControlUnvisible]: !hovered })}
+          >
+            <DotsSixVertical size={18} />
+          </ActionIcon>
+          <Checkbox
+            sx={{
+              width: "95%",
+            }}
+            styles={{
+              label: {
+                cursor: "pointer",
+              },
+              inner: {
+                cursor: "pointer",
+              },
+              input: {
+                cursor: "pointer",
+              },
+            }}
+            size="md"
+            label={<Text>{props.name}</Text>}
+          />
+        </Group>
       </Container>
     </motion.div>
   );

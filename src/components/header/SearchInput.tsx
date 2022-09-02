@@ -18,7 +18,7 @@ export default function SearchInput(props: DefaultProps) {
       placeholder="Search"
       rightSectionWidth={85}
       rightSection={
-        <Badge fullWidth className={classes.badge} color="dark" radius="sm">
+        <Badge fullWidth className={classes.badge} color="gray" radius="sm">
           Ctrl+K
         </Badge>
       }
