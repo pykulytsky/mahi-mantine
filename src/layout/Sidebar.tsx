@@ -50,6 +50,7 @@ const useStyles = createStyles((theme) => ({
   navbar: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     paddingBottom: 0,
+    border: 'none'
   },
 
   header: {
@@ -92,7 +93,7 @@ export default function Sidebar(props: SidebarProps) {
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <Navbar height={props.height} width={{ sm: 300 }} p="xl" className={classes.navbar}>
+    <Navbar height={props.height} width={{ sm: 300 }} p="xl" pr="md" className={classes.navbar}>
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
         <div className={classes.linksInner}>{links}</div>
       </Navbar.Section>
