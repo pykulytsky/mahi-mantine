@@ -10,9 +10,15 @@ const useStyles = createStyles((theme) => ({
 
 export default function SearchInput(props: DefaultProps) {
   const { classes } = useStyles();
+
+  const handleInputClick = (event: Event) => {
+    event.preventDefault()
+    openSpotlight()
+  }
+
   return (
     <Input
-      onClick={openSpotlight}
+      onClick={handleInputClick}
       icon={<IconSearch size={16} stroke={1.5} />}
       className={props.className}
       placeholder="Search"

@@ -10,8 +10,9 @@ import {
 import { motion } from "framer-motion";
 import { DotsSixVertical } from "phosphor-react";
 import { useHover } from "@mantine/hooks";
+import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
     borderRadius: theme.radius.md,
     cursor: "pointer",
@@ -22,8 +23,29 @@ const useStyles = createStyles((theme) => ({
       boxShadow: theme.shadows.sm,
     },
   },
+  task: {
+    width: isDraggable ? "93%" : "100%",
+    label: {
+      cursor: "pointer",
+    },
+    inner: {
+      cursor: "pointer",
+    },
+    input: {
+      cursor: "pointer",
+    },
+  },
+  draggingRoot: {
+    background:
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
+    boxShadow: theme.shadows.md,
+  },
+  dragControl: {
+    width: 10,
+    transition: "0.2s all ease-in-out",
+  },
   dragControlUnvisible: {
-    opacity: 0
+    opacity: 0,
   },
 }));
 
@@ -32,11 +54,14 @@ interface TaskProps extends DefaultProps {
   order: number;
   name: string;
   isDone: boolean;
+  draggableHandleProps?: DraggableProvidedDragHandleProps;
+  isDragging?: boolean;
 }
 
 export default function Task(props: TaskProps) {
-  const { classes, cx } = useStyles();
+  const { classes, cx } = useStyles(!!props.draggableHandleProps);
   const { hovered, ref } = useHover();
+
   return (
     <motion.div
       variants={{
@@ -51,33 +76,31 @@ export default function Task(props: TaskProps) {
       initial="hidden"
       animate="show"
     >
-      <Container ref={ref} p="sm" className={classes.root} fluid>
-        <Group spacing="xs">
-          <ActionIcon
-            sx={{
-              width: "1%",
-            }}
-            className={cx({ [classes.dragControlUnvisible]: !hovered })}
-          >
-            <DotsSixVertical size={18} />
-          </ActionIcon>
+      <Container
+        ref={ref}
+        p="sm"
+        pl={!!props.draggableHandleProps ? 0 : "xs"}
+        className={cx(classes.root, {
+          [classes.draggingRoot]: props.isDragging,
+        })}
+        fluid
+      >
+        <Group spacing={0}>
+          {props.draggableHandleProps && (
+            <ActionIcon
+              variant="transparent"
+              {...props.draggableHandleProps}
+              className={cx(classes.dragControl, {
+                [classes.dragControlUnvisible]: !hovered && !props.isDragging,
+              })}
+            >
+              <DotsSixVertical size={18} />
+            </ActionIcon>
+          )}
           <Checkbox
-            sx={{
-              width: "95%",
-            }}
-            styles={{
-              label: {
-                cursor: "pointer",
-              },
-              inner: {
-                cursor: "pointer",
-              },
-              input: {
-                cursor: "pointer",
-              },
-            }}
+            className={classes.task}
             size="md"
-            label={<Text>{props.name}</Text>}
+            label={<Text onClick={(e) => {e.preventDefault()}}>{props.name}</Text>}
           />
         </Group>
       </Container>

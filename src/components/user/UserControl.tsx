@@ -17,15 +17,11 @@ const useStyles = createStyles((theme) => ({
     transition: "background-color 100ms ease",
 
     "&:hover": {
-      backgroundColor: theme.colors.dark[5],
-    },
-
-    [theme.fn.smallerThan("xs")]: {
-      display: "none",
+      backgroundColor: theme.colorScheme =="dark"? theme.colors.dark[5]: 'none',
     },
   },
   userActive: {
-    backgroundColor: theme.colors.dark[5],
+    backgroundColor: theme.colorScheme =="dark"? theme.colors.dark[5]: 'none',
   },
 }));
 

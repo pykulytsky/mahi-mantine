@@ -1,7 +1,7 @@
-import { createStyles, Text } from "@mantine/core";
+import { createStyles, Container } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { IconGripVertical } from "@tabler/icons";
+import Task from "../components/tasks/Task";
 
 const useStyles = createStyles((theme) => ({
   item: {
@@ -43,84 +43,123 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface DndListHandleProps {
-  data: {
-    id: number
-    position: number;
-    mass: number;
-    symbol: string;
-    name: string;
-  }[];
-}
-
 export default function DraggableTest() {
   const { classes, cx } = useStyles();
   const [state, handlers] = useListState([
     {
       id: 1,
-      position: 13,
-      mass: 100,
-      symbol: "C",
-      name: "Carbon",
+      name: "Події розгортаються у розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових  sdfd sdfsdfsdf sdfsf sdfsfsfdsdfsfsdfdfdfs sodtwrep tsdfjower okmdosfh ret ihsfdg iojte ijfdgfdgfdo hretr ",
+      order: 1,
+      isDone: false,
     },
     {
       id: 2,
-      position: 2,
-      mass: 200,
-      symbol: "B",
-      name: "Barbon",
+      name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 2,
+      isDone: false,
     },
     {
       id: 3,
-      position: 3,
-      mass: 300,
-      symbol: "A",
-      name: "Aarbon",
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 3,
+      isDone: false,
+    },
+    {
+      id: 4,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 4,
+      isDone: false,
+    },
+    {
+      id: 5,
+      name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 5,
+      isDone: false,
+    },
+    {
+      id: 6,
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 6,
+      isDone: false,
+    },
+    {
+      id: 7,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 7,
+      isDone: false,
+    },
+    {
+      id: 8,
+      name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 8,
+      isDone: false,
+    },
+    {
+      id: 9,
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 9,
+      isDone: false,
+    },
+    {
+      id: 10,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 10,
+      isDone: false,
+    },
+    {
+      id: 11,
+      name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 11,
+      isDone: false,
+    },
+    {
+      id: 13,
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 13,
+      isDone: false,
+    },
+    {
+      id: 14,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 14,
+      isDone: false,
     },
   ]);
 
-
   const items = state.map((item, index) => (
-    <Draggable key={item.id} index={index} draggableId={item.id.toString()}>
+    <Draggable
+      key={item.order}
+      draggableId={item.order.toString()}
+      index={index}
+    >
       {(provided, snapshot) => (
-        <div
-          className={cx(classes.item, {
-            [classes.itemDragging]: snapshot.isDragging,
-          })}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-        >
-          <div {...provided.dragHandleProps} className={classes.dragHandle}>
-            <IconGripVertical size={18} stroke={1.5} />
-          </div>
-          <Text className={classes.symbol}>{item.symbol}</Text>
-          <div>
-            <Text>{item.name}</Text>
-            <Text color="dimmed" size="sm">
-              Position: {item.position} • Mass: {item.mass}
-            </Text>
-          </div>
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <Task
+            {...item}
+            draggableHandleProps={provided.dragHandleProps}
+            isDragging={snapshot.isDragging}
+          />
         </div>
       )}
     </Draggable>
   ));
 
   return (
-    <>
-    <DragDropContext
-      onDragEnd={({ destination, source }) =>
-        handlers.reorder({ from: source.index, to: destination?.index || 0 })
-      }
-    >
-      <Droppable droppableId="dnd-list" direction="vertical">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {items}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    </>
+    <Container>
+      <DragDropContext
+        onDragEnd={({ destination, source }) =>
+          handlers.reorder({ from: source.index, to: destination?.index || 0 })
+        }
+      >
+        <Droppable droppableId="dnd-list" direction="vertical">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {items}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </Container>
   );
 }
