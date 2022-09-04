@@ -118,6 +118,7 @@ export default function DraggableTest() {
       order: 10,
       isDone: false,
       section: 2,
+      color: 'red'
     },
     {
       id: 11,
@@ -182,11 +183,11 @@ export default function DraggableTest() {
 
   function move(source: number, sourceIndex: number, destinitionIndex: number): void {
     if (source == 1) {
-      const value = state1[sourceIndex]
+      const value = {...state1[sourceIndex], disableAnimation: true}
       handlers1.remove(sourceIndex)
       handlers2.insert(destinitionIndex, value)
     } else if (source == 2) {
-      const value = state2[sourceIndex]
+      const value = {...state2[sourceIndex], disableAnimation: true}
       handlers2.remove(sourceIndex)
       handlers1.insert(destinitionIndex, value)
     }

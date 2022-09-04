@@ -7,6 +7,8 @@ export interface TaskProps extends DefaultProps {
   order: number;
   name: string;
   isDone: boolean;
+  color?: string
   draggableHandleProps?: DraggableProvidedDragHandleProps;
   isDragging?: boolean;
+  disableAnimation?: boolean
 }

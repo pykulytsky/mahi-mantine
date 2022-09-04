@@ -1,6 +1,5 @@
 import {
   Checkbox,
-  DefaultProps,
   createStyles,
   Container,
   Text,
@@ -10,7 +9,6 @@ import {
 import { motion } from "framer-motion";
 import { DotsSixVertical } from "phosphor-react";
 import { useHover } from "@mantine/hooks";
-import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd";
 import { TaskProps } from "./sharedTypes";
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
@@ -33,8 +31,8 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
       cursor: "pointer",
     },
     input: {
-      cursor: "pointer",
-    },
+      cursor: 'pointer',
+    }
   },
   draggingRoot: {
     background:
@@ -57,11 +55,11 @@ export default function Task(props: TaskProps) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0 },
+        hidden: { opacity: props.disableAnimation ? 1: 0 },
         show: {
           opacity: 1,
           transition: {
-            delay: props.order / 5,
+            delay: props.disableAnimation ? 0: props.order / 10,
           },
         },
       }}
@@ -90,7 +88,13 @@ export default function Task(props: TaskProps) {
             </ActionIcon>
           )}
           <Checkbox
+            sx={props.color ? {
+              input: {
+                border: `2px solid ${props.color}`
+              }
+            }: {}}
             className={classes.task}
+            color={props.color}
             size="md"
             label={<Text onClick={(e: Event): void => {e.preventDefault()}}>{props.name}</Text>}
           />
