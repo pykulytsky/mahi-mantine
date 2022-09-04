@@ -1,4 +1,4 @@
-import { Menu, useMantineTheme } from "@mantine/core";
+import { Menu, useMantineTheme, Text } from "@mantine/core";
 import {
   IconHeart,
   IconStar,
@@ -25,6 +25,7 @@ export default function UserMenuDropdown() {
       </Menu.Item>
       <Menu.Item
         onClick={() => toggleColorScheme()}
+        rightSection={<Text size="xs" color="dimmed">Ctrl+J</Text>}
         icon={
           colorScheme === "dark" ? (
             <IconSun size={18} />

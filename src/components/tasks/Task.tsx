@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { DotsSixVertical } from "phosphor-react";
 import { useHover } from "@mantine/hooks";
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd";
+import { TaskProps } from "./sharedTypes";
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -48,15 +49,6 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
     opacity: 0,
   },
 }));
-
-interface TaskProps extends DefaultProps {
-  id: number;
-  order: number;
-  name: string;
-  isDone: boolean;
-  draggableHandleProps?: DraggableProvidedDragHandleProps;
-  isDragging?: boolean;
-}
 
 export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps);
@@ -100,7 +92,7 @@ export default function Task(props: TaskProps) {
           <Checkbox
             className={classes.task}
             size="md"
-            label={<Text onClick={(e) => {e.preventDefault()}}>{props.name}</Text>}
+            label={<Text onClick={(e: Event): void => {e.preventDefault()}}>{props.name}</Text>}
           />
         </Group>
       </Container>
