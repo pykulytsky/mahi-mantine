@@ -32,6 +32,7 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
     },
     input: {
       cursor: 'pointer',
+      border: `2px solid ${theme.colorScheme === "dark"? theme.colors.dark[4]: theme.colors.gray[5]}`
     }
   },
   draggingRoot: {
@@ -88,11 +89,11 @@ export default function Task(props: TaskProps) {
             </ActionIcon>
           )}
           <Checkbox
-            sx={props.color ? {
+            sx={(theme) => ( props.color ? {
               input: {
-                border: `2px solid ${props.color}`
+                border: `2px solid ${theme.colors[props.color][4]}`
               }
-            }: {}}
+            }: {})}
             className={classes.task}
             color={props.color}
             size="md"

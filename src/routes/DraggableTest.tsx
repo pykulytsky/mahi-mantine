@@ -3,6 +3,9 @@ import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "../components/tasks/Task";
 import Section from "../components/tasks/Section";
+import ProjectHeader from "../components/tasks/ProjectHeader";
+import { useContext } from "react";
+import { ScrollbarContext } from "../layout/LayoutProvider";
 
 const useStyles = createStyles((theme) => ({
   item: {
@@ -46,6 +49,8 @@ const useStyles = createStyles((theme) => ({
 
 export default function DraggableTest() {
   const { classes, cx } = useStyles();
+  const scrollbarContext = useContext(ScrollbarContext)
+
   const [state1, handlers1] = useListState([
     {
       id: 1,
@@ -53,6 +58,7 @@ export default function DraggableTest() {
       order: 1,
       isDone: false,
       section: 1,
+      color: "indigo",
     },
     {
       id: 2,
@@ -60,6 +66,7 @@ export default function DraggableTest() {
       order: 2,
       isDone: false,
       section: 1,
+      color: "cyan",
     },
     {
       id: 3,
@@ -67,6 +74,7 @@ export default function DraggableTest() {
       order: 3,
       isDone: false,
       section: 2,
+      color: "violet",
     },
     {
       id: 4,
@@ -74,6 +82,7 @@ export default function DraggableTest() {
       order: 4,
       isDone: false,
       section: 2,
+      color: "teal",
     },
     {
       id: 5,
@@ -81,6 +90,7 @@ export default function DraggableTest() {
       order: 5,
       isDone: false,
       section: 2,
+      color: "green",
     },
     {
       id: 6,
@@ -88,6 +98,7 @@ export default function DraggableTest() {
       order: 6,
       isDone: false,
       section: 2,
+      color: "pink",
     },
     {
       id: 7,
@@ -95,6 +106,7 @@ export default function DraggableTest() {
       order: 7,
       isDone: false,
       section: 2,
+      color: "lime",
     },
     {
       id: 8,
@@ -102,6 +114,7 @@ export default function DraggableTest() {
       order: 8,
       isDone: false,
       section: 1,
+      color: "grape",
     },
     {
       id: 9,
@@ -109,6 +122,7 @@ export default function DraggableTest() {
       order: 9,
       isDone: false,
       section: 2,
+      color: "yellow",
     },
   ]);
   const [state2, handlers2] = useListState([
@@ -118,7 +132,7 @@ export default function DraggableTest() {
       order: 10,
       isDone: false,
       section: 2,
-      color: 'red'
+      color: "red",
     },
     {
       id: 11,
@@ -126,75 +140,94 @@ export default function DraggableTest() {
       order: 11,
       isDone: false,
       section: 1,
+      color: "indigo",
     },
     {
       id: 13,
-      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
       order: 13,
+      isDone: false,
+      section: 1,
+      color: "orange",
+    },
+    {
+      id: 14,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 14,
       isDone: false,
       section: 1,
     },
     {
-      id: 14,
+      id: 15,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 15,
+      isDone: false,
+      section: 1,
+    },
+    {
+      id: 16,
       name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових",
-      order: 14,
+      order: 16,
       isDone: false,
       section: 1,
     },
   ]);
 
-  const items1 = state1
-    .map((item, index) => (
-      <Draggable
-        key={item.order}
-        draggableId={item.order.toString()}
-        index={index}
-      >
-        {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.draggableProps}>
-            <Task
-              {...item}
-              draggableHandleProps={provided.dragHandleProps}
-              isDragging={snapshot.isDragging}
-            />
-          </div>
-        )}
-      </Draggable>
-    ));
+  const items1 = state1.map((item, index) => (
+    <Draggable
+      key={item.order}
+      draggableId={item.order.toString()}
+      index={index}
+    >
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <Task
+            {...item}
+            draggableHandleProps={provided.dragHandleProps}
+            isDragging={snapshot.isDragging}
+          />
+        </div>
+      )}
+    </Draggable>
+  ));
 
-  const items2 = state2
-    .map((item, index) => (
-      <Draggable
-        key={item.order}
-        draggableId={item.order.toString()}
-        index={index}
-      >
-        {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.draggableProps}>
-            <Task
-              {...item}
-              draggableHandleProps={provided.dragHandleProps}
-              isDragging={snapshot.isDragging}
-            />
-          </div>
-        )}
-      </Draggable>
-    ));
+  const items2 = state2.map((item, index) => (
+    <Draggable
+      key={item.order}
+      draggableId={item.order.toString()}
+      index={index}
+    >
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <Task
+            {...item}
+            draggableHandleProps={provided.dragHandleProps}
+            isDragging={snapshot.isDragging}
+          />
+        </div>
+      )}
+    </Draggable>
+  ));
 
-  function move(source: number, sourceIndex: number, destinitionIndex: number): void {
+  function move(
+    source: number,
+    sourceIndex: number,
+    destinitionIndex: number
+  ): void {
     if (source == 1) {
-      const value = {...state1[sourceIndex], disableAnimation: true}
-      handlers1.remove(sourceIndex)
-      handlers2.insert(destinitionIndex, value)
+      const value = { ...state1[sourceIndex], disableAnimation: true };
+      handlers1.remove(sourceIndex);
+      handlers2.insert(destinitionIndex, value);
     } else if (source == 2) {
-      const value = {...state2[sourceIndex], disableAnimation: true}
-      handlers2.remove(sourceIndex)
-      handlers1.insert(destinitionIndex, value)
+      const value = { ...state2[sourceIndex], disableAnimation: true };
+      handlers2.remove(sourceIndex);
+      handlers1.insert(destinitionIndex, value);
     }
   }
 
   return (
     <Container>
+      <ProjectHeader title="RTest project" />
       <DragDropContext
         onDragEnd={({ destination, source }) => {
           if (!destination) {
@@ -203,23 +236,24 @@ export default function DraggableTest() {
           const sInd = source.droppableId;
           const dInd = destination.droppableId;
           if (sInd === dInd) {
-            if (dInd === 'dnd-list') {
-              handlers1.reorder({ from: source.index, to: destination?.index || 0 })
-            } else if (dInd == 'dnd-list1') {
-
-              handlers2.reorder({ from: source.index, to: destination?.index || 0 })
+            if (dInd === "dnd-list") {
+              handlers1.reorder({
+                from: source.index,
+                to: destination?.index || 0,
+              });
+            } else if (dInd == "dnd-list1") {
+              handlers2.reorder({
+                from: source.index,
+                to: destination?.index || 0,
+              });
             }
           } else {
-            const sourceType = sInd === 'dnd-list'? 1: 2
-            move(sourceType, source.index, destination.index)
+            const sourceType = sInd === "dnd-list" ? 1 : 2;
+            move(sourceType, source.index, destination.index);
           }
         }}
       >
-        <Section
-          keyStr={1}
-          droppableId="dnd-list"
-          tasks={state1}
-        />
+        <Section keyStr={1} droppableId="dnd-list" tasks={state1} />
         <Section
           keyStr={2}
           droppableId="dnd-list1"

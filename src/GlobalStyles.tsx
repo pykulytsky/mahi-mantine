@@ -63,6 +63,18 @@ export default function GlobalStyles() {
               theme.colorScheme === "light"? 3: 4
             ],
           },
+          "::-webkit-scrollbar": {
+            width: 10,
+            backgroundColor: theme.colors.dark[6],
+            marginTop: 50
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: theme.colors.dark[3],
+            borderRadius: 5
+          },
+          "::-webkit-scrollbar-track": {
+            marginTop: 50,
+          },
         },
       ]}
     />

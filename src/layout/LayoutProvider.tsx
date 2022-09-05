@@ -1,13 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { AppShell, Box, ScrollArea } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import { useState } from "react";
+import { useState, createContext } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 
+export const ScrollbarContext = createContext({ x: 0, y: 0 });
+
 export default function AppProvider() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
   const { height } = useViewportSize();
 
   const HEADER_HEIGHT = 50;
@@ -46,9 +49,13 @@ export default function AppProvider() {
         </AnimatePresence>
       }
     >
-      <ScrollArea style={{ height: height - HEADER_HEIGHT }}>
-        <Box sx={{ paddingTop: 16 }}>
-          <Outlet />
+      <ScrollArea
+        style={{ height: height - HEADER_HEIGHT }}
+      >
+        <Box>
+          <ScrollbarContext.Provider value={scrollPosition}>
+            <Outlet />
+          </ScrollbarContext.Provider>
         </Box>
       </ScrollArea>
     </AppShell>
