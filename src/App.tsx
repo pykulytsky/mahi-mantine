@@ -14,6 +14,7 @@ import { SpotlightProvider } from "@mantine/spotlight"
 import DraggableTest from "./routes/DraggableTest"
 
 import { useHotkeys, useLocalStorage } from "@mantine/hooks"
+import DraggableTestV2 from "./routes/DraggableTestV2"
 
 export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -70,6 +71,7 @@ export default function App() {
                   <Route path="/app" element={<LayoutProvider />}>
                     <Route path="about" element={<About />} />
                     <Route path="dnd" element={<DraggableTest />} />
+                    <Route path="dnd-v2" element={<DraggableTestV2 />} />
                   </Route>
                 </Routes>
               </BrowserRouter>

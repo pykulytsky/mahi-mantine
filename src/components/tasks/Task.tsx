@@ -64,7 +64,7 @@ export default function Task(props: TaskProps) {
         show: {
           opacity: 1,
           transition: {
-            delay: props.disableAnimation ? 0 : props.order / 10,
+            delay: 0,
           },
         },
       }}

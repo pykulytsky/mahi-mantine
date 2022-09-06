@@ -58,15 +58,19 @@ export default function GlobalStyles() {
           },
         },
         {
+          body: {
+            overflow: "auto overlay",
+            overflowX: "hidden",
+          },
           "::selection": {
             background:
               theme.colors.indigo[theme.colorScheme === "light" ? 3 : 4],
           },
           "::-webkit-scrollbar": {
             width: 10,
-            backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
             marginTop: 50,
+            height: 0,
+            zIndex: 0,
           },
           "::-webkit-scrollbar-thumb": {
             backgroundColor:

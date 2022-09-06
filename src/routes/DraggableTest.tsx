@@ -240,13 +240,6 @@ export default function DraggableTest() {
 
   return (
     <Container>
-      <Button
-        onClick={() => {
-          scrollIntoView({ alignment: "center" })
-        }}
-      >
-        scroll
-      </Button>
       <ProjectHeader title="RTest project" />
       <DragDropContext
         onDragEnd={({ destination, source }) => {
@@ -289,7 +282,6 @@ export default function DraggableTest() {
           tasks={state3}
         />
       </DragDropContext>
-      <h1 ref={targetRef}>test</h1>
     </Container>
   )
 }

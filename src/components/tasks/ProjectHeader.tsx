@@ -8,7 +8,8 @@ import {
   createStyles,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { Pencil, Plus, DotsThreeCircle } from "phosphor-react"
+import { Pencil, Plus, DotsThreeCircle, CheckCircle } from "phosphor-react"
+import { IconSection } from "@tabler/icons"
 
 interface ProjectHeaderProps {
   title: string
@@ -23,12 +24,12 @@ const useStyles = createStyles((theme, hovered: boolean) => ({
   },
   shownOnHover: {
     opacity: hovered ? 1 : 0,
-    transition: "all .2s linear",
+    transition: "opacity .2s linear",
   },
   title: {
     cursor: "pointer",
   },
-  addBtn: {
+  addBtnGroup: {
     position: "absolute",
     left: "40%",
   },
@@ -53,13 +54,22 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             16 of 22
           </Text>
         </Group>
-        <Button
-          className={cx(classes.addBtn, classes.shownOnHover)}
-          leftIcon={<Plus size={15} />}
-          variant="subtle"
-        >
-          Add task
-        </Button>
+        <Button.Group className={cx(classes.shownOnHover, classes.addBtnGroup)}>
+          <Button
+            compact
+            leftIcon={<CheckCircle size={15} />}
+            variant="default"
+          >
+            Add task
+          </Button>
+          <Button
+            compact
+            rightIcon={<IconSection size={15} />}
+            variant="default"
+          >
+            Add section
+          </Button>
+        </Button.Group>
         <Group className={classes.shownOnHover}>
           <ActionIcon variant="transparent">
             <DotsThreeCircle size={25} weight="duotone" />
