@@ -13,7 +13,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
       pt={0}
       sx={{
         position: "sticky",
-        top: 50,
+        top: 100,
         zIndex: 98,
         height: 45,
       }}

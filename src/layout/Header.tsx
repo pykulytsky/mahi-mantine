@@ -14,6 +14,7 @@ import { Bell } from "phosphor-react"
 
 const useStyles = createStyles((theme, headerHeight: number) => ({
   root: {
+    width: "calc(100vw + 10px)",
     borderBottom: 0,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,

@@ -17,7 +17,7 @@ interface ProjectHeaderProps {
 const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     position: "sticky",
-    top: 0,
+    top: 50,
     zIndex: 99,
     height: 50,
   },

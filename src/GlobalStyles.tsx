@@ -64,15 +64,23 @@ export default function GlobalStyles() {
           },
           "::-webkit-scrollbar": {
             width: 10,
-            backgroundColor: theme.colors.dark[6],
+            backgroundColor:
+              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
             marginTop: 50,
           },
           "::-webkit-scrollbar-thumb": {
-            backgroundColor: theme.colors.dark[3],
+            backgroundColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[3]
+                : theme.colors.gray[6],
             borderRadius: 5,
           },
           "::-webkit-scrollbar-track": {
             marginTop: 50,
+          },
+          "::-webkit-scrollbar-thumb:window-inactive": {
+            opacity: 0,
+            diplay: "none",
           },
         },
       ]}
