@@ -1,7 +1,6 @@
-import { createStyles, Container } from "@mantine/core";
+import { createStyles, Container, Button } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import Task from "../components/tasks/Task";
 import Section from "../components/tasks/Section";
 import ProjectHeader from "../components/tasks/ProjectHeader";
 import { useContext } from "react";
@@ -49,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function DraggableTest() {
   const { classes, cx } = useStyles();
-  const scrollbarContext = useContext(ScrollbarContext)
+  const scrollbarContext = useContext(ScrollbarContext);
 
   const [state1, handlers1] = useListState([
     {
@@ -173,42 +172,6 @@ export default function DraggableTest() {
     },
   ]);
 
-  const items1 = state1.map((item, index) => (
-    <Draggable
-      key={item.order}
-      draggableId={item.order.toString()}
-      index={index}
-    >
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <Task
-            {...item}
-            draggableHandleProps={provided.dragHandleProps}
-            isDragging={snapshot.isDragging}
-          />
-        </div>
-      )}
-    </Draggable>
-  ));
-
-  const items2 = state2.map((item, index) => (
-    <Draggable
-      key={item.order}
-      draggableId={item.order.toString()}
-      index={index}
-    >
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <Task
-            {...item}
-            draggableHandleProps={provided.dragHandleProps}
-            isDragging={snapshot.isDragging}
-          />
-        </div>
-      )}
-    </Draggable>
-  ));
-
   function move(
     source: number,
     sourceIndex: number,
@@ -227,6 +190,16 @@ export default function DraggableTest() {
 
   return (
     <Container>
+      <Button
+        onClick={() => {
+          scrollbarContext.current.scrollTo({
+            top: scrollbarContext.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }}
+      >
+        Scroll
+      </Button>
       <ProjectHeader title="RTest project" />
       <DragDropContext
         onDragEnd={({ destination, source }) => {
