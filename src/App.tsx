@@ -2,30 +2,30 @@ import {
   MantineProvider,
   ColorSchemeProvider,
   ColorScheme,
-} from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import GlobalStyles from "./GlobalStyles";
-import Test from "./routes/Test";
-import About from "./routes/About";
-import LayoutProvider from "./layout/LayoutProvider";
-import { SpotlightProvider } from "@mantine/spotlight";
-import DraggableTest from "./routes/DraggableTest";
+} from "@mantine/core"
+import { ModalsProvider } from "@mantine/modals"
+import { NotificationsProvider } from "@mantine/notifications"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import GlobalStyles from "./GlobalStyles"
+import Test from "./routes/Test"
+import About from "./routes/About"
+import LayoutProvider from "./layout/LayoutProvider"
+import { SpotlightProvider } from "@mantine/spotlight"
+import DraggableTest from "./routes/DraggableTest"
 
-import { useHotkeys, useLocalStorage } from "@mantine/hooks";
+import { useHotkeys, useLocalStorage } from "@mantine/hooks"
 
 export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
     defaultValue: "light",
     getInitialValueInEffect: true,
-  });
+  })
 
   const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"))
 
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
+  useHotkeys([["mod+J", () => toggleColorScheme()]])
 
   return (
     <ColorSchemeProvider
@@ -78,5 +78,5 @@ export default function App() {
         </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
-  );
+  )
 }

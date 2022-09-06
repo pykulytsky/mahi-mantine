@@ -1,15 +1,15 @@
-import { Input, Badge, createStyles, DefaultProps } from "@mantine/core";
-import { openSpotlight } from "@mantine/spotlight";
-import { IconSearch } from "@tabler/icons";
+import { Input, Badge, createStyles, DefaultProps } from "@mantine/core"
+import { openSpotlight } from "@mantine/spotlight"
+import { IconSearch } from "@tabler/icons"
 
 const useStyles = createStyles((theme) => ({
   badge: {
     width: "85%",
   },
-}));
+}))
 
 export default function SearchInput(props: DefaultProps) {
-  const { classes } = useStyles();
+  const { classes } = useStyles()
 
   const handleInputClick = (event: Event) => {
     event.preventDefault()
@@ -29,5 +29,5 @@ export default function SearchInput(props: DefaultProps) {
         </Badge>
       }
     />
-  );
+  )
 }
