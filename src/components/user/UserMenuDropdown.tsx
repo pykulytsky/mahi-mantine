@@ -1,4 +1,4 @@
-import { Menu, useMantineTheme, Text } from "@mantine/core";
+import { Menu, useMantineTheme, Text } from "@mantine/core"
 import {
   IconHeart,
   IconStar,
@@ -8,13 +8,13 @@ import {
   IconLogout,
   IconPlayerPause,
   IconTrash,
-} from "@tabler/icons";
-import { IconSun, IconMoonStars } from "@tabler/icons";
-import { useMantineColorScheme } from "@mantine/core";
+} from "@tabler/icons"
+import { IconSun, IconMoonStars } from "@tabler/icons"
+import { useMantineColorScheme } from "@mantine/core"
 
 export default function UserMenuDropdown() {
-  const theme = useMantineTheme();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const theme = useMantineTheme()
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 
   return (
     <Menu.Dropdown>
@@ -25,7 +25,11 @@ export default function UserMenuDropdown() {
       </Menu.Item>
       <Menu.Item
         onClick={() => toggleColorScheme()}
-        rightSection={<Text size="xs" color="dimmed">Ctrl+J</Text>}
+        rightSection={
+          <Text size="xs" color="dimmed">
+            Ctrl+J
+          </Text>
+        }
         icon={
           colorScheme === "dark" ? (
             <IconSun size={18} />
@@ -34,7 +38,7 @@ export default function UserMenuDropdown() {
           )
         }
       >
-        Switch to {colorScheme === "dark"? "light": "dark"} theme
+        Switch to {colorScheme === "dark" ? "light" : "dark"} theme
       </Menu.Item>
       <Menu.Item
         icon={
@@ -63,5 +67,5 @@ export default function UserMenuDropdown() {
         Delete account
       </Menu.Item>
     </Menu.Dropdown>
-  );
+  )
 }

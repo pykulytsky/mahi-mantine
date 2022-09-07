@@ -1,27 +1,23 @@
-import { Outlet } from "react-router-dom";
-import { AppShell, Box, ScrollArea } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
-import {
-  useState,
-  createContext,
-  useRef,
-  ForwardedRef,
-  MutableRefObject,
-} from "react";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import { motion, AnimatePresence } from "framer-motion";
+import { Outlet } from "react-router-dom"
+import { AppShell, Box, ScrollArea } from "@mantine/core"
+import { useViewportSize } from "@mantine/hooks"
+import { useState, createContext } from "react"
+import Header from "./Header"
+import Sidebar from "./Sidebar"
+import { motion, AnimatePresence } from "framer-motion"
+import { useQuery } from "@tanstack/react-query"
+import { getMe } from "../api/user.api"
 
-export const ScrollbarContext =
-  createContext<MutableRefObject<HTMLDivElement>>(null);
+export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
 export default function AppProvider() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
-  const { height } = useViewportSize();
-  const viewport = useRef<HTMLDivElement>();
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 })
+  const { height } = useViewportSize()
 
-  const HEADER_HEIGHT = 50;
+  const currentUser = useQuery(["user"], getMe)
+
+  const HEADER_HEIGHT = 50
 
   return (
     <AppShell
@@ -57,16 +53,11 @@ export default function AppProvider() {
         </AnimatePresence>
       }
     >
-      <ScrollArea
-        style={{ height: height - HEADER_HEIGHT }}
-        viewportRef={viewport}
-      >
-        <Box>
-          <ScrollbarContext.Provider value={viewport}>
-            <Outlet />
-          </ScrollbarContext.Provider>
-        </Box>
-      </ScrollArea>
+      <Box>
+        <ScrollbarContext.Provider value={scrollPosition}>
+          <Outlet />
+        </ScrollbarContext.Provider>
+      </Box>
     </AppShell>
-  );
+  )
 }

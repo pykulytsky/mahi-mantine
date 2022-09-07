@@ -1,22 +1,24 @@
-import { Group, Text, Paper } from "@mantine/core";
+import { Group, Text, Paper } from "@mantine/core"
 
 interface ProjectHeaderProps {
-  name: string;
+  name: string
 }
 
 export default function ProjectHeader(props: ProjectHeaderProps) {
   return (
     <Paper
       radius={0}
+      p="xs"
+      pl="sm"
+      pt={0}
       sx={{
         position: "sticky",
-        top: 50,
-        zIndex: 999,
+        top: 100,
+        zIndex: 98,
+        height: 45,
       }}
     >
-      <Group
-        p="md"
-      >
+      <Group p="xs">
         <Text
           sx={{
             cursor: "pointer",
@@ -26,7 +28,10 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
         >
           {props.name}
         </Text>
+        <Text italic size="sm">
+          16 of 22
+        </Text>
       </Group>
     </Paper>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import { Menu } from "@mantine/core";
-import { UserControl } from "./UserControl";
-import UserMenuDropdown from "./UserMenuDropdown";
-import { useState } from "react";
+import { Menu } from "@mantine/core"
+import { UserControl } from "./UserControl"
+import UserMenuDropdown from "./UserMenuDropdown"
+import { useState } from "react"
 
 export default function UserMenu() {
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   return (
     <Menu
@@ -25,5 +25,5 @@ export default function UserMenu() {
       </Menu.Target>
       <UserMenuDropdown />
     </Menu>
-  );
+  )
 }

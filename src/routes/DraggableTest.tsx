@@ -1,10 +1,10 @@
-import { createStyles, Container, Button } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import Section from "../components/tasks/Section";
-import ProjectHeader from "../components/tasks/ProjectHeader";
-import { useContext } from "react";
-import { ScrollbarContext } from "../layout/LayoutProvider";
+import { createStyles, Container, Button } from "@mantine/core"
+import { useListState, useScrollIntoView } from "@mantine/hooks"
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
+import Section from "../components/tasks/Section"
+import ProjectHeader from "../components/tasks/ProjectHeader"
+import { useContext } from "react"
+import { ScrollbarContext } from "../layout/LayoutProvider"
 
 const useStyles = createStyles((theme) => ({
   item: {
@@ -44,11 +44,14 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
   },
-}));
+}))
 
 export default function DraggableTest() {
-  const { classes, cx } = useStyles();
-  const scrollbarContext = useContext(ScrollbarContext);
+  const { classes, cx } = useStyles()
+  const scrollbarContext = useContext(ScrollbarContext)
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+  })
 
   const [state1, handlers1] = useListState([
     {
@@ -123,7 +126,7 @@ export default function DraggableTest() {
       section: 2,
       color: "yellow",
     },
-  ]);
+  ])
   const [state2, handlers2] = useListState([
     {
       id: 10,
@@ -145,7 +148,7 @@ export default function DraggableTest() {
       id: 13,
       name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
       order: 13,
-      isDone: false,
+      isDone: true,
       section: 1,
       color: "orange",
     },
@@ -170,7 +173,54 @@ export default function DraggableTest() {
       isDone: false,
       section: 1,
     },
-  ]);
+  ])
+  const [state3, handlers3] = useListState([
+    {
+      id: 17,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 17,
+      isDone: false,
+      section: 2,
+      color: "red",
+    },
+    {
+      id: 18,
+      name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 18,
+      isDone: true,
+      section: 1,
+      color: "indigo",
+    },
+    {
+      id: 19,
+      name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 19,
+      isDone: false,
+      section: 1,
+      color: "orange",
+    },
+    {
+      id: 20,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 20,
+      isDone: true,
+      section: 1,
+    },
+    {
+      id: 21,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component Поньому Вест-Сайді Нью-Йорка, де за загадкових  tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component tab under component documentation and find styles names table. The name column will tell you how to target a specific element inside the component",
+      order: 21,
+      isDone: false,
+      section: 1,
+    },
+    {
+      id: 22,
+      name: "Поньому Вест-Сайді Нью-Йорка, де за загадкових",
+      order: 22,
+      isDone: false,
+      section: 1,
+    },
+  ])
 
   function move(
     source: number,
@@ -178,13 +228,13 @@ export default function DraggableTest() {
     destinitionIndex: number
   ): void {
     if (source == 1) {
-      const value = { ...state1[sourceIndex], disableAnimation: true };
-      handlers1.remove(sourceIndex);
-      handlers2.insert(destinitionIndex, value);
+      const value = { ...state1[sourceIndex], disableAnimation: true }
+      handlers1.remove(sourceIndex)
+      handlers2.insert(destinitionIndex, value)
     } else if (source == 2) {
-      const value = { ...state2[sourceIndex], disableAnimation: true };
-      handlers2.remove(sourceIndex);
-      handlers1.insert(destinitionIndex, value);
+      const value = { ...state2[sourceIndex], disableAnimation: true }
+      handlers2.remove(sourceIndex)
+      handlers1.insert(destinitionIndex, value)
     }
   }
 
@@ -195,7 +245,7 @@ export default function DraggableTest() {
           scrollbarContext.current.scrollTo({
             top: scrollbarContext.current.scrollHeight,
             behavior: "smooth",
-          });
+          })
         }}
       >
         Scroll
@@ -204,25 +254,25 @@ export default function DraggableTest() {
       <DragDropContext
         onDragEnd={({ destination, source }) => {
           if (!destination) {
-            return;
+            return
           }
-          const sInd = source.droppableId;
-          const dInd = destination.droppableId;
+          const sInd = source.droppableId
+          const dInd = destination.droppableId
           if (sInd === dInd) {
             if (dInd === "dnd-list") {
               handlers1.reorder({
                 from: source.index,
                 to: destination?.index || 0,
-              });
+              })
             } else if (dInd == "dnd-list1") {
               handlers2.reorder({
                 from: source.index,
                 to: destination?.index || 0,
-              });
+              })
             }
           } else {
-            const sourceType = sInd === "dnd-list" ? 1 : 2;
-            move(sourceType, source.index, destination.index);
+            const sourceType = sInd === "dnd-list" ? 1 : 2
+            move(sourceType, source.index, destination.index)
           }
         }}
       >
@@ -234,7 +284,14 @@ export default function DraggableTest() {
           name="Test Section"
           tasks={state2}
         />
+        <Section
+          keyStr={3}
+          droppableId="dnd-list2"
+          id={3}
+          name="Test Section 1"
+          tasks={state3}
+        />
       </DragDropContext>
     </Container>
-  );
+  )
 }
