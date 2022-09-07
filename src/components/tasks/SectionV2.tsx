@@ -3,7 +3,7 @@ import {
   Draggable,
   DraggableProvidedDragHandleProps,
 } from "@hello-pangea/dnd"
-import { useHover } from "@mantine/hooks"
+import { useHover, useId } from "@mantine/hooks"
 import { Collapse, ActionIcon } from "@mantine/core"
 import SectionHeader from "./SectionHeader"
 import { TaskProps } from "./sharedTypes"
@@ -26,11 +26,14 @@ interface SectionProps {
 export default function SectionV2(props: SectionProps) {
   const [opened, setOpened] = useState(true)
   const { hovered, ref } = useHover()
+  const uuid = useId()
+
+  props.section.tasks.sort((item, nextItem) => item.order - nextItem.order)
 
   const tasks = props.section.tasks.map((task, index) => (
     <Draggable
       key={task.order}
-      draggableId={task.order.toString()}
+      draggableId={`${uuid}_${task.order}`}
       index={index}
     >
       {(provided, snapshot) => (

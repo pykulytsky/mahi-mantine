@@ -3,7 +3,7 @@ import { useListState, useScrollIntoView } from "@mantine/hooks"
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
 import Section from "../components/tasks/Section"
 import ProjectHeader from "../components/tasks/ProjectHeader"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { ScrollbarContext } from "../layout/LayoutProvider"
 import SectionV2 from "../components/tasks/SectionV2"
 
@@ -61,16 +61,20 @@ export default function DraggableTestV2() {
         {
           id: 2,
           name: "х апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
-          order: 2,
+          order: 0,
           isDone: false,
-          color: "cyan",
         },
         {
           id: 3,
           name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
-          order: 3,
+          order: 1,
           isDone: false,
-          color: "violet",
+        },
+        {
+          id: 3,
+          name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
+          order: 2,
+          isDone: false,
         },
       ],
     },
@@ -80,9 +84,8 @@ export default function DraggableTestV2() {
         {
           id: 4,
           name: "Под розкішних апартаментах багатоквартирного будинку у Верхньому Вест-Сайді Нью-Йорка, де за загадкових",
-          order: 4,
+          order: 0,
           isDone: false,
-          color: "violet",
         },
       ],
       name: "test section",
@@ -117,11 +120,12 @@ export default function DraggableTestV2() {
               sectionHandlers.applyWhere(
                 (section) => section.id.toString() === source.droppableId,
                 (section) => {
-                  console.log(section)
                   let tasks = [...section.tasks]
-                  tasks.move(source.index, destination.index)
+                  tasks[source.index].order = destination.index
+                  tasks[destination.index].order = source.index
                   return {
                     id: section.id,
+                    name: section.name,
                     tasks: tasks,
                   }
                 }
@@ -135,6 +139,7 @@ export default function DraggableTestV2() {
                   task = tasks.splice(source.index, 1)[0]
                   return {
                     id: section.id,
+                    name: section.name,
                     tasks: tasks,
                   }
                 }
@@ -142,33 +147,17 @@ export default function DraggableTestV2() {
               sectionHandlers.applyWhere(
                 (section) => section.id.toString() === destination.droppableId,
                 (section) => {
-                  console.log(section)
                   let tasks = [...section.tasks]
                   tasks.splice(source.index, 0, task)
                   return {
                     id: section.id,
+                    name: section.name,
                     tasks: tasks,
                   }
                 }
               )
             }
           }
-          // if (sInd === dInd) {
-          //   if (dInd === "dnd-list") {
-          //     handlers1.reorder({
-          //       from: source.index,
-          //       to: destination?.index || 0,
-          //     })
-          //   } else if (dInd == "dnd-list1") {
-          //     handlers2.reorder({
-          //       from: source.index,
-          //       to: destination?.index || 0,
-          //     })
-          //   }
-          // } else {
-          //   const sourceType = sInd === "dnd-list" ? 1 : 2
-          //   move(sourceType, source.index, destination.index)
-          // }
         }}
       >
         <Droppable droppableId="droppableRoot" type="droppableItem">

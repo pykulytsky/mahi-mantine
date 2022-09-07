@@ -3,6 +3,7 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -17,15 +18,15 @@ import { useHotkeys, useLocalStorage } from "@mantine/hooks"
 import DraggableTestV2 from "./routes/DraggableTestV2"
 
 export default function App() {
+  const queryClient = new QueryClient()
+
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
     defaultValue: "light",
     getInitialValueInEffect: true,
   })
-
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"))
-
   useHotkeys([["mod+J", () => toggleColorScheme()]])
 
   return (
@@ -64,17 +65,19 @@ export default function App() {
         <ModalsProvider>
           <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
             <NotificationsProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/test" element={<Test />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/app" element={<LayoutProvider />}>
-                    <Route path="about" element={<About />} />
-                    <Route path="dnd" element={<DraggableTest />} />
-                    <Route path="dnd-v2" element={<DraggableTestV2 />} />
-                  </Route>
-                </Routes>
-              </BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/test" element={<Test />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/app" element={<LayoutProvider />}>
+                      <Route path="about" element={<About />} />
+                      <Route path="dnd" element={<DraggableTest />} />
+                      <Route path="dnd-v2" element={<DraggableTestV2 />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </QueryClientProvider>
             </NotificationsProvider>
           </SpotlightProvider>
         </ModalsProvider>

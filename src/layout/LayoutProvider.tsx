@@ -5,6 +5,8 @@ import { useState, createContext } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { motion, AnimatePresence } from "framer-motion"
+import { useQuery } from "@tanstack/react-query"
+import { getMe } from "../api/user.api"
 
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
@@ -12,6 +14,8 @@ export default function AppProvider() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 })
   const { height } = useViewportSize()
+
+  const currentUser = useQuery(["user"], getMe)
 
   const HEADER_HEIGHT = 50
 

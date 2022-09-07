@@ -59,17 +59,17 @@ export default function Task(props: TaskProps) {
 
   return (
     <motion.div
-      variants={{
-        hidden: { opacity: props.disableAnimation ? 1 : 0 },
-        show: {
-          opacity: 1,
-          transition: {
-            delay: 0,
-          },
-        },
-      }}
-      initial="hidden"
-      animate="show"
+    // variants={{
+    //   hidden: { opacity: props.disableAnimation ? 1 : 0 },
+    //   show: {
+    //     opacity: 1,
+    //     transition: {
+    //       delay: 0,
+    //     },
+    //   },
+    // }}
+    // initial="hidden"
+    // animate="show"
     >
       <Container
         ref={ref}
