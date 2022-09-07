@@ -5,11 +5,11 @@ import {
   Text,
   Group,
   ActionIcon,
-} from "@mantine/core";
-import { motion } from "framer-motion";
-import { DotsSixVertical } from "phosphor-react";
-import { useHover } from "@mantine/hooks";
-import { TaskProps } from "./sharedTypes";
+} from "@mantine/core"
+import { motion } from "framer-motion"
+import { DotsSixVertical } from "phosphor-react"
+import { useHover } from "@mantine/hooks"
+import { TaskProps } from "./sharedTypes"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -31,9 +31,13 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
       cursor: "pointer",
     },
     input: {
-      cursor: 'pointer',
-      border: `2px solid ${theme.colorScheme === "dark"? theme.colors.dark[4]: theme.colors.gray[5]}`
-    }
+      cursor: "pointer",
+      border: `2px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[5]
+      }`,
+    },
   },
   draggingRoot: {
     background:
@@ -47,25 +51,25 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
   dragControlUnvisible: {
     opacity: 0,
   },
-}));
+}))
 
 export default function Task(props: TaskProps) {
-  const { classes, cx } = useStyles(!!props.draggableHandleProps);
-  const { hovered, ref } = useHover();
+  const { classes, cx } = useStyles(!!props.draggableHandleProps)
+  const { hovered, ref } = useHover()
 
   return (
     <motion.div
-      variants={{
-        hidden: { opacity: props.disableAnimation ? 1: 0 },
-        show: {
-          opacity: 1,
-          transition: {
-            delay: props.disableAnimation ? 0: props.order / 10,
-          },
-        },
-      }}
-      initial="hidden"
-      animate="show"
+    // variants={{
+    //   hidden: { opacity: props.disableAnimation ? 1 : 0 },
+    //   show: {
+    //     opacity: 1,
+    //     transition: {
+    //       delay: 0,
+    //     },
+    //   },
+    // }}
+    // initial="hidden"
+    // animate="show"
     >
       <Container
         ref={ref}
@@ -89,18 +93,35 @@ export default function Task(props: TaskProps) {
             </ActionIcon>
           )}
           <Checkbox
-            sx={(theme) => ( props.color ? {
-              input: {
-                border: `2px solid ${theme.colors[props.color][4]}`
-              }
-            }: {})}
+            sx={(theme) =>
+              props.color
+                ? {
+                    input: {
+                      border: `2px solid ${theme.colors[props.color][4]}`,
+                    },
+                  }
+                : {}
+            }
             className={classes.task}
             color={props.color}
+            checked={props.isDone}
+            onChange={() => {
+              console.log(props.name)
+            }}
             size="md"
-            label={<Text onClick={(e: Event): void => {e.preventDefault()}}>{props.name}</Text>}
+            label={
+              <Text
+                color={props.isDone ? "dimmed" : ""}
+                onClick={(e: Event): void => {
+                  e.preventDefault()
+                }}
+              >
+                {props.name}
+              </Text>
+            }
           />
         </Group>
       </Container>
     </motion.div>
-  );
+  )
 }

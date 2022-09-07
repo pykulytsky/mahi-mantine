@@ -5,14 +5,14 @@ import {
   Container,
   Checkbox,
   GroupedTransition,
-} from "@mantine/core";
-import ColorSchemeSwitch from "../components/core/ColorSchemeSwitch";
-import Task from "../components/tasks/Task";
+} from "@mantine/core"
+import ColorSchemeSwitch from "../components/core/ColorSchemeSwitch"
+import Task from "../components/tasks/Task"
 
 export default function About() {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const dark = colorScheme === "dark";
-  const duration = 500;
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const dark = colorScheme === "dark"
+  const duration = 500
 
   return (
     <Container>
@@ -36,5 +36,5 @@ export default function About() {
         order={3}
       />
     </Container>
-  );
+  )
 }
