@@ -1,22 +1,16 @@
 import http from "./axios";
-
-type Project = {
-    id: number
-    name: string
-    description?: string
-    icon?: string
-    accent_color?: string
-    is_favorite: boolean
-    is_pinned: boolean
-    is_editable: boolean
-    show_completed_tasks: boolean
-}
+import { Project } from "../sharedTypes";
 
 const BASE_URL: string = "/projects/"
 
-
 export const fetchUserProjects = async () => {
-    const { data } = await http.get<Project>("/user/")
+    const { data } = await http.get<Project[]>(BASE_URL + "/user/")
+
+    return data
+}
+
+export const fetchProject = async (ID: string | undefined) => {
+    const { data } = await http.get<Project>(BASE_URL + ID)
 
     return data
 }

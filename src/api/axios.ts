@@ -12,13 +12,11 @@ function getAuthToken (): string | null {
     if (token) {
         token = 'Bearer ' + token
     }
-
     return token
 }
 
 http.interceptors.request.use(config => {
-    const token = getAuthToken()
-    if (token) config.headers['Authorization'] = getAuthToken()
+    config.headers['Authorization'] = getAuthToken()
     return config
 })
 

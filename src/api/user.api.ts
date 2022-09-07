@@ -1,14 +1,5 @@
 import http from "./axios"
-
-export type User = {
-  id: number
-  email: string
-  first_name?: string
-  last_name?: string
-  email_verified: boolean
-  avatar?: string
-  tasks_goal_per_day?: number
-}
+import { User } from "../sharedTypes"
 
 export type UserList = {
   data: User[]

@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import GlobalStyles from "./GlobalStyles"
 import Test from "./routes/Test"
 import About from "./routes/About"
+import ProjectRoot from "./components/tasks/Project"
 import LayoutProvider from "./layout/LayoutProvider"
 import { SpotlightProvider } from "@mantine/spotlight"
 import DraggableTest from "./routes/DraggableTest"
@@ -74,6 +75,7 @@ export default function App() {
                       <Route path="about" element={<About />} />
                       <Route path="dnd" element={<DraggableTest />} />
                       <Route path="dnd-v2" element={<DraggableTestV2 />} />
+                      <Route path="projects/:id" element={<ProjectRoot />} />
                     </Route>
                   </Routes>
                 </BrowserRouter>
