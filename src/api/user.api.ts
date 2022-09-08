@@ -1,5 +1,5 @@
 import http from "./axios"
-import { User } from "../sharedTypes"
+import { User } from "../types"
 
 export type UserList = {
   data: User[]
@@ -17,7 +17,7 @@ export const getMe = async () => {
 }
 
 export const fetchUsers = async () => {
-  const { data } =  await http.get<User[]>(BASE_URL)
+  const { data } = await http.get<User[]>(BASE_URL)
   return data
 }
 

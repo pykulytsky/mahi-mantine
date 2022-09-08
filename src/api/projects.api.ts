@@ -1,16 +1,16 @@
-import http from "./axios";
-import { Project } from "../sharedTypes";
+import http from "./axios"
+import { Project } from "../types"
 
 const BASE_URL: string = "/projects/"
 
 export const fetchUserProjects = async () => {
-    const { data } = await http.get<Project[]>(BASE_URL + "/user/")
+  const { data } = await http.get<Project[]>(BASE_URL + "user/")
 
-    return data
+  return data
 }
 
 export const fetchProject = async (ID: string | undefined) => {
-    const { data } = await http.get<Project>(BASE_URL + ID)
+  const { data } = await http.get<Project>(BASE_URL + ID)
 
-    return data
+  return data
 }

@@ -8,12 +8,8 @@ import {
   UnstyledButton,
   createStyles,
 } from "@mantine/core"
-import {
-  TablerIcon,
-  IconCalendarStats,
-  IconChevronLeft,
-  IconChevronRight,
-} from "@tabler/icons"
+import { Link } from "react-router-dom"
+import { TablerIcon, IconChevronLeft, IconChevronRight } from "@tabler/icons"
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -65,17 +61,23 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface LinksGroupProps {
-  icon: TablerIcon
+  id?: int
+  icon?: TablerIcon
+  emoji?: string
   label: string
+  color?: string
   initiallyOpened?: boolean
   links?: { label: string; link: string }[]
 }
 
 export function LinksGroup({
+  id,
   icon: Icon,
   label,
+  color,
   initiallyOpened,
   links,
+  emoji,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles()
   const hasLinks = Array.isArray(links)
@@ -96,13 +98,15 @@ export function LinksGroup({
   return (
     <>
       <UnstyledButton
+        component={!hasLinks ? Link : undefined}
+        to={"/app/projects/" + id}
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon variant="light" size={35}>
-              <Icon size={18} />
+            <ThemeIcon color={color} variant="light" size={35}>
+              {!emoji ? <Icon size={18} /> : <Text>{emoji}</Text>}
             </ThemeIcon>
             <Box ml="md">{label}</Box>
           </Box>
@@ -122,30 +126,5 @@ export function LinksGroup({
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
-  )
-}
-
-const mockdata = {
-  label: "Releases",
-  icon: IconCalendarStats,
-  links: [
-    { label: "Upcoming releases", link: "/" },
-    { label: "Previous releases", link: "/" },
-    { label: "Releases schedule", link: "/" },
-  ],
-}
-
-export function NavbarLinksGroup() {
-  return (
-    <Box
-      sx={(theme) => ({
-        minHeight: 220,
-        padding: theme.spacing.md,
-        backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-      })}
-    >
-      <LinksGroup {...mockdata} />
-    </Box>
   )
 }

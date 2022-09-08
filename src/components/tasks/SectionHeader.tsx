@@ -4,7 +4,7 @@ interface ProjectHeaderProps {
   name: string
 }
 
-export default function ProjectHeader(props: ProjectHeaderProps) {
+export default function SectionHeader(props: ProjectHeaderProps) {
   return (
     <Paper
       radius={0}

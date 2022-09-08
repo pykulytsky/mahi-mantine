@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom"
-import { AppShell, Box, ScrollArea } from "@mantine/core"
+import { AppShell, Box, LoadingOverlay, ScrollArea } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import { useState, createContext } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { motion, AnimatePresence } from "framer-motion"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useIsFetching } from "@tanstack/react-query"
 import { getMe } from "../api/user.api"
+import { fetchUserProjects } from "../api/projects.api"
 
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
@@ -16,6 +17,8 @@ export default function AppProvider() {
   const { height } = useViewportSize()
 
   const currentUser = useQuery(["user"], getMe)
+  const ownProjects = useQuery(["user", "project"], fetchUserProjects)
+  const isFetching = useIsFetching()
 
   const HEADER_HEIGHT = 50
 
@@ -47,7 +50,10 @@ export default function AppProvider() {
               animate={{ x: 0 }}
               transition={{ ease: "easeInOut", duration: 0.5 }}
             >
-              <Sidebar height={height - HEADER_HEIGHT} />
+              <Sidebar
+                ownProjects={ownProjects.data}
+                height={height - HEADER_HEIGHT}
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -55,6 +61,7 @@ export default function AppProvider() {
     >
       <Box>
         <ScrollbarContext.Provider value={scrollPosition}>
+          <LoadingOverlay visible={isFetching} overlayBlur={2} />
           <Outlet />
         </ScrollbarContext.Provider>
       </Box>
