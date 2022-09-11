@@ -104,14 +104,14 @@ export default function Task(props: TaskProps) {
             }
             className={classes.task}
             color={props.color}
-            checked={props.isDone}
+            checked={props.is_done}
             onChange={() => {
               console.log(props.name)
             }}
             size="md"
             label={
               <Text
-                color={props.isDone ? "dimmed" : ""}
+                color={props.is_done ? "dimmed" : ""}
                 onClick={(e: Event): void => {
                   e.preventDefault()
                 }}

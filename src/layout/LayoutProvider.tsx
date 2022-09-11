@@ -61,7 +61,11 @@ export default function AppProvider() {
     >
       <Box>
         <ScrollbarContext.Provider value={scrollPosition}>
-          <LoadingOverlay visible={isFetching} overlayBlur={2} />
+          <LoadingOverlay
+            transitionDuration={500}
+            visible={isFetching > 0}
+            overlayBlur={2}
+          />
           <Outlet />
         </ScrollbarContext.Provider>
       </Box>

@@ -1,11 +1,10 @@
 import { createStyles, Container, Button } from "@mantine/core"
 import { useListState, useScrollIntoView } from "@mantine/hooks"
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
-import Section from "../components/tasks/Section"
+import SectionComponent from "../components/tasks/Section"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import { useContext, useEffect } from "react"
 import { ScrollbarContext } from "../layout/LayoutProvider"
-import SectionV2 from "../components/tasks/SectionV2"
 
 const useStyles = createStyles((theme) => ({
   item: {
@@ -57,6 +56,7 @@ export default function DraggableTestV2() {
   const [sections, sectionHandlers] = useListState([
     {
       id: 91,
+      order: 1,
       tasks: [
         {
           id: 2,
@@ -80,6 +80,7 @@ export default function DraggableTestV2() {
     },
     {
       id: 92,
+      order: 2,
       tasks: [
         {
           id: 4,
@@ -92,6 +93,7 @@ export default function DraggableTestV2() {
     },
     {
       id: 93,
+      order: 3,
       tasks: [],
       name: "test section 1",
     },
@@ -164,7 +166,7 @@ export default function DraggableTestV2() {
           {(provided, snapshot) => (
             <div ref={provided.innerRef}>
               {sections.map((section, index) => (
-                <SectionV2 key={index} section={section} index={index} />
+                <SectionComponent key={index} section={section} index={index} />
               ))}
               {provided.placeholder}
             </div>

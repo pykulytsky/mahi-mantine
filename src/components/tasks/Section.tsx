@@ -1,60 +1,81 @@
-import { Droppable, Draggable } from "@hello-pangea/dnd"
-import { Collapse } from "@mantine/core"
+import {
+  Droppable,
+  Draggable,
+  DraggableProvidedDragHandleProps,
+} from "@hello-pangea/dnd"
+import { useId } from "@mantine/hooks"
+import { Collapse, ActionIcon } from "@mantine/core"
 import SectionHeader from "./SectionHeader"
-import { TaskProps } from "./sharedTypes"
 import { useState } from "react"
-import Task from "./Task"
+import DraggableTaskList from "./DraggableTaskList"
+import { DotsSixVertical } from "phosphor-react"
+import { Section, Task } from "../../types"
 
-interface SectionProps {
-  id?: number
-  name?: string
-  keyStr: number
-  droppableId: string
-  direction?: string
-  tasks: TaskProps[]
+export interface BaseSectionProps {
+  index: number
+  draggableHandleProps?: DraggableProvidedDragHandleProps
 }
 
-export default function Section(props: SectionProps) {
-  const [opened, setOpened] = useState(true)
+interface CustomSectionProps extends BaseSectionProps {
+  section: Section
+}
 
-  const tasks = props.tasks.map((task, index) => (
+interface DefaultSectionProps extends BaseSectionProps {
+  tasks: Task[]
+}
+
+export type SectionProps = CustomSectionProps | DefaultSectionProps
+
+export default function SectionComponent(props: SectionProps) {
+  const [opened, setOpened] = useState(true)
+  const uuid = useId()
+  const isCustomSection = "section" in props
+
+  let tasks = DraggableTaskList(
+    isCustomSection ? props.section.tasks : props.tasks,
+    uuid
+  )
+
+  let sectionID = isCustomSection ? props.section.order : -1
+
+  return (
     <Draggable
-      key={task.order}
-      draggableId={task.order.toString()}
-      index={index}
+      key={sectionID}
+      draggableId={sectionID.toString()}
+      index={props.index}
     >
-      {(provided, snapshot) => (
+      {(provided) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
-          <Task
-            {...task}
-            draggableHandleProps={provided.dragHandleProps}
-            isDragging={snapshot.isDragging}
-          />
+          <ActionIcon sx={{ display: "none" }} {...provided.dragHandleProps}>
+            <DotsSixVertical />
+          </ActionIcon>
+          <Droppable
+            droppableId={sectionID.toString()}
+            direction="vertical"
+            type={`droppableSubItem`}
+          >
+            {(providedDrop) => (
+              <div {...providedDrop.droppableProps} ref={providedDrop.innerRef}>
+                {isCustomSection && (
+                  <SectionHeader
+                    name={props.section.name}
+                    dragHandleProps={provided.dragHandleProps}
+                    onOpen={() => {
+                      setOpened(!opened)
+                    }}
+                  />
+                )}
+                {isCustomSection ? (
+                  <Collapse in={opened}>{tasks}</Collapse>
+                ) : (
+                  tasks
+                )}
+                {providedDrop.placeholder}
+              </div>
+            )}
+          </Droppable>
         </div>
       )}
     </Draggable>
-  ))
-
-  return (
-    <Droppable
-      key={props.keyStr}
-      droppableId={props.droppableId}
-      direction="vertical"
-    >
-      {(provided) => (
-        <div {...provided.droppableProps} ref={provided.innerRef}>
-          {!!props.id && (
-            <SectionHeader
-              name={props.name}
-              onOpen={() => {
-                setOpened(!opened)
-              }}
-            />
-          )}
-          {!!props.id ? <Collapse in={opened}>{tasks}</Collapse> : tasks}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
   )
 }
