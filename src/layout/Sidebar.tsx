@@ -1,55 +1,26 @@
-import {
-  Navbar,
-  Group,
-  Code,
-  ScrollArea,
-  createStyles,
-  Title,
-} from "@mantine/core"
+import { Navbar, ScrollArea, createStyles, Divider, Title } from "@mantine/core"
 import {
   IconNotes,
   IconCalendarStats,
   IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
+  IconCalendarEvent,
+  IconInbox,
 } from "@tabler/icons"
-import { LinksGroup } from "./LinksGroup"
+import { Project } from "../types"
+import { LinksGroup } from "../components/navbar/LinksGroup"
 
-const mockdata = [
+const builtInLinks = [
+  { label: "Inbox", icon: IconInbox, color: "violet" },
   { label: "Dashboard", icon: IconGauge },
   {
-    label: "Market news",
-    icon: IconNotes,
-    initiallyOpened: true,
-    links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
-    ],
+    label: "Calendar",
+    icon: IconCalendarEvent,
+    color: "green",
   },
   {
-    label: "Releases",
+    label: "Today",
     icon: IconCalendarStats,
-    links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
-    ],
-  },
-  { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
-  {
-    label: "Security",
-    icon: IconLock,
-    links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
-    ],
+    color: "yellow",
   },
 ]
 
@@ -78,8 +49,6 @@ const useStyles = createStyles((theme) => ({
   },
 
   linksInner: {
-    paddingTop: theme.spacing.xl,
-    paddingBottom: theme.spacing.xl,
     paddingRight: theme.spacing.sm,
   },
 
@@ -94,24 +63,40 @@ const useStyles = createStyles((theme) => ({
 
 interface SidebarProps {
   height: number
+  ownProjects?: Project[]
 }
 
 export default function Sidebar(props: SidebarProps) {
   const { classes } = useStyles()
-  const links = mockdata.map((item) => (
+  const defaultLinks = builtInLinks.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ))
+  const pinnedLinks = props.ownProjects
+    ?.filter((project) => project.is_pinned)
+    .map((project) => (
+      <LinksGroup
+        key={project.id}
+        label={project.name}
+        color={project.accent_color}
+        emoji={project.icon}
+        id={project.id}
+      />
+    ))
 
   return (
     <Navbar
       height={props.height}
       width={{ sm: 300 }}
       p="xl"
+      pt={5}
       pr="md"
       className={classes.navbar}
     >
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
-        <div className={classes.linksInner}>{links}</div>
+        <div className={classes.linksInner}>{defaultLinks}</div>
+        <Divider my="sm" label="Pinned" />
+        <div className={classes.linksInner}>{pinnedLinks}</div>
+        <Divider my="sm" />
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>aaaa</Navbar.Section>

@@ -1,14 +1,5 @@
 import http from "./axios"
-
-export type User = {
-  id: number
-  email: string
-  first_name?: string
-  last_name?: string
-  email_verified: boolean
-  avatar?: string
-  tasks_goal_per_day?: number
-}
+import { User } from "../types"
 
 export type UserList = {
   data: User[]
@@ -20,14 +11,17 @@ export type UserResposne = {
 
 const BASE_URL: string = "/users/"
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const { data } = await http.get<User>(BASE_URL + "me/")
   return data
 }
 
-export const fetchUsers = async () => {
-  const { data } =  await http.get<User[]>(BASE_URL)
+export const fetchUsers = async (): Promise<User[]> => {
+  const { data } = await http.get<User[]>(BASE_URL)
   return data
 }
 
-export const getUser = (ID: number | string) => http.get(BASE_URL + ID)
+export const getUser = async (ID: number | string): Promise<User> => {
+  const { data } = await http.get(BASE_URL + ID)
+  return data
+}

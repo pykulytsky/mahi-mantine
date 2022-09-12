@@ -1,13 +1,9 @@
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { DefaultProps } from "@mantine/core"
+import { Task } from "../../types"
 
-export interface TaskProps extends DefaultProps {
-  id: number
-  order: number
-  name: string
-  isDone: boolean
-  color?: string
-  draggableHandleProps?: DraggableProvidedDragHandleProps
+export interface TaskProps extends Task {
+  draggableHandleProps: DraggableProvidedDragHandleProps | null
   isDragging?: boolean
   disableAnimation?: boolean
 }

@@ -1,6 +1,7 @@
 import {
   Group,
   Text,
+  Title,
   Paper,
   ActionIcon,
   useMantineTheme,
@@ -8,11 +9,14 @@ import {
   createStyles,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { Pencil, Plus, DotsThreeCircle, CheckCircle } from "phosphor-react"
+import { Pencil, DotsThreeCircle, CheckCircle } from "phosphor-react"
 import { IconSection } from "@tabler/icons"
 
 interface ProjectHeaderProps {
-  title: string
+  id?: number
+  name: string
+  icon?: string
+  tasksCount?: [number, number]
 }
 
 const useStyles = createStyles((theme, hovered: boolean) => ({
@@ -44,15 +48,23 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
     <Paper ref={ref} radius={0} mt={16} className={classes.root}>
       <Group p="md" position="apart">
         <Group spacing={5}>
+          {props.icon && (
+            <ActionIcon variant="transparent">
+              <Title order={3}>{props.icon}</Title>
+            </ActionIcon>
+          )}
           <Text className={classes.title} weight={700} size="xl">
-            {props.title}
+            {props.name}
           </Text>
           <ActionIcon className={classes.shownOnHover} variant="transparent">
             <Pencil weight="duotone" />
           </ActionIcon>
-          <Text italic size="sm">
-            16 of 22
-          </Text>
+          {props.tasksCount && (
+            <Text italic size="sm">
+              <span>{props.tasksCount[0]}</span> of{" "}
+              <span>{props.tasksCount[1]}</span>
+            </Text>
+          )}
         </Group>
         <Button.Group className={cx(classes.shownOnHover, classes.addBtnGroup)}>
           <Button
