@@ -1,8 +1,8 @@
 import {
   useMutation,
   useQuery,
-  useQueryClient,
   QueryClient,
+  useQueryClient,
 } from "@tanstack/react-query"
 import { fetchProject } from "../api/projects.api"
 import { useParams } from "react-router-dom"
@@ -23,7 +23,7 @@ import { IconArrowsSort } from "@tabler/icons"
 
 const useStyles = createStyles({})
 
-const projectRootQuery = (id: number) => ({
+const projectRootQuery = (id: string | undefined) => ({
   queryKey: ["project", { id: id }],
   queryFn: async () => fetchProject(id),
 })
@@ -32,21 +32,16 @@ export const loader =
   (queryClient: QueryClient) =>
   async ({ params }) => {
     const query = projectRootQuery(params.id)
+    return queryClient.getQueryData(["project", { id: params.id }])
 
-    return (
-      queryClient.getQueryData(query.queryKey) ??
-      (await queryClient.fetchQuery(query))
-    )
   }
 
 export default function ProjectRoot() {
   const { id } = useParams()
   const { classes } = useStyles()
   const queryClient = useQueryClient()
-  const { data, isLoading, isError } = useQuery(
-    ["project", { id: id }],
-    async () => fetchProject(id)
-  )
+  const { data, isLoading, isError } = useQuery(projectRootQuery(id))
+
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
       queryClient.setQueryData(["project", { id: id }], data)

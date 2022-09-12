@@ -3,15 +3,16 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Routes, Route, DataBrowserRouter } from "react-router-dom"
 import GlobalStyles from "./GlobalStyles"
 import Test from "./routes/Test"
 import About from "./routes/About"
-import ProjectRoot from "./routes/Project"
-import LayoutProvider from "./layout/LayoutProvider"
+import ProjectRoot, { loader as projectLoader } from "./routes/Project"
+import LayoutProvider, { loader as rootLoader } from "./layout/LayoutProvider"
 import { SpotlightProvider } from "@mantine/spotlight"
 import DraggableTest from "./routes/DraggableTest"
 
@@ -19,7 +20,14 @@ import { useHotkeys, useLocalStorage } from "@mantine/hooks"
 import DraggableTestV2 from "./routes/DraggableTestV2"
 
 export default function App() {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 10,
+        refetchOnWindowFocus: false,
+      },
+    },
+  })
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
@@ -67,18 +75,25 @@ export default function App() {
           <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
             <NotificationsProvider>
               <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/app" element={<LayoutProvider />}>
-                      <Route path="about" element={<About />} />
-                      <Route path="dnd" element={<DraggableTest />} />
-                      <Route path="dnd-v2" element={<DraggableTestV2 />} />
-                      <Route path="projects/:id" element={<ProjectRoot />} />
-                    </Route>
-                  </Routes>
-                </BrowserRouter>
+                <ReactQueryDevtools initialIsOpen={false} />
+                <DataBrowserRouter>
+                  <Route path="/test" element={<Test />} />
+                  <Route path="/about" element={<About />} />
+                  <Route
+                    loader={rootLoader(queryClient)}
+                    path="/app"
+                    element={<LayoutProvider />}
+                  >
+                    <Route path="about" element={<About />} />
+                    <Route path="dnd" element={<DraggableTest />} />
+                    <Route path="dnd-v2" element={<DraggableTestV2 />} />
+                    <Route
+                      loader={projectLoader(queryClient)}
+                      path="projects/:id"
+                      element={<ProjectRoot />}
+                    />
+                  </Route>
+                </DataBrowserRouter>
               </QueryClientProvider>
             </NotificationsProvider>
           </SpotlightProvider>
