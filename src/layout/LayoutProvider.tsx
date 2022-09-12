@@ -5,11 +5,21 @@ import { useState, createContext } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { motion, AnimatePresence } from "framer-motion"
-import { useQuery, useIsFetching } from "@tanstack/react-query"
+import { useQuery, useIsFetching, QueryClient } from "@tanstack/react-query"
 import { getMe } from "../api/user.api"
 import { fetchUserProjects } from "../api/projects.api"
 
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
+
+export const userQuery = () => ({
+  queryKey: ["user"],
+  queryFn: getMe,
+})
+
+export const ownProjectsQuery = () => ({
+  queryKey: ["user", "project"],
+  queryFn: fetchUserProjects,
+})
 
 export default function AppProvider() {
   const [sidebarOpen, setSidebarOpen] = useState(false)

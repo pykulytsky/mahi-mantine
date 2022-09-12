@@ -43,6 +43,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
           sx={{
             cursor: "pointer",
           }}
+          onClick={props.onOpen}
           weight={700}
           size="lg"
         >

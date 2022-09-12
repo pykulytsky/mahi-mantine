@@ -19,5 +19,19 @@ export default function useTasksHelper(data: Project | Section | undefined) {
         ]
       }
     }, [data]),
+    projectTasksCount: useMemo((): [number, number] | undefined => {
+      let completedTasks =
+        data?.tasks.filter((task) => task.is_done).length || 0
+      let totalTasks = data?.tasks.length || 0
+
+      if (data && "sections" in data) {
+        data.sections.forEach((section) => {
+          totalTasks += section.tasks.length
+          completedTasks += section.tasks.filter((task) => task.is_done).length
+        })
+      }
+
+      return [completedTasks, totalTasks]
+    }, [data]),
   }
 }

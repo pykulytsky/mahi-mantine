@@ -1,7 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  QueryClient,
+} from "@tanstack/react-query"
 import { fetchProject } from "../api/projects.api"
 import { useParams } from "react-router-dom"
 import { Container, createStyles } from "@mantine/core"
+import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import {
   DragDropContext,
@@ -12,12 +18,26 @@ import {
 import { ProjectEmptyPlaceholder } from "../components/tasks/ProjectEmptyPlaceholder"
 import SectionComponent from "../components/tasks/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
-import Task from "../components/tasks/Task"
 import { reorder } from "../api/tasks.api"
-import { TaskReorder } from "../types"
-import { useEffect, useMemo } from "react"
+import { IconArrowsSort } from "@tabler/icons"
 
 const useStyles = createStyles({})
+
+const projectRootQuery = (id: number) => ({
+  queryKey: ["project", { id: id }],
+  queryFn: async () => fetchProject(id),
+})
+
+export const loader =
+  (queryClient: QueryClient) =>
+  async ({ params }) => {
+    const query = projectRootQuery(params.id)
+
+    return (
+      queryClient.getQueryData(query.queryKey) ??
+      (await queryClient.fetchQuery(query))
+    )
+  }
 
 export default function ProjectRoot() {
   const { id } = useParams()
@@ -30,10 +50,15 @@ export default function ProjectRoot() {
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
       queryClient.setQueryData(["project", { id: id }], data)
+      showNotification({
+        title: "Project was successfully reordered.",
+        message: undefined,
+        icon: <IconArrowsSort size={18} />,
+      })
     },
   })
 
-  const { isEmpty, tasksCount } = useTasksHelper(data)
+  const { isEmpty, projectTasksCount } = useTasksHelper(data)
 
   function orderProject(
     source: DraggableLocation,
@@ -62,7 +87,7 @@ export default function ProjectRoot() {
   return (
     <Container>
       <ProjectHeader
-        tasksCount={tasksCount}
+        tasksCount={projectTasksCount}
         name={data.name}
         icon={data.icon}
       />

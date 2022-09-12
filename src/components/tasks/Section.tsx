@@ -10,6 +10,7 @@ import { useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
 import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
+import useTasksHelper from "../../hooks/tasksHelpers"
 
 export interface BaseSectionProps {
   index: number
@@ -37,6 +38,9 @@ export default function SectionComponent(props: SectionProps) {
   )
 
   let sectionID = isCustomSection ? props.section.order : -1
+  const { tasksCount } = useTasksHelper(
+    isCustomSection ? props.section : undefined
+  )
 
   return (
     <Draggable
@@ -58,6 +62,7 @@ export default function SectionComponent(props: SectionProps) {
               <div {...providedDrop.droppableProps} ref={providedDrop.innerRef}>
                 {isCustomSection && (
                   <SectionHeader
+                    tasksCount={tasksCount}
                     name={props.section.name}
                     dragHandleProps={provided.dragHandleProps}
                     onOpen={() => {
