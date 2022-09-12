@@ -20,6 +20,7 @@ import SectionComponent from "../components/tasks/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
 import { reorder } from "../api/tasks.api"
 import { IconArrowsSort } from "@tabler/icons"
+import { Project, TaskReorder } from "../types"
 
 const useStyles = createStyles({})
 
@@ -33,7 +34,6 @@ export const loader =
   async ({ params }) => {
     const query = projectRootQuery(params.id)
     return queryClient.getQueryData(["project", { id: params.id }])
-
   }
 
 export default function ProjectRoot() {
@@ -44,12 +44,56 @@ export default function ProjectRoot() {
 
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
-      queryClient.setQueryData(["project", { id: id }], data)
+      // queryClient.setQueryData(["project", { id: id }], data)
       showNotification({
         title: "Project was successfully reordered.",
         message: undefined,
         icon: <IconArrowsSort size={18} />,
       })
+    },
+    onMutate: async (reorderData: TaskReorder) => {
+      await queryClient.cancelQueries(["project", { id: id }])
+      let oldProject = queryClient.getQueryData<Project>([
+        "project",
+        { id: id },
+      ])
+
+      let project = { ...oldProject }
+      if (project) {
+        let source =
+          reorderData.sourceType == "project"
+            ? project
+            : project.sections?.find(
+                (section) => section.id === Number(reorderData.sourceID)
+              )
+        let destinition =
+          reorderData.destinationType === "project"
+            ? project
+            : project.sections?.find(
+                (section) => section.id === Number(reorderData.destinitionID)
+              )
+        const task = source?.tasks?.splice(
+          Number(reorderData.sourceOrder),
+          1
+        )[0]
+        if (task) {
+          task.order = 9999
+          destinition?.tasks?.splice(
+            Number(reorderData.destinationOrder),
+            0,
+            task
+          )
+        }
+        queryClient.setQueryData(["project", { id: id }], project)
+
+        return { oldProject, project }
+      }
+    },
+    onError: (error, newProject, context) => {
+      queryClient.setQueryData(["project", { id: id }], context?.oldProject)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries(["project", { id: id }])
     },
   })
 

@@ -12,7 +12,6 @@ export type UserResposne = {
 const BASE_URL: string = "/users/"
 
 export const getMe = async (): Promise<User> => {
-  console.log("fetching current user...")
   const { data } = await http.get<User>(BASE_URL + "me/")
   return data
 }
