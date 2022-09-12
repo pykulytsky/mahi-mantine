@@ -1,4 +1,4 @@
-import { Project, Task, TaskReorder } from "../types"
+import { Project, Task, TaskEdit, TaskReorder } from "../types"
 import http from "./axios"
 
 const BASE_URL = "/tasks/"
@@ -19,6 +19,13 @@ export const reorder = async (reorder: TaskReorder): Promise<Project> => {
 }
 
 export const getTask = async (ID: number | string): Promise<Task> => {
-  const { data } = await http.get(BASE_URL + ID)
+  const { data } = await http.get<Task>(BASE_URL + ID)
+  return data
+}
+
+export const editTask = async (task: TaskEdit): Promise<Task> => {
+  const { data } = await http.patch<Task>(BASE_URL + task.id, {
+    ...task,
+  })
   return data
 }

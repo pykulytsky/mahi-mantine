@@ -10,6 +10,7 @@ import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
 import { TaskProps } from "./sharedTypes"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { editTask } from "../../api/tasks.api"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -58,7 +59,11 @@ export default function Task(props: TaskProps) {
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
 
-  const taskMutation = useMutation()
+  const taskMutation = useMutation(editTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["project", { id: "1" }])
+    },
+  })
 
   function testInvalidation() {
     queryClient.invalidateQueries(["project", { id: "1" }])
@@ -100,7 +105,10 @@ export default function Task(props: TaskProps) {
           color={props.color}
           checked={props.is_done}
           onChange={() => {
-            testInvalidation()
+            taskMutation.mutate({
+              id: props.id,
+              is_done: !props.is_done,
+            })
           }}
           size="md"
           label={
