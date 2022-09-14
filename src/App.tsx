@@ -88,7 +88,7 @@ export default function App() {
                     <Route path="dnd" element={<DraggableTest />} />
                     <Route path="dnd-v2" element={<DraggableTestV2 />} />
                     <Route
-                      loader={projectLoader(queryClient)}
+                      // loader={projectLoader(queryClient)}
                       path="projects/:id"
                       element={<ProjectRoot />}
                     />

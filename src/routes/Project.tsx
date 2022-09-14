@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import { fetchProject } from "../api/projects.api"
-import { useParams } from "react-router-dom"
+import { useParams, Params } from "react-router-dom"
 import { Container, createStyles } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
@@ -25,14 +25,13 @@ import { Project, TaskReorder } from "../types"
 const useStyles = createStyles({})
 
 const projectRootQuery = (id: string | undefined) => ({
-  queryKey: ["project", { id: id }],
+  queryKey: ["project", { id }],
   queryFn: async () => fetchProject(id),
 })
 
 export const loader =
   (queryClient: QueryClient) =>
-  async ({ params }) => {
-    const query = projectRootQuery(params.id)
+  async ({ params: Params }) => {
     return queryClient.getQueryData(["project", { id: params.id }])
   }
 
@@ -44,7 +43,6 @@ export default function ProjectRoot() {
 
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
-      // queryClient.setQueryData(["project", { id: id }], data)
       showNotification({
         title: "Project was successfully reordered.",
         message: undefined,
@@ -52,11 +50,8 @@ export default function ProjectRoot() {
       })
     },
     onMutate: async (reorderData: TaskReorder) => {
-      await queryClient.cancelQueries(["project", { id: id }])
-      let oldProject = queryClient.getQueryData<Project>([
-        "project",
-        { id: id },
-      ])
+      await queryClient.cancelQueries(["project", { id }])
+      let oldProject = queryClient.getQueryData<Project>(["project", { id }])
 
       let project = { ...oldProject }
       if (project) {
@@ -84,16 +79,16 @@ export default function ProjectRoot() {
             task
           )
         }
-        queryClient.setQueryData(["project", { id: id }], project)
+        queryClient.setQueryData(["project", { id }], project)
 
         return { oldProject, project }
       }
     },
     onError: (error, newProject, context) => {
-      queryClient.setQueryData(["project", { id: id }], context?.oldProject)
+      queryClient.setQueryData(["project", { id }], context?.oldProject)
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["project", { id: id }])
+      queryClient.invalidateQueries(["project", { id }])
     },
   })
 

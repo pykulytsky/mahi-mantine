@@ -65,10 +65,6 @@ export default function Task(props: TaskProps) {
     },
   })
 
-  function testInvalidation() {
-    queryClient.invalidateQueries(["project", { id: "1" }])
-  }
-
   return (
     <Container
       ref={ref}

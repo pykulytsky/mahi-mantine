@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData, useRouteLoaderData } from "react-router-dom"
 import { AppShell, Box, LoadingOverlay, ScrollArea } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
-import { useState, createContext } from "react"
+import { useState, createContext, useEffect } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { motion, AnimatePresence } from "framer-motion"
@@ -13,7 +13,7 @@ export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
 export const userQuery = () => ({
   queryKey: ["users", "me"],
-  queryFn: getMe,
+  queryFn: async () => getMe,
 })
 
 export const ownProjectsQuery = () => ({
@@ -22,12 +22,9 @@ export const ownProjectsQuery = () => ({
 })
 
 export const loader = (queryClient: QueryClient) => async () => {
-  const usrQuery = useQuery(userQuery())
-  const userProjectsQuery = useQuery(ownProjectsQuery())
-  if (!queryClient.getQueryData(userQuery().queryKey)) {
-    await queryClient.fetchQuery(userQuery())
+  if (!queryClient.getQueryData(["user", "me"])) {
+    await queryClient.fetchQuery(["user", "me"], getMe)
   }
-  return { usrQuery, userProjectsQuery }
 }
 
 export default function AppProvider() {
@@ -38,6 +35,8 @@ export default function AppProvider() {
   const currentUser = useQuery(userQuery())
   const ownProjects = useQuery(ownProjectsQuery())
   const isFetching = useIsFetching()
+
+  useEffect(() => {}, [])
 
   const HEADER_HEIGHT = 50
 
