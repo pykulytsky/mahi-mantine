@@ -41,8 +41,8 @@ export default function ProjectRoot() {
       })
     },
     onMutate: async (reorderData: TaskReorder) => {
-      await queryClient.cancelQueries(["project", { id }])
-      let oldProject = queryClient.getQueryData<Project>(["project", { id }])
+      await queryClient.cancelQueries(["projects", { id }])
+      let oldProject = queryClient.getQueryData<Project>(["projects", { id }])
 
       let project = { ...oldProject }
       if (project) {
@@ -70,16 +70,16 @@ export default function ProjectRoot() {
             task
           )
         }
-        queryClient.setQueryData(["project", { id }], project)
+        queryClient.setQueryData(["projects", { id }], project)
 
         return { oldProject, project }
       }
     },
     onError: (error, newProject, context) => {
-      queryClient.setQueryData(["project", { id }], context?.oldProject)
+      queryClient.setQueryData(["projects", { id }], context?.oldProject)
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["project", { id }])
+      queryClient.invalidateQueries(["projects", { id }])
     },
   })
 

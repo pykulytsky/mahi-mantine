@@ -65,7 +65,7 @@ export default function Task(props: TaskProps) {
 
   const taskMutation = useMutation(editTask, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["project", { id }])
+      queryClient.invalidateQueries(["projects", { id }])
     },
   })
 
