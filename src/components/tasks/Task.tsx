@@ -11,6 +11,7 @@ import { useHover } from "@mantine/hooks"
 import { TaskProps } from "./sharedTypes"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../api/tasks.api"
+import { useMatch } from "react-location"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -58,10 +59,13 @@ export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps)
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
+  const {
+    params: { projectID: id },
+  } = useMatch()
 
   const taskMutation = useMutation(editTask, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["project", { id: "1" }])
+      queryClient.invalidateQueries(["project", { id }])
     },
   })
 

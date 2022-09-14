@@ -8,7 +8,7 @@ import {
   UnstyledButton,
   createStyles,
 } from "@mantine/core"
-import { Link } from "react-router-dom"
+import { Link } from "react-location"
 import { TablerIcon, IconChevronLeft, IconChevronRight } from "@tabler/icons"
 
 const useStyles = createStyles((theme) => ({

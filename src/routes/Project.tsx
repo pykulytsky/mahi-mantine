@@ -4,8 +4,7 @@ import {
   QueryClient,
   useQueryClient,
 } from "@tanstack/react-query"
-import { fetchProject } from "../api/projects.api"
-import { useParams, Params } from "react-router-dom"
+import { useMatch } from "react-location"
 import { Container, createStyles } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
@@ -21,25 +20,17 @@ import useTasksHelper from "../hooks/tasksHelpers"
 import { reorder } from "../api/tasks.api"
 import { IconArrowsSort } from "@tabler/icons"
 import { Project, TaskReorder } from "../types"
+import { useProject } from "../queries/projects"
 
 const useStyles = createStyles({})
 
-const projectRootQuery = (id: string | undefined) => ({
-  queryKey: ["project", { id }],
-  queryFn: async () => fetchProject(id),
-})
-
-export const loader =
-  (queryClient: QueryClient) =>
-  async ({ params: Params }) => {
-    return queryClient.getQueryData(["project", { id: params.id }])
-  }
-
 export default function ProjectRoot() {
-  const { id } = useParams()
   const { classes } = useStyles()
+  const {
+    params: { projectID: id },
+  } = useMatch()
   const queryClient = useQueryClient()
-  const { data, isLoading, isError } = useQuery(projectRootQuery(id))
+  const { data, isLoading, isError } = useProject(id)
 
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
