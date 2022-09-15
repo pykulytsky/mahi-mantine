@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMatch } from "react-location"
-import { Container, createStyles } from "@mantine/core"
+import { Container, createStyles, TextInput } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import {
@@ -21,6 +21,8 @@ import { reorder } from "../api/tasks.api"
 import { IconArrowsSort } from "@tabler/icons"
 import { Project, TaskReorder } from "../types"
 import { useProject } from "../queries/projects"
+
+import TaskNameInputRTE from "../components/tasks/createTaskForm/TaskNameInputRTE"
 
 const useStyles = createStyles({})
 
@@ -111,6 +113,7 @@ export default function ProjectRoot() {
   if (isError) return <h1>Error...</h1>
   return (
     <Container>
+      <TaskNameInputRTE />
       <ProjectHeader
         tasksCount={projectTasksCount}
         name={data.name}

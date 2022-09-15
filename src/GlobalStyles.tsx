@@ -86,6 +86,9 @@ export default function GlobalStyles() {
             opacity: 0,
             diplay: "none",
           },
+          ".ql-editor": {
+            padding: "12px 16px 0 16px !important",
+          },
         },
       ]}
     />
