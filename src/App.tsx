@@ -3,24 +3,18 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { QueryClientProvider } from "@tanstack/react-query"
+import { Outlet, Router } from "react-location"
+import { routes, location, queryClient } from "./router"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
 import GlobalStyles from "./GlobalStyles"
-import Test from "./routes/Test"
-import About from "./routes/About"
-import ProjectRoot from "./routes/Project"
-import LayoutProvider from "./layout/LayoutProvider"
 import { SpotlightProvider } from "@mantine/spotlight"
-import DraggableTest from "./routes/DraggableTest"
 
 import { useHotkeys, useLocalStorage } from "@mantine/hooks"
-import DraggableTestV2 from "./routes/DraggableTestV2"
 
 export default function App() {
-  const queryClient = new QueryClient()
-
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
     defaultValue: "light",
@@ -67,18 +61,10 @@ export default function App() {
           <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
             <NotificationsProvider>
               <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/app" element={<LayoutProvider />}>
-                      <Route path="about" element={<About />} />
-                      <Route path="dnd" element={<DraggableTest />} />
-                      <Route path="dnd-v2" element={<DraggableTestV2 />} />
-                      <Route path="projects/:id" element={<ProjectRoot />} />
-                    </Route>
-                  </Routes>
-                </BrowserRouter>
+                <ReactQueryDevtools initialIsOpen={false} />
+                <Router location={location} routes={routes}>
+                  <Outlet />
+                </Router>
               </QueryClientProvider>
             </NotificationsProvider>
           </SpotlightProvider>

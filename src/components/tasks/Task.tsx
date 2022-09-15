@@ -6,11 +6,12 @@ import {
   Group,
   ActionIcon,
 } from "@mantine/core"
-import { motion } from "framer-motion"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
 import { TaskProps } from "./sharedTypes"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { editTask } from "../../api/tasks.api"
+import { useMatch } from "react-location"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -57,8 +58,16 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
 export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps)
   const { hovered, ref } = useHover()
+  const queryClient = useQueryClient()
+  const {
+    params: { projectID: id },
+  } = useMatch()
 
-  const taskMutation = useMutation()
+  const taskMutation = useMutation(editTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects", { id }])
+    },
+  })
 
   return (
     <Container
@@ -96,7 +105,10 @@ export default function Task(props: TaskProps) {
           color={props.color}
           checked={props.is_done}
           onChange={() => {
-            console.log(props.name)
+            taskMutation.mutate({
+              id: props.id,
+              is_done: !props.is_done,
+            })
           }}
           size="md"
           label={

@@ -61,7 +61,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           </ActionIcon>
           {props.tasksCount && (
             <Text italic size="sm">
-              <span>{props.tasksCount[0]}</span> of{" "}
+              <span>{props.tasksCount[0]} </span> of{" "}
               <span>{props.tasksCount[1]}</span>
             </Text>
           )}

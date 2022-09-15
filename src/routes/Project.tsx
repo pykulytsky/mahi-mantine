@@ -1,12 +1,11 @@
 import {
   useMutation,
   useQuery,
-  useQueryClient,
   QueryClient,
+  useQueryClient,
 } from "@tanstack/react-query"
-import { fetchProject } from "../api/projects.api"
-import { useParams } from "react-router-dom"
-import { Container, createStyles } from "@mantine/core"
+import { useMatch } from "react-location"
+import { Container, createStyles, TextInput } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import {
@@ -20,41 +19,69 @@ import SectionComponent from "../components/tasks/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
 import { reorder } from "../api/tasks.api"
 import { IconArrowsSort } from "@tabler/icons"
+import { Project, TaskReorder } from "../types"
+import { useProject } from "../queries/projects"
+
+import TaskNameInputRTE from "../components/tasks/createTaskForm/TaskNameInputRTE"
 
 const useStyles = createStyles({})
 
-const projectRootQuery = (id: number) => ({
-  queryKey: ["project", { id: id }],
-  queryFn: async () => fetchProject(id),
-})
-
-export const loader =
-  (queryClient: QueryClient) =>
-  async ({ params }) => {
-    const query = projectRootQuery(params.id)
-
-    return (
-      queryClient.getQueryData(query.queryKey) ??
-      (await queryClient.fetchQuery(query))
-    )
-  }
-
 export default function ProjectRoot() {
-  const { id } = useParams()
   const { classes } = useStyles()
+  const {
+    params: { projectID: id },
+  } = useMatch()
   const queryClient = useQueryClient()
-  const { data, isLoading, isError } = useQuery(
-    ["project", { id: id }],
-    async () => fetchProject(id)
-  )
+  const { data, isLoading, isError } = useProject(id)
+
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
-      queryClient.setQueryData(["project", { id: id }], data)
       showNotification({
         title: "Project was successfully reordered.",
         message: undefined,
         icon: <IconArrowsSort size={18} />,
       })
+    },
+    onMutate: async (reorderData: TaskReorder) => {
+      await queryClient.cancelQueries(["projects", { id }])
+      let oldProject = queryClient.getQueryData<Project>(["projects", { id }])
+
+      let project = { ...oldProject }
+      if (project) {
+        let source =
+          reorderData.sourceType == "project"
+            ? project
+            : project.sections?.find(
+                (section) => section.id === Number(reorderData.sourceID)
+              )
+        let destinition =
+          reorderData.destinationType === "project"
+            ? project
+            : project.sections?.find(
+                (section) => section.id === Number(reorderData.destinitionID)
+              )
+        const task = source?.tasks?.splice(
+          Number(reorderData.sourceOrder),
+          1
+        )[0]
+        if (task) {
+          task.order = 9999
+          destinition?.tasks?.splice(
+            Number(reorderData.destinationOrder),
+            0,
+            task
+          )
+        }
+        queryClient.setQueryData(["projects", { id }], project)
+
+        return { oldProject, project }
+      }
+    },
+    onError: (error, newProject, context) => {
+      queryClient.setQueryData(["projects", { id }], context?.oldProject)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries(["projects", { id }])
     },
   })
 
@@ -86,6 +113,7 @@ export default function ProjectRoot() {
   if (isError) return <h1>Error...</h1>
   return (
     <Container>
+      <TaskNameInputRTE />
       <ProjectHeader
         tasksCount={projectTasksCount}
         name={data.name}

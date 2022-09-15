@@ -54,6 +54,18 @@ export interface Task {
   tags: Tag[]
 }
 
+export type TaskEdit = {
+  id: number
+  name?: string
+  description?: string
+  is_done?: boolean
+  deadline?: Date
+  done_at?: Date
+  color?: string
+  is_important?: boolean
+  remind_at?: Date
+}
+
 export type TaskReorder = {
   sourceID: string | number
   sourceOrder: string | number

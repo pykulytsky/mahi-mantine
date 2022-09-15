@@ -1,34 +1,25 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-location"
 import { AppShell, Box, LoadingOverlay, ScrollArea } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
-import { useState, createContext } from "react"
+import { useState, createContext, useEffect } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 import { motion, AnimatePresence } from "framer-motion"
-import { useQuery, useIsFetching, QueryClient } from "@tanstack/react-query"
-import { getMe } from "../api/user.api"
-import { fetchUserProjects } from "../api/projects.api"
+import { useQuery, useIsFetching } from "@tanstack/react-query"
+import { useUser } from "../queries/user"
+import { useOwnProjects } from "../queries/projects"
 
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
-
-export const userQuery = () => ({
-  queryKey: ["user"],
-  queryFn: getMe,
-})
-
-export const ownProjectsQuery = () => ({
-  queryKey: ["user", "project"],
-  queryFn: fetchUserProjects,
-})
 
 export default function AppProvider() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 })
   const { height } = useViewportSize()
-
-  const currentUser = useQuery(["user"], getMe)
-  const ownProjects = useQuery(["user", "project"], fetchUserProjects)
+  const currentUser = useUser()
+  const ownProjects = useOwnProjects()
   const isFetching = useIsFetching()
+
+  useEffect(() => {}, [])
 
   const HEADER_HEIGHT = 50
 
