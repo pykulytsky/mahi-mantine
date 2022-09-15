@@ -67,6 +67,7 @@ export default function SectionComponent(props: SectionProps) {
                     tasksCount={tasksCount}
                     name={props.section.name}
                     dragHandleProps={provided.dragHandleProps}
+                    formVisible={taskFormVisible}
                     onOpen={() => {
                       setOpened(!opened)
                     }}
@@ -85,6 +86,7 @@ export default function SectionComponent(props: SectionProps) {
                     <CreateTaskForm
                       style={styles}
                       sectionID={props.section?.id}
+                      toggleForm={toggleTaskForm}
                     />
                   )}
                 </Transition>

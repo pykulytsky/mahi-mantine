@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useMatch } from "react-location"
-import { Container, createStyles, TextInput } from "@mantine/core"
+import { Container, createStyles, TextInput, Transition } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import {
@@ -16,6 +16,8 @@ import { reorder } from "../api/tasks.api"
 import { IconArrowsSort } from "@tabler/icons"
 import { Project, TaskReorder } from "../types"
 import { useProject } from "../queries/projects"
+import { useToggle } from "@mantine/hooks"
+import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 
 const useStyles = createStyles({})
 
@@ -26,6 +28,8 @@ export default function ProjectRoot() {
   } = useMatch()
   const queryClient = useQueryClient()
   const { data, isLoading, isError } = useProject(id)
+
+  const [taskFormVisible, toggleTaskForm] = useToggle()
 
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
@@ -110,7 +114,19 @@ export default function ProjectRoot() {
         tasksCount={projectTasksCount}
         name={data.name}
         icon={data.icon}
+        formVisible={taskFormVisible}
+        toggleTaskForm={toggleTaskForm}
       />
+      <Transition
+        mounted={taskFormVisible}
+        transition="pop"
+        duration={400}
+        timingFunction="ease-out"
+      >
+        {(styles) => (
+          <CreateTaskForm style={styles} toggleForm={toggleTaskForm} />
+        )}
+      </Transition>
       {!isEmpty ? (
         <DragDropContext
           onDragEnd={({ source, destination }) =>

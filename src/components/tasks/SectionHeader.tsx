@@ -6,6 +6,7 @@ import {
   ActionIcon,
   createStyles,
   Button,
+  Transition,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { DotsSixVertical, CheckCircle } from "phosphor-react"
@@ -15,6 +16,7 @@ interface ProjectHeaderProps {
   onOpen: () => void
   dragHandleProps: DraggableProvidedDragHandleProps | null
   tasksCount?: [number, number]
+  formVisible: boolean
   toggleTaskForm: () => void
 }
 
@@ -67,15 +69,25 @@ export default function SectionHeader(props: ProjectHeaderProps) {
             <span>{props.tasksCount[1]}</span>
           </Text>
         )}
-        <Button
-          className={cx(classes.addBtn, classes.shownOnHover)}
-          compact
-          leftIcon={<CheckCircle size={15} />}
-          variant="default"
-          onClick={props.toggleTaskForm}
+        <Transition
+          mounted={!props.formVisible}
+          transition="pop"
+          duration={400}
+          timingFunction="ease-out"
         >
-          Add task
-        </Button>
+          {(style) => (
+            <Button
+              style={hovered ? style : null}
+              className={cx(classes.addBtn, classes.shownOnHover)}
+              compact
+              leftIcon={<CheckCircle size={15} />}
+              variant="default"
+              onClick={props.toggleTaskForm}
+            >
+              Add task
+            </Button>
+          )}
+        </Transition>
       </Group>
     </Paper>
   )

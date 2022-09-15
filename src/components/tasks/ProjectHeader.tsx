@@ -17,6 +17,8 @@ interface ProjectHeaderProps {
   name: string
   icon?: string
   tasksCount?: [number, number]
+  formVisible: boolean
+  toggleTaskForm: () => void
 }
 
 const useStyles = createStyles((theme, hovered: boolean) => ({
@@ -66,22 +68,28 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             </Text>
           )}
         </Group>
-        <Button.Group className={cx(classes.shownOnHover, classes.addBtnGroup)}>
-          <Button
-            compact
-            leftIcon={<CheckCircle size={15} />}
-            variant="default"
+
+        {!props.formVisible && (
+          <Button.Group
+            className={cx(classes.shownOnHover, classes.addBtnGroup)}
           >
-            Add task
-          </Button>
-          <Button
-            compact
-            rightIcon={<IconSection size={15} />}
-            variant="default"
-          >
-            Add section
-          </Button>
-        </Button.Group>
+            <Button
+              compact
+              leftIcon={<CheckCircle size={15} />}
+              variant="default"
+              onClick={props.toggleTaskForm}
+            >
+              Add task
+            </Button>
+            <Button
+              compact
+              rightIcon={<IconSection size={15} />}
+              variant="default"
+            >
+              Add section
+            </Button>
+          </Button.Group>
+        )}
         <Group className={classes.shownOnHover}>
           <ActionIcon variant="transparent">
             <DotsThreeCircle size={25} weight="duotone" />

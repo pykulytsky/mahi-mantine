@@ -9,6 +9,7 @@ export type CreateTaskFormProps = {
   projectID?: number | string
   sectionID?: number | string
   style?: React.CSSProperties
+  toggleForm: () => void
 }
 
 export default function CreateTaskForm(props: CreateTaskFormProps) {
@@ -21,9 +22,16 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
       section_id: props.sectionID,
     },
     validate: {
-      title: (value) => (value.length > 0 ? null : "Fill the title"),
+      title: (value) =>
+        value.length > 0 && value !== "<p><br></p>" ? null : "Fill the title",
     },
   })
+
+  function handleClose(event: Event) {
+    event.preventDefault()
+    props.toggleForm()
+  }
+
   return (
     <Container style={props.style} m="md" ml={0} mr={0} p="sm">
       <form>
@@ -51,10 +59,10 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             }}
           />
           <Group spacing="sm" position="right">
-            <Button variant="subtle" color="red">
+            <Button onClick={handleClose} variant="subtle" color="red">
               Cancel
             </Button>
-            <Button variant="light" color="green">
+            <Button variant="light" color="green" disabled={!form.isValid()}>
               Add
             </Button>
           </Group>
