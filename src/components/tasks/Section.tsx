@@ -3,14 +3,15 @@ import {
   Draggable,
   DraggableProvidedDragHandleProps,
 } from "@hello-pangea/dnd"
-import { useId } from "@mantine/hooks"
-import { Collapse, ActionIcon } from "@mantine/core"
+import { useId, useToggle } from "@mantine/hooks"
+import { Collapse, ActionIcon, Transition } from "@mantine/core"
 import SectionHeader from "./SectionHeader"
 import { useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
 import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
 import useTasksHelper from "../../hooks/tasksHelpers"
+import CreateTaskForm from "./createTaskForm/CreateTaskForm"
 
 export interface BaseSectionProps {
   index: number
@@ -29,6 +30,7 @@ export type SectionProps = CustomSectionProps | DefaultSectionProps
 
 export default function SectionComponent(props: SectionProps) {
   const [opened, setOpened] = useState(true)
+  const [taskFormVisible, toggleTaskForm] = useToggle()
   const uuid = useId()
   const isCustomSection = "section" in props
 
@@ -68,8 +70,24 @@ export default function SectionComponent(props: SectionProps) {
                     onOpen={() => {
                       setOpened(!opened)
                     }}
+                    toggleTaskForm={() => {
+                      toggleTaskForm()
+                    }}
                   />
                 )}
+                <Transition
+                  mounted={taskFormVisible}
+                  transition="pop"
+                  duration={400}
+                  timingFunction="ease-out"
+                >
+                  {(styles) => (
+                    <CreateTaskForm
+                      style={styles}
+                      sectionID={props.section?.id}
+                    />
+                  )}
+                </Transition>
                 {isCustomSection ? (
                   <Collapse in={opened}>{tasks}</Collapse>
                 ) : (

@@ -1,13 +1,21 @@
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
-import { Group, Text, Paper, ActionIcon, createStyles } from "@mantine/core"
+import {
+  Group,
+  Text,
+  Paper,
+  ActionIcon,
+  createStyles,
+  Button,
+} from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { DotsSixVertical } from "phosphor-react"
+import { DotsSixVertical, CheckCircle } from "phosphor-react"
 
 interface ProjectHeaderProps {
   name: string
   onOpen: () => void
   dragHandleProps: DraggableProvidedDragHandleProps | null
   tasksCount?: [number, number]
+  toggleTaskForm: () => void
 }
 
 const useStyles = createStyles((theme, hovered: boolean) => ({
@@ -15,11 +23,15 @@ const useStyles = createStyles((theme, hovered: boolean) => ({
     opacity: hovered ? 1 : 0,
     transition: "opacity .2s linear",
   },
+  addBtn: {
+    position: "absolute",
+    left: "45%",
+  },
 }))
 
 export default function SectionHeader(props: ProjectHeaderProps) {
   const { hovered, ref } = useHover()
-  const { classes } = useStyles(hovered)
+  const { classes, cx } = useStyles(hovered)
 
   return (
     <Paper
@@ -55,6 +67,15 @@ export default function SectionHeader(props: ProjectHeaderProps) {
             <span>{props.tasksCount[1]}</span>
           </Text>
         )}
+        <Button
+          className={cx(classes.addBtn, classes.shownOnHover)}
+          compact
+          leftIcon={<CheckCircle size={15} />}
+          variant="default"
+          onClick={props.toggleTaskForm}
+        >
+          Add task
+        </Button>
       </Group>
     </Paper>
   )

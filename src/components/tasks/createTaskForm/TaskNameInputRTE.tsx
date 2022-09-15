@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { RichTextEditor } from "@mantine/rte"
 import { mentionStyles } from "./TaskForm.styles"
 
@@ -16,7 +16,12 @@ const tags = [
   { id: 3, value: "Python" },
 ]
 
-export default function TaskNameInputRTE() {
+export type TaskNameInputTREProps = {
+  value: string
+  onChange: (value: string) => void
+}
+
+export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
   const [value, onChange] = useState("")
   const mentions = useMemo(
     () => ({
@@ -32,6 +37,9 @@ export default function TaskNameInputRTE() {
     }),
     []
   )
+  useEffect(() => {
+    props.onChange(value)
+  }, [value])
 
   const modules = useMemo(
     () => ({
