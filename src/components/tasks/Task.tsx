@@ -12,6 +12,8 @@ import { TaskProps } from "./sharedTypes"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../api/tasks.api"
 import { useMatch } from "react-location"
+import { showNotification } from "@mantine/notifications"
+import { IconCheck } from "@tabler/icons"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -69,6 +71,26 @@ export default function Task(props: TaskProps) {
     },
   })
 
+  function handleTaskStatus() {
+    taskMutation.mutate(
+      {
+        id: props.id,
+        is_done: !props.is_done,
+      },
+      {
+        onSuccess: () => {
+          if (!props.is_done) {
+            showNotification({
+              title: `Task #${props.id} was completed`,
+              message: null,
+              icon: <IconCheck size={18} />,
+            })
+          }
+        },
+      }
+    )
+  }
+
   return (
     <Container
       ref={ref}
@@ -104,17 +126,12 @@ export default function Task(props: TaskProps) {
           className={classes.task}
           color={props.color}
           checked={props.is_done}
-          onChange={() => {
-            taskMutation.mutate({
-              id: props.id,
-              is_done: !props.is_done,
-            })
-          }}
+          onChange={handleTaskStatus}
           size="md"
           label={
             <Text
               color={props.is_done ? "dimmed" : ""}
-              onClick={(e: Event): void => {
+              onClick={(e: any): void => {
                 e.preventDefault()
               }}
             >

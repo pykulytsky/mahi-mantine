@@ -1,6 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useMatch } from "react-location"
-import { Container, createStyles, TextInput, Transition } from "@mantine/core"
+import {
+  Container,
+  createStyles,
+  MantineProvider,
+  Transition,
+  useMantineTheme,
+} from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import ProjectHeader from "../components/tasks/ProjectHeader"
 import {
@@ -18,6 +24,7 @@ import { Project, TaskReorder } from "../types"
 import { useProject } from "../queries/projects"
 import { useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
+import { useMemo } from "react"
 
 const useStyles = createStyles({})
 
@@ -30,6 +37,11 @@ export default function ProjectRoot() {
   const { data, isLoading, isError } = useProject(id)
 
   const [taskFormVisible, toggleTaskForm] = useToggle()
+
+  const theme = useMantineTheme()
+  const accentColor = useMemo(() => {
+    return data?.accent_color ? data.accent_color : theme.primaryColor
+  }, [data?.accent_color])
 
   const reorderMutation = useMutation(reorder, {
     onSuccess: (data) => {
@@ -109,51 +121,60 @@ export default function ProjectRoot() {
   if (isLoading) return <></>
   if (isError) return <h1>Error...</h1>
   return (
-    <Container>
-      <ProjectHeader
-        tasksCount={projectTasksCount}
-        name={data.name}
-        icon={data.icon}
-        formVisible={taskFormVisible}
-        toggleTaskForm={toggleTaskForm}
-      />
-      <Transition
-        mounted={taskFormVisible}
-        transition="pop"
-        duration={400}
-        timingFunction="ease-out"
-      >
-        {(styles) => (
-          <CreateTaskForm style={styles} toggleForm={toggleTaskForm} />
-        )}
-      </Transition>
-      {!isEmpty ? (
-        <DragDropContext
-          onDragEnd={({ source, destination }) =>
-            orderProject(source, destination)
-          }
+    <MantineProvider
+      inherit
+      theme={{
+        primaryColor: accentColor,
+      }}
+    >
+      <Container>
+        <ProjectHeader
+          tasksCount={projectTasksCount}
+          id={data.id}
+          color={data.accent_color}
+          name={data.name}
+          icon={data.icon}
+          formVisible={taskFormVisible}
+          toggleTaskForm={toggleTaskForm}
+        />
+        <Transition
+          mounted={taskFormVisible}
+          transition="pop"
+          duration={400}
+          timingFunction="ease-out"
         >
-          <Droppable droppableId="droppableRoot" type="droppableItem">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef}>
-                {data.tasks.length > 0 && (
-                  <SectionComponent tasks={data.tasks} index={0} />
-                )}
-                {data.sections.map((section, index) => (
-                  <SectionComponent
-                    key={index}
-                    section={section}
-                    index={index + 1}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      ) : (
-        <ProjectEmptyPlaceholder />
-      )}
-    </Container>
+          {(styles) => (
+            <CreateTaskForm style={styles} toggleForm={toggleTaskForm} />
+          )}
+        </Transition>
+        {!isEmpty ? (
+          <DragDropContext
+            onDragEnd={({ source, destination }) =>
+              orderProject(source, destination)
+            }
+          >
+            <Droppable droppableId="droppableRoot" type="droppableItem">
+              {(provided, snapshot) => (
+                <div ref={provided.innerRef}>
+                  {data.tasks.length > 0 && (
+                    <SectionComponent tasks={data.tasks} index={0} />
+                  )}
+                  {data.sections.map((section, index) => (
+                    <SectionComponent
+                      key={index}
+                      section={section}
+                      index={index + 1}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        ) : (
+          <ProjectEmptyPlaceholder />
+        )}
+      </Container>
+    </MantineProvider>
   )
 }

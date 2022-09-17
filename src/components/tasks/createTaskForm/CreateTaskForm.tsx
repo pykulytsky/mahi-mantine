@@ -27,8 +27,8 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
     },
   })
 
-  function handleClose(event: Event) {
-    event.preventDefault()
+  function handleClose(e: any) {
+    e.preventDefault()
     props.toggleForm()
   }
 
@@ -51,7 +51,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             />
           )}
         </Transition>
-        <Group mt="md" position="apart">
+        <Group mt="xs" position="apart">
           <ActionsGroup
             noteIsShown={noteIsShown}
             toggleNote={() => {
@@ -62,7 +62,14 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             <Button onClick={handleClose} variant="subtle" color="red">
               Cancel
             </Button>
-            <Button variant="light" color="green" disabled={!form.isValid()}>
+            <Button
+              onClick={() => {
+                console.log(form.getInputProps("description"))
+              }}
+              variant="light"
+              color="green"
+              disabled={!form.isValid()}
+            >
               Add
             </Button>
           </Group>

@@ -21,6 +21,17 @@ interface ProjectHeaderProps {
 }
 
 const useStyles = createStyles((theme, hovered: boolean) => ({
+  root: {
+    position: "sticky",
+    top: 100,
+    zIndex: 98,
+    height: 45,
+    backdropFilter: "blur(5px)",
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.fn.rgba(theme.colors.dark[7], 0.5)
+        : "white",
+  },
   shownOnHover: {
     opacity: hovered ? 1 : 0,
     transition: "opacity .2s linear",
@@ -36,19 +47,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
   const { classes, cx } = useStyles(hovered)
 
   return (
-    <Paper
-      ref={ref}
-      radius={0}
-      p="xs"
-      pl="sm"
-      pt={0}
-      sx={{
-        position: "sticky",
-        top: 100,
-        zIndex: 98,
-        height: 45,
-      }}
-    >
+    <Paper className={classes.root} ref={ref} radius={0} p="xs" pl="sm" pt={0}>
       <Group p="xs">
         <ActionIcon className={classes.shownOnHover} {...props.dragHandleProps}>
           <DotsSixVertical />
@@ -81,7 +80,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
               className={cx(classes.addBtn, classes.shownOnHover)}
               compact
               leftIcon={<CheckCircle size={15} />}
-              variant="default"
+              variant="subtle"
               onClick={props.toggleTaskForm}
             >
               Add task

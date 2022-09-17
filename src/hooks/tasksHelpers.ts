@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Project, Section } from "../types"
+import { Project, ProjectEdit, Section } from "../types"
 
 export default function useTasksHelper(data: Project | Section | undefined) {
   return {
@@ -33,5 +33,8 @@ export default function useTasksHelper(data: Project | Section | undefined) {
 
       return [completedTasks, totalTasks]
     }, [data]),
+    updateProject: (project: ProjectEdit) => {
+      
+    }
   }
 }

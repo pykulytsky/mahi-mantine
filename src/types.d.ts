@@ -23,6 +23,7 @@ export type Project = {
 }
 
 export type ProjectEdit = {
+  id?: number
   name?: string
   description?: string
   icon?: string
