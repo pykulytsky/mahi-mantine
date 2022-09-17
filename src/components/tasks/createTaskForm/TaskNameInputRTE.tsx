@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react"
 import { RichTextEditor } from "@mantine/rte"
-import { mentionStyles } from "./TaskForm.styles"
+import { emojies } from "../../../hooks/emojis"
 
 const people = [
   { id: 1, value: "Bill Horsefighter" },
@@ -16,6 +16,8 @@ const tags = [
   { id: 3, value: "Python" },
 ]
 
+const neverMatchingRegex = /($a)/
+
 export type TaskNameInputTREProps = {
   value: string
   onChange: (value: string) => void
@@ -26,13 +28,26 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
   const mentions = useMemo(
     () => ({
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ["@", "#"],
-      source: (searchTerm, renderList, mentionChar) => {
-        const list = mentionChar === "@" ? people : tags
-        const includesSearchTerm = list.filter((item) =>
-          item.value.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        renderList(includesSearchTerm)
+      mentionDenotationChars: ["@", "#", ":"],
+      source: (
+        searchTerm: string,
+        renderList: (arg0: { id: number; value: string }[]) => void,
+        mentionChar: string
+      ) => {
+        if (mentionChar !== ":") {
+          const list = mentionChar === "@" ? people : tags
+          const includesSearchTerm = list.filter((item) =>
+            item.value.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          renderList(includesSearchTerm)
+        } else {
+          if (searchTerm.length > 2) {
+            const includesEmojies = emojies.filter((item) =>
+              item.key.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            renderList(includesEmojies)
+          }
+        }
       },
     }),
     []

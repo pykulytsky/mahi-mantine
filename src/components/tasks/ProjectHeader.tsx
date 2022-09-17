@@ -8,10 +8,13 @@ import {
   Button,
   createStyles,
   Popover,
+  MediaQuery,
+  Transition,
+  TextInput,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { Pencil, DotsThreeCircle, CheckCircle } from "phosphor-react"
-import { IconSection } from "@tabler/icons"
+import { IconSection, IconCheck } from "@tabler/icons"
 import ColorEmojiPicker from "./projectEditForms/ColorEmojiPicker"
 import {
   useIsFetching,
@@ -20,13 +23,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import { editProject } from "../../api/projects.api"
-import { ProjectEdit } from "../../types"
+import { Project, ProjectEdit } from "../../types"
+import ProjectActions from "./ProjectActions"
+import { useState } from "react"
 
 interface ProjectHeaderProps {
-  id?: number
-  name: string
-  icon?: string
-  color?: string
+  project: Project
   tasksCount?: [number, number]
   formVisible: boolean
   toggleTaskForm: () => void
@@ -58,29 +60,45 @@ const useStyles = createStyles((theme, hovered: boolean) => ({
 }))
 
 export default function ProjectHeader(props: ProjectHeaderProps) {
+  const [isNameEditing, setNameEditing] = useState<boolean>(false)
+  const [name, setName] = useState<string>(props.project.name)
   const { hovered, ref } = useHover()
+  const [nameError, setNameError] = useState<string>("")
   const theme = useMantineTheme()
   const { classes, cx } = useStyles(hovered)
   const queryClient = useQueryClient()
-  const isFetching = useIsFetching(["projects", { id: props.id?.toString() }])
+  const isFetching = useIsFetching([
+    "projects",
+    { id: props.project.id.toString() },
+  ])
   const isMutating = useIsMutating()
 
   const projectMutation = useMutation(editProject, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects", { id: props.id?.toString() }])
+      queryClient.invalidateQueries([
+        "projects",
+        { id: props.project.id.toString() },
+      ])
     },
   })
 
-  function updateProject(project: ProjectEdit) {
-    project.id = props.id
+  function updateProject(project: ProjectEdit): void {
+    project.id = props.project.id
     projectMutation.mutate(project)
+  }
+
+  function onNameSave(): void {
+    if (name.length > 0) {
+      setNameEditing(false)
+      updateProject({ name })
+    } else setNameError("Name is to short.")
   }
 
   return (
     <Paper ref={ref} radius={0} mt={16} className={classes.root}>
       <Group p="md" position="apart">
         <Group spacing={5}>
-          {props.icon && (
+          {props.project.icon && (
             <Popover>
               <Popover.Target>
                 <ActionIcon
@@ -89,29 +107,77 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                   size={35}
                   color={theme.colors[theme.primaryColor][5]}
                 >
-                  <Title order={4}>{props.icon}</Title>
+                  <Title order={4}>{props.project.icon}</Title>
                 </ActionIcon>
               </Popover.Target>
               <Popover.Dropdown p={0}>
                 <ColorEmojiPicker
                   updateProject={updateProject}
-                  color={props.color}
+                  color={props.project.accent_color}
                 />
               </Popover.Dropdown>
             </Popover>
           )}
-          <Text className={classes.title} weight={700} size="xl">
-            {props.name}
-          </Text>
-          <ActionIcon className={classes.shownOnHover} variant="transparent">
-            <Pencil weight="duotone" />
-          </ActionIcon>
-          {props.tasksCount && (
-            <Text italic size="sm">
-              <span>{props.tasksCount[0]} </span> of{" "}
-              <span>{props.tasksCount[1]}</span>
-            </Text>
+          <Transition
+            mounted={!isNameEditing}
+            transition="slide-right"
+            duration={400}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <Text
+                style={styles}
+                className={classes.title}
+                weight={700}
+                size="xl"
+              >
+                {props.project.name}
+              </Text>
+            )}
+          </Transition>
+          <Transition
+            mounted={isNameEditing}
+            transition="slide-right"
+            duration={400}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <TextInput
+                variant="filled"
+                style={styles}
+                value={name}
+                error={nameError}
+                onChange={(event: any) => {
+                  setName(event.target.value)
+                }}
+              />
+            )}
+          </Transition>
+          {isNameEditing ? (
+            <ActionIcon onClick={onNameSave} variant="filled">
+              <IconCheck size={16} />
+            </ActionIcon>
+          ) : (
+            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+              <ActionIcon
+                onClick={() => {
+                  setNameEditing(!isNameEditing)
+                }}
+                className={classes.shownOnHover}
+                variant="transparent"
+              >
+                <Pencil weight="duotone" />
+              </ActionIcon>
+            </MediaQuery>
           )}
+          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+            {props.tasksCount && (
+              <Text italic size="sm">
+                <span>{props.tasksCount[0]} </span> of{" "}
+                <span>{props.tasksCount[1]}</span>
+              </Text>
+            )}
+          </MediaQuery>
         </Group>
 
         {!props.formVisible && (
@@ -135,15 +201,11 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             </Button>
           </Button.Group>
         )}
-        <Group className={classes.shownOnHover}>
-          <ActionIcon variant="transparent">
-            <DotsThreeCircle
-              size={25}
-              weight="duotone"
-              color={theme.colors[theme.primaryColor][5]}
-            />
-          </ActionIcon>
-        </Group>
+        <ProjectActions
+          updateProject={updateProject}
+          hovered={hovered}
+          project={props.project}
+        />
       </Group>
     </Paper>
   )

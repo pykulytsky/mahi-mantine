@@ -134,6 +134,7 @@ export default function ProjectRoot() {
           color={data.accent_color}
           name={data.name}
           icon={data.icon}
+          project={data}
           formVisible={taskFormVisible}
           toggleTaskForm={toggleTaskForm}
         />
