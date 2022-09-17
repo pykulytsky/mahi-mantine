@@ -72,7 +72,7 @@ export default function Sidebar(props: SidebarProps) {
     <LinksGroup {...item} key={item.label} />
   ))
   const pinnedLinks = props.ownProjects
-    ?.filter((project) => project.is_pinned)
+    ?.filter((project) => project.is_favorite)
     .map((project) => (
       <LinksGroup
         key={project.id}
@@ -94,7 +94,7 @@ export default function Sidebar(props: SidebarProps) {
     >
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
         <div className={classes.linksInner}>{defaultLinks}</div>
-        <Divider my="sm" label="Pinned" />
+        <Divider my="sm" label="Favorite" />
         <div className={classes.linksInner}>{pinnedLinks}</div>
         <Divider my="sm" />
       </Navbar.Section>

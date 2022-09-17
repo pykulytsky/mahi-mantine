@@ -61,7 +61,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface LinksGroupProps {
-  id?: int
+  id?: number
   icon?: TablerIcon
   emoji?: string
   label: string
