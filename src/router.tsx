@@ -5,7 +5,7 @@ import About from "./routes/About"
 import ProjectRoot from "./routes/Project"
 import Projects from "./routes/Projects"
 import Test from "./routes/Test"
-import { projectQuery, ownProjectsQuery } from "./queries/projects"
+import { ownProjectsQuery } from "./queries/projects"
 import { userQuery } from "./queries/user"
 
 export type LocationGenerics = MakeGenerics<{
@@ -45,7 +45,7 @@ export const routes: Route<LocationGenerics>[] = [
         path: "projects",
         element: <Projects />,
         loader: () =>
-          queryClient.getQueryData(["projects"]) ??
+          queryClient.getQueryData(["projects", "user"]) ??
           queryClient.fetchQuery(ownProjectsQuery()),
         children: [
           {

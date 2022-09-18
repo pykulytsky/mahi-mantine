@@ -1,8 +1,8 @@
 import { createStyles, Container, Button } from "@mantine/core"
 import { useListState, useScrollIntoView } from "@mantine/hooks"
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
-import Section from "../components/tasks/Section"
-import ProjectHeader from "../components/tasks/ProjectHeader"
+import Section from "../components/section/Section"
+import ProjectHeader from "../components/project/ProjectHeader"
 import { useContext } from "react"
 import { ScrollbarContext } from "../layout/LayoutProvider"
 

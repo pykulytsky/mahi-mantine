@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { useMatch } from "react-location"
 import {
   Container,
@@ -7,24 +7,21 @@ import {
   Transition,
   useMantineTheme,
 } from "@mantine/core"
-import { showNotification } from "@mantine/notifications"
-import ProjectHeader from "../components/tasks/ProjectHeader"
+import ProjectHeader from "../components/project/ProjectHeader"
 import {
   DragDropContext,
   Droppable,
   DraggableLocation,
   DropResult,
 } from "@hello-pangea/dnd"
-import { ProjectEmptyPlaceholder } from "../components/tasks/ProjectEmptyPlaceholder"
-import SectionComponent from "../components/tasks/Section"
+import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlaceholder"
+import SectionComponent from "../components/section/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
-import { reorder } from "../api/tasks.api"
-import { IconArrowsSort } from "@tabler/icons"
-import { Project, TaskReorder } from "../types"
-import { useProject } from "../queries/projects"
+import { useProject, useReorderMutation } from "../queries/projects"
 import { useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 import { useMemo } from "react"
+import { useTags } from "../queries/tags"
 
 const useStyles = createStyles({})
 
@@ -35,6 +32,7 @@ export default function ProjectRoot() {
   } = useMatch()
   const queryClient = useQueryClient()
   const { data, isLoading, isError } = useProject(id)
+  const tags = useTags()
 
   const [taskFormVisible, toggleTaskForm] = useToggle()
 
@@ -43,56 +41,7 @@ export default function ProjectRoot() {
     return data?.accent_color ? data.accent_color : theme.primaryColor
   }, [data?.accent_color])
 
-  const reorderMutation = useMutation(reorder, {
-    onSuccess: (data) => {
-      showNotification({
-        title: "Project was successfully reordered.",
-        message: undefined,
-        icon: <IconArrowsSort size={18} />,
-      })
-    },
-    onMutate: async (reorderData: TaskReorder) => {
-      await queryClient.cancelQueries(["projects", { id }])
-      let oldProject = queryClient.getQueryData<Project>(["projects", { id }])
-
-      let project = { ...oldProject }
-      if (project) {
-        let source =
-          reorderData.sourceType == "project"
-            ? project
-            : project.sections?.find(
-                (section) => section.id === Number(reorderData.sourceID)
-              )
-        let destinition =
-          reorderData.destinationType === "project"
-            ? project
-            : project.sections?.find(
-                (section) => section.id === Number(reorderData.destinitionID)
-              )
-        const task = source?.tasks?.splice(
-          Number(reorderData.sourceOrder),
-          1
-        )[0]
-        if (task) {
-          task.order = 9999
-          destinition?.tasks?.splice(
-            Number(reorderData.destinationOrder),
-            0,
-            task
-          )
-        }
-        queryClient.setQueryData(["projects", { id }], project)
-
-        return { oldProject, project }
-      }
-    },
-    onError: (error, newProject, context) => {
-      queryClient.setQueryData(["projects", { id }], context?.oldProject)
-    },
-    onSettled: (data) => {
-      queryClient.invalidateQueries(["projects", { id }])
-    },
-  })
+  const reorderMutation = useReorderMutation(id)
 
   const { isEmpty, projectTasksCount } = useTasksHelper(data)
 
@@ -130,10 +79,6 @@ export default function ProjectRoot() {
       <Container>
         <ProjectHeader
           tasksCount={projectTasksCount}
-          id={data.id}
-          color={data.accent_color}
-          name={data.name}
-          icon={data.icon}
           project={data}
           formVisible={taskFormVisible}
           toggleTaskForm={toggleTaskForm}

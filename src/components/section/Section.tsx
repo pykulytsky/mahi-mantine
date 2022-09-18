@@ -11,7 +11,7 @@ import DraggableTaskList from "./DraggableTaskList"
 import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
 import useTasksHelper from "../../hooks/tasksHelpers"
-import CreateTaskForm from "./createTaskForm/CreateTaskForm"
+import CreateTaskForm from "../tasks/createTaskForm/CreateTaskForm"
 
 export interface BaseSectionProps {
   index: number

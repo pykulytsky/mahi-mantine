@@ -15,17 +15,16 @@ import {
 import { useHover } from "@mantine/hooks"
 import { Pencil, DotsThreeCircle, CheckCircle } from "phosphor-react"
 import { IconSection, IconCheck } from "@tabler/icons"
-import ColorEmojiPicker from "./projectEditForms/ColorEmojiPicker"
+import ColorEmojiPicker from "../project/projectEditForms/ColorEmojiPicker"
 import {
   useIsFetching,
   useIsMutating,
-  useMutation,
   useQueryClient,
 } from "@tanstack/react-query"
-import { editProject } from "../../api/projects.api"
 import { Project, ProjectEdit } from "../../types"
 import ProjectActions from "./ProjectActions"
 import { useState } from "react"
+import { useProjectMutation } from "../../queries/projects"
 
 interface ProjectHeaderProps {
   project: Project
@@ -73,14 +72,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   ])
   const isMutating = useIsMutating()
 
-  const projectMutation = useMutation(editProject, {
-    onSuccess: () => {
-      queryClient.invalidateQueries([
-        "projects",
-        { id: props.project.id.toString() },
-      ])
-    },
-  })
+  const projectMutation = useProjectMutation(props.project.id.toString())
 
   function updateProject(project: ProjectEdit): void {
     project.id = props.project.id

@@ -1,6 +1,6 @@
 import { Task as TaskProp } from "../../types"
 import { Draggable } from "@hello-pangea/dnd"
-import Task from "./Task"
+import Task from "../tasks/Task"
 
 export default function DraggableTaskList(tasks: TaskProp[], uuid?: string) {
   return tasks.map((task, index) => (

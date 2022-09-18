@@ -8,7 +8,7 @@ import {
 } from "@mantine/core"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
-import { TaskProps } from "./sharedTypes"
+import { TaskProps } from "../sharedTypes"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../api/tasks.api"
 import { useMatch } from "react-location"

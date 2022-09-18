@@ -23,16 +23,19 @@ export default function useEmojis() {
 }
 
 type Emoji = {
+  id: number
   key: string
   value: string
 }
 
 export const emojies: Emoji[] = [
   {
+    id: 1,
     key: "smyle grinning face",
     value: "😀",
   },
   {
+    id: 2,
     key: "smyle face heart love",
     value: "🥰",
   },

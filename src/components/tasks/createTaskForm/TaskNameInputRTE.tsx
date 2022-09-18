@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from "react"
 import { RichTextEditor } from "@mantine/rte"
 import { emojies } from "../../../hooks/emojis"
+import { Tag } from "../../../types"
+import { useTags } from "../../../queries/tags"
 
 const people = [
   { id: 1, value: "Bill Horsefighter" },
@@ -9,26 +11,42 @@ const people = [
   { id: 4, value: "Jane Sinkspitter" },
 ]
 
-const tags = [
-  { id: 1, value: "JavaScript" },
-  { id: 2, value: "TypeScript" },
-  { id: 3, value: "Ruby" },
-  { id: 3, value: "Python" },
-]
-
-const neverMatchingRegex = /($a)/
+type DisplayTag = {
+  id: number
+  value: string
+}
 
 export type TaskNameInputTREProps = {
   value: string
   onChange: (value: string) => void
+  onTagApply: (tag: Tag) => void
 }
 
 export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
+  const tagsData = useTags()
   const [value, onChange] = useState("")
+  const tags = useMemo(() => {
+    if (tagsData.data) {
+      let value: DisplayTag[] = tagsData.data.map((tag) => ({
+        id: tag.id,
+        value: tag.name,
+      }))
+
+      return value
+    } else {
+      return []
+    }
+  }, [tagsData.data])
   const mentions = useMemo(
     () => ({
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@", "#", ":"],
+      showDenotationChar: false,
+      isolateCharacter: true,
+      onSelect: (item: Tag, insertItem: (arg0: any) => void) => {
+        if (item) props.onTagApply(item)
+        insertItem(item)
+      },
       source: (
         searchTerm: string,
         renderList: (arg0: { id: number; value: string }[]) => void,
@@ -100,6 +118,9 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
       placeholder="Type @ or # to see mentions autocomplete"
       mentions={mentions}
       modules={modules}
+      onSelect={(el) => {
+        console.log(el)
+      }}
     />
   )
 }
