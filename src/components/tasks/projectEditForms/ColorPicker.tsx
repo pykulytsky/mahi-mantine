@@ -1,10 +1,12 @@
 import {
-  Grid,
   useMantineTheme,
   createStyles,
-  Box,
   Container,
   Title,
+  ColorSwatch,
+  Group,
+  CheckIcon,
+  Transition,
 } from "@mantine/core"
 import { ProjectEdit } from "../../../types"
 
@@ -32,6 +34,9 @@ const useStyles = createStyles((theme) => ({
     width: 10,
     cursor: "pointer",
   },
+  swatch: {
+    cursor: "pointer",
+  },
 }))
 
 type ColorPickerProps = {
@@ -41,44 +46,44 @@ type ColorPickerProps = {
 
 export default function ColorPicker(props: ColorPickerProps) {
   const theme = useMantineTheme()
-  const { classes, cx } = useStyles()
+  const { classes } = useStyles()
 
-  function colors(): string[] {
-    let arr = []
-    for (let color in theme.colors) {
-      if (color !== "dark" && color !== "grape") arr.push(color)
-    }
-    return arr
-  }
+  const swatches = Object.keys(theme.colors).map((color) => (
+    <ColorSwatch
+      className={classes.swatch}
+      size={30}
+      key={color}
+      color={theme.colors[color][6]}
+      onClick={() => {
+        onColorChange(color)
+      }}
+    >
+      <Transition
+        mounted={color === props.color}
+        transition="slide-up"
+        duration={300}
+        timingFunction="linear"
+      >
+        {(styles) => <CheckIcon style={styles} color="white" width={15} />}
+      </Transition>
+    </ColorSwatch>
+  ))
 
   function onColorChange(color: string): void {
     props.updateProject({ accent_color: color })
   }
 
   return (
-    <Container p={0} mb="sm" mt="sm">
+    <Container p={0} pl="lg" pr="lg" mb="sm" mt="sm">
       <Title m="sm" order={5}>
         Pick a color
       </Title>
-      <Grid gutter={10}>
-        {colors().map((color, index) => (
-          <Grid.Col key={index} className={classes.col} span={2}>
-            <Box
-              onClick={() => {
-                onColorChange(color)
-              }}
-              m={0}
-              p={0}
-              sx={{
-                backgroundColor: theme.colors[color][9],
-              }}
-              className={cx(classes.color, {
-                [classes.colorPicked]: color === props.color,
-              })}
-            ></Box>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <Group mb="xs" position="apart" spacing="xs">
+        {swatches.slice(0, 7)}
+      </Group>
+      <Group position="apart" spacing="xs">
+        {swatches.slice(7, 14)}
+      </Group>
     </Container>
   )
 }
