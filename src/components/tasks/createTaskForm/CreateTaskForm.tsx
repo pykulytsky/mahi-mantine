@@ -4,35 +4,34 @@ import { useToggle } from "@mantine/hooks"
 import ActionsGroup from "./ActionsGroup"
 import TaskNameInputRTE from "./TaskNameInputRTE"
 import RichTextEditor from "@mantine/rte"
-import { Tag } from "../../../types"
+import { CreateTaskFormType, Tag, Task } from "../../../types"
+import { useApplyTagMutation, useTaskAddMutation } from "../../../queries/tasks"
+import { useMatch } from "react-location"
+import { useQueryClient } from "@tanstack/react-query"
 
 export type CreateTaskFormProps = {
-  projectID?: number | string
   sectionID?: number | string
   style?: React.CSSProperties
   toggleForm: () => void
 }
 
-type CreateTaskFormType = {
-  title: string
-  description: string
-  project_id?: number | string
-  section_id?: number | string
-  tags: Tag[]
-}
-
 export default function CreateTaskForm(props: CreateTaskFormProps) {
   const [noteIsShown, toggleNote] = useToggle()
+  const tasksAddMutation = useTaskAddMutation()
+  const applyTagMutation = useApplyTagMutation()
+  const queryClient = useQueryClient()
+  const {
+    params: { projectID: id },
+  } = useMatch()
   const form = useForm<CreateTaskFormType>({
     initialValues: {
-      title: "",
+      name: "",
       description: "",
-      project_id: props.projectID,
       section_id: props.sectionID,
       tags: [],
     },
     validate: {
-      title: (value) =>
+      name: (value) =>
         trimTitle().length > 1 && value.length > 0 && value !== "<p><br></p>"
           ? null
           : "Fill the title",
@@ -45,7 +44,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   }
 
   function trimTitle(): string {
-    let value: string = form.getInputProps("title").value
+    let value: string = form.getInputProps("name").value
     value = value.replaceAll("<p>", "")
     value = value.replaceAll("</p>", "")
 
@@ -57,7 +56,29 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   }
 
   function applyTag(tag: Tag): void {
-    console.log(tag)
+    form.insertListItem("tags", tag)
+  }
+
+  function handleAddTask(): void {
+    tasksAddMutation.mutate(
+      {
+        name: trimTitle(),
+        project_id: !props.sectionID ? id : undefined,
+        section_id: props.sectionID,
+      },
+      {
+        onSuccess: (data: Task) => {
+          form.values.tags.forEach((tag) => {
+            applyTagMutation.mutate({
+              tag_id: tag.id,
+              task_id: data.id,
+            })
+          })
+          queryClient.invalidateQueries(["projects", { id }])
+          props.toggleForm()
+        },
+      }
+    )
   }
 
   return (
@@ -67,7 +88,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
           onTagApply={(tag: Tag) => {
             applyTag(tag)
           }}
-          {...form.getInputProps("title")}
+          {...form.getInputProps("name")}
         />
         <Transition
           mounted={noteIsShown}
@@ -96,9 +117,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
               Cancel
             </Button>
             <Button
-              onClick={() => {
-                console.log(trimTitle())
-              }}
+              onClick={handleAddTask}
               variant="light"
               color="green"
               disabled={!form.isValid()}

@@ -81,3 +81,20 @@ export type Tag = {
   name: string
   color?: string
 }
+
+export type CreateTaskFormType = {
+  name: string
+  description?: string
+  project_id?: number | string
+  section_id?: number | string
+  tags: Tag[]
+}
+
+export interface TagItemCreate {
+  task_id: number
+  tag_id: number
+}
+
+export interface TagItem extends TagItemCreate {
+  id: number
+}
