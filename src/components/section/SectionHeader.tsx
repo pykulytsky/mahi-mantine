@@ -55,6 +55,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
         <Text
           sx={{
             cursor: "pointer",
+            userSelect: "none",
           }}
           onClick={props.onOpen}
           weight={700}
@@ -79,7 +80,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
               style={hovered ? style : null}
               className={cx(classes.addBtn, classes.shownOnHover)}
               compact
-              leftIcon={<CheckCircle size={15} />}
+              leftIcon={<CheckCircle size={20} />}
               variant="subtle"
               onClick={props.toggleTaskForm}
             >

@@ -26,7 +26,7 @@ export default function ProjectActions(props: ProjectActionsProps) {
           variant="transparent"
         >
           <Star
-            size={25}
+            size={20}
             weight={props.project.is_favorite ? "fill" : "duotone"}
             color={theme.colors[theme.primaryColor][3]}
           />

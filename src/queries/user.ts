@@ -8,5 +8,5 @@ export const userQuery = () => ({
 })
 
 export function useUser() {
-  return useQuery<User, any>(userQuery())
+  return useQuery<User>(userQuery())
 }

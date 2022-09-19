@@ -8,12 +8,14 @@ import {
 } from "@mantine/core"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
-import { TaskProps } from "../sharedTypes"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../api/tasks.api"
 import { useMatch } from "react-location"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck } from "@tabler/icons"
+import { useEffect, useState } from "react"
+import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
+import { Task as TaskType } from "../../types"
 
 const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -57,6 +59,12 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
   },
 }))
 
+export interface TaskProps extends TaskType {
+  draggableHandleProps: DraggableProvidedDragHandleProps | null
+  isDragging?: boolean
+  disableAnimation?: boolean
+}
+
 export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps)
   const { hovered, ref } = useHover()
@@ -64,31 +72,33 @@ export default function Task(props: TaskProps) {
   const {
     params: { projectID: id },
   } = useMatch()
+  const [isDone, setDone] = useState<boolean>(props.is_done)
+
+  useEffect(() => {
+    setDone(props.is_done)
+  }, [props.is_done])
 
   const taskMutation = useMutation(editTask, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects", { id }])
+      setDone(!props.is_done)
+      setTimeout(() => {
+        if (!props.is_done) {
+          showNotification({
+            title: `Task #${props.id} was completed`,
+            message: null,
+            icon: <IconCheck size={18} />,
+          })
+        }
+        queryClient.invalidateQueries(["projects", { id }])
+      }, 300)
     },
   })
 
   function handleTaskStatus() {
-    taskMutation.mutate(
-      {
-        id: props.id,
-        is_done: !props.is_done,
-      },
-      {
-        onSuccess: () => {
-          if (!props.is_done) {
-            showNotification({
-              title: `Task #${props.id} was completed`,
-              message: null,
-              icon: <IconCheck size={18} />,
-            })
-          }
-        },
-      }
-    )
+    taskMutation.mutate({
+      id: props.id,
+      is_done: !props.is_done,
+    })
   }
 
   return (
@@ -125,7 +135,7 @@ export default function Task(props: TaskProps) {
           }
           className={classes.task}
           color={props.color}
-          checked={props.is_done}
+          checked={isDone}
           onChange={handleTaskStatus}
           size="md"
           label={

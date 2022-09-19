@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query"
 import { useMatch } from "react-location"
 import {
   Container,
@@ -30,7 +29,6 @@ export default function ProjectRoot() {
   const {
     params: { projectID: id },
   } = useMatch()
-  const queryClient = useQueryClient()
   const { data, isLoading, isError } = useProject(id)
   const tags = useTags()
 
@@ -45,10 +43,10 @@ export default function ProjectRoot() {
 
   const { isEmpty, projectTasksCount } = useTasksHelper(data)
 
-  function orderProject(
+  async function orderProject(
     source: DraggableLocation,
     destination: DraggableLocation | null
-  ): DropResult | void {
+  ): Promise<DropResult | void> {
     if (destination?.droppableId === "droppableRoot") {
     } else if (destination && Number.isInteger(+destination?.droppableId)) {
       reorderMutation.mutate({
@@ -95,8 +93,8 @@ export default function ProjectRoot() {
         </Transition>
         {!isEmpty ? (
           <DragDropContext
-            onDragEnd={({ source, destination }) =>
-              orderProject(source, destination)
+            onDragEnd={ async ({ source, destination }) =>
+              await orderProject(source, destination)
             }
           >
             <Droppable droppableId="droppableRoot" type="droppableItem">

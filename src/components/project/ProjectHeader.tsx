@@ -13,7 +13,7 @@ import {
   TextInput,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { Pencil, DotsThreeCircle, CheckCircle } from "phosphor-react"
+import { Pencil, CheckCircle } from "phosphor-react"
 import { IconSection, IconCheck } from "@tabler/icons"
 import ColorEmojiPicker from "../project/projectEditForms/ColorEmojiPicker"
 import {
@@ -65,7 +65,6 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   const [nameError, setNameError] = useState<string>("")
   const theme = useMantineTheme()
   const { classes, cx } = useStyles(hovered)
-  const queryClient = useQueryClient()
   const isFetching = useIsFetching([
     "projects",
     { id: props.project.id.toString() },
@@ -178,7 +177,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           >
             <Button
               compact
-              leftIcon={<CheckCircle size={15} />}
+              leftIcon={<CheckCircle size={20} />}
               variant="subtle"
               onClick={props.toggleTaskForm}
             >
@@ -186,7 +185,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             </Button>
             <Button
               compact
-              rightIcon={<IconSection size={15} />}
+              rightIcon={<IconSection size={20} />}
               variant="subtle"
             >
               Add section

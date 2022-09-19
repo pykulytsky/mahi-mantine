@@ -16,7 +16,7 @@ export const ownProjectsQuery = () => ({
 })
 
 export function useOwnProjects() {
-  return useQuery<Project[], any>(ownProjectsQuery())
+  return useQuery<Project[]>(ownProjectsQuery())
 }
 
 export const projectQuery = (id: string | number) => ({
@@ -25,7 +25,7 @@ export const projectQuery = (id: string | number) => ({
 })
 
 export function useProject(id: number | string) {
-  return useQuery<Project, any>(projectQuery(id))
+  return useQuery<Project>(projectQuery(id))
 }
 
 export const useReorderMutation = (id: string) =>
@@ -38,51 +38,37 @@ export const useReorderMutation = (id: string) =>
       })
     },
     onMutate: async (reorderData: TaskReorder) => {
-      await queryClient.cancelQueries(["projects", { id }])
       let oldProject = queryClient.getQueryData<Project>(["projects", { id }])
-
       let project = { ...oldProject }
-      if (project) {
-        let source =
-          reorderData.sourceType == "project"
-            ? project
-            : project.sections?.find(
-                (section) => section.id === Number(reorderData.sourceID)
-              )
-        let destinition =
-          reorderData.destinationType === "project"
-            ? project
-            : project.sections?.find(
-                (section) => section.id === Number(reorderData.destinitionID)
-              )
-        const task = source?.tasks?.splice(
-          Number(reorderData.sourceOrder),
-          1
-        )[0]
-        if (task) {
-          task.order = 9999
-          destinition?.tasks?.splice(
-            Number(reorderData.destinationOrder),
-            0,
-            task
-          )
-        }
-        queryClient.setQueryData(["projects", { id }], project)
 
-        return { oldProject, project }
-      }
+      let source =
+        reorderData.sourceType == "project"
+          ? project
+          : project.sections?.find(
+              (section) => section.id === Number(reorderData.sourceID)
+            )
+      let destinition =
+        reorderData.destinationType === "project"
+          ? project
+          : project.sections?.find(
+              (section) => section.id === Number(reorderData.destinitionID)
+            )
+      const task = source?.tasks?.splice(Number(reorderData.sourceOrder), 1)[0]
+      destinition?.tasks?.splice(Number(reorderData.destinationOrder), 0, task)
+
+      return { oldProject, project }
     },
     onError: (error, newProject, context) => {
       queryClient.setQueryData(["projects", { id }], context?.oldProject)
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["projects", { id }])
+      // queryClient.invalidateQueries(["projects", { id }])
     },
   })
 
 export const useProjectMutation = (id: string) =>
   useMutation(editProject, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects", { id }])
+      // queryClient.invalidateQueries(["projects", { id }])
     },
   })
