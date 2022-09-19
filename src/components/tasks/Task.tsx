@@ -5,6 +5,11 @@ import {
   Text,
   Group,
   ActionIcon,
+  Stack,
+  TypographyStylesProvider,
+  useMantineTheme,
+  Spoiler,
+  Badge,
 } from "@mantine/core"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
@@ -29,7 +34,6 @@ const useStyles = createStyles((theme, isDraggable: boolean) => ({
     },
   },
   task: {
-    width: isDraggable ? "93%" : "100%",
     label: {
       cursor: "pointer",
     },
@@ -67,6 +71,7 @@ export interface TaskProps extends TaskType {
 
 export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps)
+  const theme = useMantineTheme()
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
   const {
@@ -123,32 +128,77 @@ export default function Task(props: TaskProps) {
             <DotsSixVertical size={18} />
           </ActionIcon>
         )}
-        <Checkbox
-          sx={(theme) =>
-            props.color
-              ? {
-                  input: {
-                    border: `2px solid ${theme.colors[props.color][4]}`,
-                  },
-                }
-              : {}
-          }
-          className={classes.task}
-          color={props.color}
-          checked={isDone}
-          onChange={handleTaskStatus}
-          size="md"
-          label={
-            <Text
-              color={props.is_done ? "dimmed" : ""}
-              onClick={(e: any): void => {
-                e.preventDefault()
-              }}
+
+        <Stack
+          sx={{
+            width: "95%",
+          }}
+          align="stretch"
+          spacing={0}
+          p={0}
+          m={0}
+        >
+          <Checkbox
+            sx={(theme) =>
+              props.color
+                ? {
+                    input: {
+                      border: `2px solid ${theme.colors[props.color][4]}`,
+                    },
+                  }
+                : {}
+            }
+            className={classes.task}
+            color={props.color}
+            checked={isDone}
+            onChange={handleTaskStatus}
+            size="md"
+            label={
+              <Text
+                color={props.is_done ? "dimmed" : ""}
+                onClick={(e: any): void => {
+                  e.preventDefault()
+                }}
+              >
+                {props.name}
+              </Text>
+            }
+          />
+          {props.tags && (
+            <Group spacing="sm" ml={35} mt="xs">
+              {props.tags.map((tag) => (
+                <Badge radius="md" color={tag.color}>
+                  #{tag.name}
+                </Badge>
+              ))}
+            </Group>
+          )}
+          {props.description && (
+            <Spoiler
+              ml={35}
+              mt="xs"
+              maxHeight={0}
+              showLabel="Show note"
+              hideLabel="Hide"
             >
-              {props.name}
-            </Text>
-          }
-        />
+              <TypographyStylesProvider
+                p={5}
+                sx={{
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : "white",
+                  borderRadius: theme.radius.md,
+                  "h1, h2, h3, h4, p": {
+                    marginTop: 0,
+                  },
+                }}
+              >
+                <div dangerouslySetInnerHTML={{ __html: props.description }} />
+              </TypographyStylesProvider>
+            </Spoiler>
+          )}
+        </Stack>
       </Group>
     </Container>
   )

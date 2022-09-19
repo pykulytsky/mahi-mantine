@@ -63,6 +63,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
     tasksAddMutation.mutate(
       {
         name: trimTitle(),
+        description: form.values.description,
         project_id: !props.sectionID ? id : undefined,
         section_id: props.sectionID,
       },
