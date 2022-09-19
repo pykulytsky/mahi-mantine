@@ -1,10 +1,10 @@
 import { Navbar, ScrollArea, createStyles, Divider, Title } from "@mantine/core"
 import {
-  IconNotes,
   IconCalendarStats,
   IconGauge,
   IconCalendarEvent,
   IconInbox,
+  IconTags,
 } from "@tabler/icons"
 import { Project } from "../types"
 import { LinksGroup } from "../components/navbar/LinksGroup"
@@ -21,6 +21,11 @@ const builtInLinks = [
     label: "Today",
     icon: IconCalendarStats,
     color: "yellow",
+  },
+  {
+    label: "Tags",
+    icon: IconTags,
+    color: "teal",
   },
 ]
 

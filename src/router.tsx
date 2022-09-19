@@ -7,6 +7,7 @@ import Projects from "./routes/Projects"
 import Test from "./routes/Test"
 import { ownProjectsQuery } from "./queries/projects"
 import { userQuery } from "./queries/user"
+import NotFound from "./routes/NotFound"
 
 export type LocationGenerics = MakeGenerics<{
   Params: {
@@ -55,5 +56,9 @@ export const routes: Route<LocationGenerics>[] = [
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]

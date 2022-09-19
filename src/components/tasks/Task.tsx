@@ -15,7 +15,7 @@ import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../api/tasks.api"
-import { useMatch } from "react-location"
+import { useMatch, useNavigate } from "react-location"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck } from "@tabler/icons"
 import { useEffect, useState } from "react"
@@ -77,6 +77,7 @@ export default function Task(props: TaskProps) {
   const {
     params: { projectID: id },
   } = useMatch()
+  const navigate = useNavigate()
   const [isDone, setDone] = useState<boolean>(props.is_done)
 
   useEffect(() => {
@@ -164,10 +165,20 @@ export default function Task(props: TaskProps) {
               </Text>
             }
           />
-          {props.tags && (
+          {props.tags.length > 0 && (
             <Group spacing="sm" ml={35} mt="xs">
               {props.tags.map((tag) => (
-                <Badge radius="md" color={tag.color}>
+                <Badge
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    navigate({ to: `/app/tags/${tag.id}` })
+                  }}
+                  key={tag.id}
+                  radius="md"
+                  color={tag.color ?? undefined}
+                >
                   #{tag.name}
                 </Badge>
               ))}
