@@ -93,7 +93,7 @@ export default function ProjectRoot() {
         </Transition>
         {!isEmpty ? (
           <DragDropContext
-            onDragEnd={ async ({ source, destination }) =>
+            onDragEnd={async ({ source, destination }) =>
               await orderProject(source, destination)
             }
           >
@@ -101,10 +101,15 @@ export default function ProjectRoot() {
               {(provided, snapshot) => (
                 <div ref={provided.innerRef}>
                   {data.tasks.length > 0 && (
-                    <SectionComponent tasks={data.tasks} index={0} />
+                    <SectionComponent
+                      showCompletedtasks={data.show_completed_tasks}
+                      tasks={data.tasks}
+                      index={0}
+                    />
                   )}
                   {data.sections.map((section, index) => (
                     <SectionComponent
+                      showCompletedtasks={data.show_completed_tasks}
                       key={index}
                       section={section}
                       index={index + 1}

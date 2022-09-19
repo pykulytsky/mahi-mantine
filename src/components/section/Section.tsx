@@ -6,7 +6,7 @@ import {
 import { useId, useToggle } from "@mantine/hooks"
 import { Collapse, ActionIcon, Transition } from "@mantine/core"
 import SectionHeader from "./SectionHeader"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
 import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
@@ -16,6 +16,7 @@ import CreateTaskForm from "../tasks/createTaskForm/CreateTaskForm"
 export interface BaseSectionProps {
   index: number
   draggableHandleProps?: DraggableProvidedDragHandleProps
+  showCompletedtasks: boolean
 }
 
 interface CustomSectionProps extends BaseSectionProps {
@@ -34,10 +35,16 @@ export default function SectionComponent(props: SectionProps) {
   const uuid = useId()
   const isCustomSection = "section" in props
 
-  let tasks = DraggableTaskList(
-    isCustomSection ? props.section.tasks : props.tasks,
-    uuid
-  )
+  const tasksList = useMemo<Task[]>((): Task[] => {
+    if (props.showCompletedtasks) {
+      return isCustomSection ? props.section.tasks : props.tasks
+    } else {
+      let list = isCustomSection ? props.section.tasks : props.tasks
+      return list.filter((task) => !task.is_done)
+    }
+  }, [props])
+
+  let tasks = DraggableTaskList(tasksList, uuid)
 
   let sectionID = isCustomSection ? props.section.order : -1
   const { tasksCount } = useTasksHelper(
@@ -85,7 +92,7 @@ export default function SectionComponent(props: SectionProps) {
                   {(styles) => (
                     <CreateTaskForm
                       style={styles}
-                      sectionID={props.section?.id}
+                      sectionID={isCustomSection ? props.section.id : -1}
                       toggleForm={toggleTaskForm}
                     />
                   )}

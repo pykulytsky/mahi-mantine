@@ -1,6 +1,7 @@
 import { Group, ActionIcon, useMantineTheme, MediaQuery } from "@mantine/core"
 import { DotsThreeCircle, Star } from "phosphor-react"
 import { Project, ProjectEdit } from "../../types"
+import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
   hovered: boolean
@@ -32,13 +33,7 @@ export default function ProjectActions(props: ProjectActionsProps) {
           />
         </ActionIcon>
       </MediaQuery>
-      <ActionIcon variant="transparent">
-        <DotsThreeCircle
-          size={25}
-          weight="duotone"
-          color={theme.colors[theme.primaryColor][3]}
-        />
-      </ActionIcon>
+      <ProjectMenu />
     </Group>
   )
 }

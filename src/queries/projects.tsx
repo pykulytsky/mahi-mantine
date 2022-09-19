@@ -56,7 +56,7 @@ export const useReorderMutation = (id: string) =>
       const task = source?.tasks?.splice(Number(reorderData.sourceOrder), 1)[0]
       destinition?.tasks?.splice(Number(reorderData.destinationOrder), 0, task)
 
-      return { oldProject, project }
+      return { project, oldProject }
     },
     onError: (error, newProject, context) => {
       queryClient.setQueryData(["projects", { id }], context?.oldProject)
@@ -69,6 +69,6 @@ export const useReorderMutation = (id: string) =>
 export const useProjectMutation = (id: string) =>
   useMutation(editProject, {
     onSuccess: () => {
-      // queryClient.invalidateQueries(["projects", { id }])
+      queryClient.invalidateQueries(["projects", { id }])
     },
   })
