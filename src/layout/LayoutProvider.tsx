@@ -1,5 +1,11 @@
 import { Outlet } from "react-location"
-import { AppShell, Box, LoadingOverlay, ScrollArea } from "@mantine/core"
+import {
+  AppShell,
+  Box,
+  LoadingOverlay,
+  ScrollArea,
+  Transition,
+} from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import { useState, createContext, useEffect } from "react"
 import Header from "./Header"
@@ -12,7 +18,7 @@ import { useOwnProjects } from "../queries/projects"
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
 export default function AppProvider() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 })
   const { height } = useViewportSize()
   const currentUser = useUser()
@@ -27,7 +33,7 @@ export default function AppProvider() {
     <AppShell
       styles={{
         main: {
-          paddingTop: HEADER_HEIGHT,
+          paddingTop: 0,
           paddingRight: 0,
           paddingBottom: 0,
           transition: "0.5s all ease-out",
@@ -35,31 +41,34 @@ export default function AppProvider() {
             paddingRight: 0,
           },
         },
+        body: {
+          marginTop: 0,
+          paddingTop: 0,
+        },
       }}
-      header={
-        <Header
-          opened={sidebarOpen}
-          onBurgerClick={() => setSidebarOpen(!sidebarOpen)}
-          headerHeight={HEADER_HEIGHT}
-        />
-      }
+      // header={
+      //   <Header
+      //     opened={sidebarOpen}
+      //     onBurgerClick={() => setSidebarOpen(!sidebarOpen)}
+      //     headerHeight={HEADER_HEIGHT}
+      //   />
+      // }
       navbar={
-        <AnimatePresence>
-          {sidebarOpen && (
-            <motion.div
-              initial={{ x: -200 }}
-              animate={{ x: 0 }}
-              transition={{ ease: "easeInOut", duration: 0.5 }}
-            >
-              <Sidebar
-                ownProjects={ownProjects.data}
-                height={height - HEADER_HEIGHT}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <Sidebar ownProjects={ownProjects.data} height="100vh" />
+        // <AnimatePresence>
+        //   {sidebarOpen && (
+        //     <motion.div
+        //       initial={{ x: -200 }}
+        //       animate={{ x: 0 }}
+        //       transition={{ ease: "easeInOut", duration: 0.5 }}
+        //     >
+        //       <Sidebar ownProjects={ownProjects.data} height="100vh" />
+        //     </motion.div>
+        //   )}
+        // </AnimatePresence>
       }
     >
+      {/* <ScrollArea style={{ height: "calc(100vh - 0px)" }}> */}
       <Box>
         <ScrollbarContext.Provider value={scrollPosition}>
           <LoadingOverlay
@@ -70,6 +79,7 @@ export default function AppProvider() {
           <Outlet />
         </ScrollbarContext.Provider>
       </Box>
+      {/* </ScrollArea> */}
     </AppShell>
   )
 }

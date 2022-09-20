@@ -74,13 +74,13 @@ export default function ProjectRoot() {
         primaryColor: accentColor,
       }}
     >
+      <ProjectHeader
+        tasksCount={projectTasksCount}
+        project={data}
+        formVisible={taskFormVisible}
+        toggleTaskForm={toggleTaskForm}
+      />
       <Container>
-        <ProjectHeader
-          tasksCount={projectTasksCount}
-          project={data}
-          formVisible={taskFormVisible}
-          toggleTaskForm={toggleTaskForm}
-        />
         <Transition
           mounted={taskFormVisible}
           transition="pop"

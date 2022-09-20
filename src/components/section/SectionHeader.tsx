@@ -23,7 +23,7 @@ interface ProjectHeaderProps {
 const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     position: "sticky",
-    top: 100,
+    top: 50,
     zIndex: 98,
     height: 45,
     backdropFilter: "blur(5px)",

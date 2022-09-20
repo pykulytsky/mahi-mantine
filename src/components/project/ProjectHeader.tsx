@@ -36,7 +36,7 @@ interface ProjectHeaderProps {
 const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     position: "sticky",
-    top: 50,
+    top: 0,
     zIndex: 99,
     height: 50,
     backdropFilter: "blur(5px)",
@@ -86,11 +86,11 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }
 
   return (
-    <Paper ref={ref} radius={0} mt={16} className={classes.root}>
+    <Paper ref={ref} radius={0} className={classes.root}>
       <Group p="md" position="apart">
         <Group spacing={5}>
           {props.project.icon && (
-            <Popover>
+            <Popover position="right-end">
               <Popover.Target>
                 <ActionIcon
                   loading={!!isFetching || !!isMutating}

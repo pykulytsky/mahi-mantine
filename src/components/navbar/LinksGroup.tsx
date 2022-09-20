@@ -7,6 +7,7 @@ import {
   Text,
   UnstyledButton,
   createStyles,
+  Transition,
 } from "@mantine/core"
 import { Link } from "react-location"
 import { TablerIcon, IconChevronLeft, IconChevronRight } from "@tabler/icons"
@@ -66,6 +67,7 @@ interface LinksGroupProps {
   emoji?: string
   label: string
   color?: string
+  opened: boolean
   initiallyOpened?: boolean
   links?: { label: string; link: string }[]
 }
@@ -78,6 +80,7 @@ export function LinksGroup({
   initiallyOpened,
   links,
   emoji,
+  opened: sidebarOpened,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles()
   const hasLinks = Array.isArray(links)
@@ -98,6 +101,8 @@ export function LinksGroup({
   return (
     <>
       <UnstyledButton
+        ml={5}
+        pl="sm"
         component={!hasLinks ? Link : undefined}
         to={"/app/projects/" + id}
         onClick={() => setOpened((o) => !o)}
@@ -108,7 +113,18 @@ export function LinksGroup({
             <ThemeIcon color={color} variant="light" size={35}>
               {!emoji ? <Icon size={18} /> : <Text>{emoji}</Text>}
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Transition
+              transition="slide-left"
+              mounted={sidebarOpened}
+              duration={200}
+              timingFunction="ease-in"
+            >
+              {(styles) => (
+                <Box style={styles} ml="md">
+                  {label}
+                </Box>
+              )}
+            </Transition>
           </Box>
           {hasLinks && (
             <ChevronIcon

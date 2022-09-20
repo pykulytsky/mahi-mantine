@@ -58,10 +58,10 @@ export default function GlobalStyles() {
           },
         },
         {
-          body: {
-            overflow: "auto overlay",
-            overflowX: "hidden",
-          },
+          // body: {
+          //   overflow: "auto overlay",
+          //   overflowX: "hidden",
+          // },
           "::selection": {
             background:
               theme.colors.indigo[theme.colorScheme === "light" ? 3 : 4],
@@ -79,9 +79,9 @@ export default function GlobalStyles() {
                 : theme.colors.gray[6],
             borderRadius: 5,
           },
-          "::-webkit-scrollbar-track": {
-            marginTop: 50,
-          },
+          // "::-webkit-scrollbar-track": {
+          //   marginTop: 50,
+          // },
           "::-webkit-scrollbar-thumb:window-inactive": {
             opacity: 0,
             diplay: "none",
@@ -89,6 +89,11 @@ export default function GlobalStyles() {
           ".ql-editor": {
             padding: "12px 16px 0 16px !important",
           },
+          ".burger .burger-lines, .burger .burger-lines:after, .burger .burger-lines:before":
+            {
+              backgroundColor:
+                theme.colorScheme === "dark" ? theme.colors.gray[3] : "black",
+            },
         },
       ]}
     />
