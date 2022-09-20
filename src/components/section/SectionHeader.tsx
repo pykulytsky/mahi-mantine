@@ -23,7 +23,7 @@ interface ProjectHeaderProps {
 const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     position: "sticky",
-    top: 50,
+    top: 0,
     zIndex: 98,
     height: 45,
     backdropFilter: "blur(5px)",
@@ -77,7 +77,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
         >
           {(style) => (
             <Button
-              style={hovered ? style : null}
+              style={hovered ? style : undefined}
               className={cx(classes.addBtn, classes.shownOnHover)}
               compact
               leftIcon={<CheckCircle size={20} />}

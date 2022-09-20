@@ -31,6 +31,7 @@ interface ProjectHeaderProps {
   tasksCount?: [number, number]
   formVisible: boolean
   toggleTaskForm: () => void
+  toggleSectionForm: () => void
 }
 
 const useStyles = createStyles((theme, hovered: boolean) => ({
@@ -86,7 +87,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }
 
   return (
-    <Paper ref={ref} radius={0} className={classes.root}>
+    <Paper pl="lg" pr="lg" ref={ref} radius={0} className={classes.root}>
       <Group p="md" position="apart">
         <Group spacing={5}>
           {props.project.icon && (
@@ -184,6 +185,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
               Add task
             </Button>
             <Button
+              onClick={props.toggleSectionForm}
               compact
               rightIcon={<IconSection size={20} />}
               variant="subtle"

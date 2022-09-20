@@ -21,6 +21,7 @@ import { useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 import { useMemo } from "react"
 import { useTags } from "../queries/tags"
+import SectionCreateForm from "../components/section/SectionCreateForm"
 
 const useStyles = createStyles({})
 
@@ -33,6 +34,7 @@ export default function ProjectRoot() {
   const tags = useTags()
 
   const [taskFormVisible, toggleTaskForm] = useToggle()
+  const [sectionFormVisible, toggleSectionForm] = useToggle()
 
   const theme = useMantineTheme()
   const accentColor = useMemo(() => {
@@ -79,6 +81,7 @@ export default function ProjectRoot() {
         project={data}
         formVisible={taskFormVisible}
         toggleTaskForm={toggleTaskForm}
+        toggleSectionForm={toggleSectionForm}
       />
       <Container>
         <Transition
@@ -119,6 +122,21 @@ export default function ProjectRoot() {
                 </div>
               )}
             </Droppable>
+
+            <Transition
+              mounted={sectionFormVisible}
+              transition="pop"
+              duration={400}
+              timingFunction="ease-out"
+            >
+              {(styles) => (
+                <SectionCreateForm
+                  style={styles}
+                  projectID={data.id}
+                  toggleForm={toggleSectionForm}
+                />
+              )}
+            </Transition>
           </DragDropContext>
         ) : (
           <ProjectEmptyPlaceholder />

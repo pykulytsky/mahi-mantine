@@ -3,22 +3,17 @@ import {
   AppShell,
   Box,
   LoadingOverlay,
-  ScrollArea,
-  Transition,
 } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import { useState, createContext, useEffect } from "react"
-import Header from "./Header"
 import Sidebar from "./Sidebar"
-import { motion, AnimatePresence } from "framer-motion"
-import { useQuery, useIsFetching } from "@tanstack/react-query"
+import { useIsFetching } from "@tanstack/react-query"
 import { useUser } from "../queries/user"
 import { useOwnProjects } from "../queries/projects"
 
 export const ScrollbarContext = createContext({ x: 0, y: 0 })
 
 export default function AppProvider() {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 })
   const { height } = useViewportSize()
   const currentUser = useUser()
@@ -54,7 +49,7 @@ export default function AppProvider() {
       //   />
       // }
       navbar={
-        <Sidebar ownProjects={ownProjects.data} height="100vh" />
+        <Sidebar ownProjects={ownProjects.data} />
         // <AnimatePresence>
         //   {sidebarOpen && (
         //     <motion.div

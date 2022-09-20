@@ -8,6 +8,7 @@ import {
   UnstyledButton,
   createStyles,
   Transition,
+  Tooltip,
 } from "@mantine/core"
 import { Link } from "react-location"
 import { TablerIcon, IconChevronLeft, IconChevronRight } from "@tabler/icons"
@@ -108,37 +109,44 @@ export function LinksGroup({
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
-        <Group position="apart" spacing={0}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon color={color} variant="light" size={35}>
-              {!emoji ? <Icon size={18} /> : <Text>{emoji}</Text>}
-            </ThemeIcon>
-            <Transition
-              transition="slide-left"
-              mounted={sidebarOpened}
-              duration={200}
-              timingFunction="ease-in"
-            >
-              {(styles) => (
-                <Box style={styles} ml="md">
-                  {label}
-                </Box>
-              )}
-            </Transition>
-          </Box>
-          {hasLinks && (
-            <ChevronIcon
-              className={classes.chevron}
-              size={14}
-              stroke={1.5}
-              style={{
-                transform: opened
-                  ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
-                  : "none",
-              }}
-            />
-          )}
-        </Group>
+        <Tooltip
+          disabled={sidebarOpened}
+          label={label}
+          transition="slide-right"
+          position="right"
+        >
+          <Group position="apart" spacing={0}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <ThemeIcon color={color} variant="light" size={35}>
+                {!emoji ? <Icon size={18} /> : <Text>{emoji}</Text>}
+              </ThemeIcon>
+              <Transition
+                transition="slide-left"
+                mounted={sidebarOpened}
+                duration={200}
+                timingFunction="ease-in"
+              >
+                {(styles) => (
+                  <Box style={styles} ml="md">
+                    {label}
+                  </Box>
+                )}
+              </Transition>
+            </Box>
+            {hasLinks && (
+              <ChevronIcon
+                className={classes.chevron}
+                size={14}
+                stroke={1.5}
+                style={{
+                  transform: opened
+                    ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
+                    : "none",
+                }}
+              />
+            )}
+          </Group>
+        </Tooltip>
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>

@@ -81,7 +81,6 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface SidebarProps {
-  height: number
   ownProjects?: Project[]
 }
 
@@ -127,7 +126,7 @@ export default function Sidebar(props: SidebarProps) {
         />
       </Center>
       <div className={classes.linksInner}>{defaultLinks}</div>
-      <Divider my="sm" label="Favorite" />
+      <Divider my="sm" />
       <div className={classes.linksInner}>{pinnedLinks}</div>
       <Divider my="sm" />
       {/* <Navbar

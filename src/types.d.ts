@@ -98,3 +98,8 @@ export interface TagItemCreate {
 export interface TagItem extends TagItemCreate {
   id: number
 }
+
+export interface SectionCreate {
+  name: string
+  project_id: number
+}
