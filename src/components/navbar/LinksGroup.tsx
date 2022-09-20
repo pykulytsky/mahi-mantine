@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     width: "100%",
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+    padding: `7px 11px`,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.md,
@@ -103,8 +103,7 @@ export function LinksGroup({
     <>
       <UnstyledButton
         ml={5}
-        pl="sm"
-        component={!hasLinks ? Link : undefined}
+        component={Link}
         to={"/app/projects/" + id}
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
@@ -115,10 +114,15 @@ export function LinksGroup({
           transition="slide-right"
           position="right"
         >
-          <Group position="apart" spacing={0}>
+          <Group pr={0} spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <ThemeIcon color={color} variant="light" size={35}>
-                {!emoji ? <Icon size={18} /> : <Text>{emoji}</Text>}
+                {!emoji ? (
+                  // @ts-ignore
+                  <Icon size={18} />
+                ) : (
+                  <Text>{emoji}</Text>
+                )}
               </ThemeIcon>
               <Transition
                 transition="slide-left"

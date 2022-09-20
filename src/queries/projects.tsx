@@ -54,8 +54,13 @@ export const useReorderMutation = (id: string) =>
               (section) => section.id === Number(reorderData.destinitionID)
             )
       const task = source?.tasks?.splice(Number(reorderData.sourceOrder), 1)[0]
-      destinition?.tasks?.splice(Number(reorderData.destinationOrder), 0, task)
-
+      if (task) {
+        destinition?.tasks?.splice(
+          Number(reorderData.destinationOrder),
+          0,
+          task
+        )
+      }
       return { project, oldProject }
     },
     onError: (error, newProject, context) => {

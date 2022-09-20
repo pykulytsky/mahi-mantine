@@ -7,17 +7,19 @@ const http: AxiosInstance = axios.create({
   },
 })
 
-function getAuthToken(): string | null {
+function getAuthToken(): string | boolean {
   let token = localStorage.getItem("access_token")
   if (token) {
     token = "Bearer " + token
-  }
+  } else return false
   return token
 }
 
 http.interceptors.request.use((config) => {
-  config.headers["Authorization"] = getAuthToken()
-  return config
+  if (config.headers) {
+    config.headers["Authorization"] = getAuthToken()
+    return config
+  }
 })
 
 export default http

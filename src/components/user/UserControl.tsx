@@ -9,7 +9,7 @@ import {
   Stack,
   MediaQuery,
 } from "@mantine/core"
-import { forwardRef } from "react"
+import { ForwardedRef, forwardRef, Ref } from "react"
 import { useUser } from "../../queries/user"
 
 const useStyles = createStyles((theme) => ({
@@ -35,6 +35,7 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   setUserMenuOpen: () => void
 }
 
+// @ts-ignore
 export function UserControlComponent(props: UserButtonProps, ref) {
   const { classes, cx } = useStyles()
   const { data, isLoading, isError } = useUser()
@@ -59,6 +60,7 @@ export function UserControlComponent(props: UserButtonProps, ref) {
 }
 
 export const UserControl = forwardRef<HTMLButtonElement, UserButtonProps>(
+  // @ts-ignore
   (props: UserButtonProps, ref) => {
     const { classes, cx } = useStyles()
     const { data, isLoading, isError } = useUser()

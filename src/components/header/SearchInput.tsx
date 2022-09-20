@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
 export default function SearchInput(props: DefaultProps) {
   const { classes } = useStyles()
 
-  const handleInputClick = (event: Event) => {
+  const handleInputClick = (event: any) => {
     event.preventDefault()
     openSpotlight()
   }

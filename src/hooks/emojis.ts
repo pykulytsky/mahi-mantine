@@ -6,10 +6,7 @@ export default function useEmojis() {
   useEffect(() => {
     http
       .get(
-        "https://gist.githubusercontent.com/oliveratgithub/0bf11a9aff0d6da7b46f1490f86a71eb/raw/d8e4b78cfe66862cf3809443c1dba017f37b61db/emojis.json",
-        {
-          "Access-Control-Allow-Origin": "*",
-        }
+        "https://gist.githubusercontent.com/oliveratgithub/0bf11a9aff0d6da7b46f1490f86a71eb/raw/d8e4b78cfe66862cf3809443c1dba017f37b61db/emojis.json"
       )
       .then((response) => {
         setEmojis(response.data)

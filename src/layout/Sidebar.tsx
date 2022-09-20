@@ -1,10 +1,10 @@
 import {
-  Navbar,
-  ScrollArea,
   createStyles,
   Divider,
   Center,
   useMantineTheme,
+  Box,
+  ScrollArea,
 } from "@mantine/core"
 import {
   IconCalendarStats,
@@ -17,6 +17,7 @@ import { Project } from "../types"
 import { LinksGroup } from "../components/navbar/LinksGroup"
 import { useLocalStorage } from "@mantine/hooks"
 import { motion } from "framer-motion"
+// @ts-ignore
 import Burger from "@animated-burgers/burger-squeeze"
 import "@animated-burgers/burger-squeeze/dist/styles.css"
 
@@ -125,35 +126,17 @@ export default function Sidebar(props: SidebarProps) {
           }}
         />
       </Center>
-      <div className={classes.linksInner}>{defaultLinks}</div>
-      <Divider my="sm" />
-      <div className={classes.linksInner}>{pinnedLinks}</div>
-      <Divider my="sm" />
-      {/* <Navbar
-        height={props.height}
-        width={{ sm: opened ? 300 : 75 }}
-        p="xl"
-        pt={5}
-        pr="md"
-        className={classes.navbar}
+      <Box
+        sx={{
+          height: "85vh",
+          overflow: "auto",
+        }}
       >
-        <Burger
-          opened={opened}
-          onClick={() => {
-            setOpened(!opened)
-          }}
-          size="sm"
-          mr="xl"
-        />
-        <Navbar.Section grow className={classes.links} component={ScrollArea}>
-          <div className={classes.linksInner}>{defaultLinks}</div>
-          <Divider my="sm" label="Favorite" />
-          <div className={classes.linksInner}>{pinnedLinks}</div>
-          <Divider my="sm" />
-        </Navbar.Section>
-
-        <Navbar.Section className={classes.footer}>aaaa</Navbar.Section>
-      </Navbar> */}
+        <div className={classes.linksInner}>{defaultLinks}</div>
+        <Divider my="sm" />
+        <div className={classes.linksInner}>{pinnedLinks}</div>
+        <Divider my="sm" />
+      </Box>
     </motion.div>
   )
 }

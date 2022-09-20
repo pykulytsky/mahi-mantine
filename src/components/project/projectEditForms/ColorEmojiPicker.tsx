@@ -1,6 +1,7 @@
 import { Container, useMantineTheme } from "@mantine/core"
 import { ProjectEdit } from "../../../types"
 import ColorPicker from "./ColorPicker"
+// @ts-ignore
 import Picker from "@emoji-mart/react"
 import data from "@emoji-mart/data"
 

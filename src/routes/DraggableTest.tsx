@@ -234,64 +234,12 @@ export default function DraggableTest() {
     } else if (source == 2) {
       const value = { ...state2[sourceIndex], disableAnimation: true }
       handlers2.remove(sourceIndex)
-      handlers1.insert(destinitionIndex, value)
+      // handlers1.insert(destinitionIndex, value)
     }
   }
 
   return (
     <Container>
-      <Button
-        onClick={() => {
-          scrollbarContext.current.scrollTo({
-            top: scrollbarContext.current.scrollHeight,
-            behavior: "smooth",
-          })
-        }}
-      >
-        Scroll
-      </Button>
-      <ProjectHeader title="RTest project" />
-      <DragDropContext
-        onDragEnd={({ destination, source }) => {
-          if (!destination) {
-            return
-          }
-          const sInd = source.droppableId
-          const dInd = destination.droppableId
-          if (sInd === dInd) {
-            if (dInd === "dnd-list") {
-              handlers1.reorder({
-                from: source.index,
-                to: destination?.index || 0,
-              })
-            } else if (dInd == "dnd-list1") {
-              handlers2.reorder({
-                from: source.index,
-                to: destination?.index || 0,
-              })
-            }
-          } else {
-            const sourceType = sInd === "dnd-list" ? 1 : 2
-            move(sourceType, source.index, destination.index)
-          }
-        }}
-      >
-        <Section keyStr={1} droppableId="dnd-list" tasks={state1} />
-        <Section
-          keyStr={2}
-          droppableId="dnd-list1"
-          id={2}
-          name="Test Section"
-          tasks={state2}
-        />
-        <Section
-          keyStr={3}
-          droppableId="dnd-list2"
-          id={3}
-          name="Test Section 1"
-          tasks={state3}
-        />
-      </DragDropContext>
     </Container>
   )
 }
