@@ -68,18 +68,16 @@ export function UserSidebarMenuDropdown(props: UserMenuDropDownProps) {
   if (isLoading) return <Loader />
   if (isError) return <p>Error</p>
   return (
-    <Group position="center">
-      <Menu withArrow width={260}>
-        <Menu.Target>
-          <UserButton
-            image={data.avatar}
-            name={`${data.first_name} ${data.last_name}`}
-            email={data.email}
-            opened={props.opened}
-          />
-        </Menu.Target>
-        <UserMenuDropdown />
-      </Menu>
-    </Group>
+    <Menu withArrow width={260}>
+      <Menu.Target>
+        <UserButton
+          image={data.avatar}
+          name={`${data.first_name} ${data.last_name}`}
+          email={data.email}
+          opened={props.opened}
+        />
+      </Menu.Target>
+      <UserMenuDropdown />
+    </Menu>
   )
 }

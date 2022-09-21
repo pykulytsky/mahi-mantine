@@ -47,12 +47,11 @@ const builtInLinks = [
 const useStyles = createStyles((theme) => ({
   navbar: {
     height: "100vh",
-    position: "sticky",
-    top: 0,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     paddingBottom: 0,
     border: "none",
+    overflow: "hidden",
   },
 
   header: {
@@ -118,7 +117,13 @@ export default function Sidebar(props: SidebarProps) {
         width: opened ? 300 : 70,
       }}
     >
-      <Center mt="sm" mb="sm">
+      <Center
+        sx={{
+          height: "3vh",
+        }}
+        mt="sm"
+        mb="sm"
+      >
         <Burger
           style={{
             fontSize: 8,
@@ -131,8 +136,8 @@ export default function Sidebar(props: SidebarProps) {
       </Center>
       <Box
         sx={{
-          height: "77vh",
           overflow: "auto",
+          height: "80vh",
         }}
       >
         <div className={classes.linksInner}>{defaultLinks}</div>
@@ -140,9 +145,23 @@ export default function Sidebar(props: SidebarProps) {
         <div className={classes.linksInner}>{pinnedLinks}</div>
         <Divider my="sm" />
       </Box>
-      <SearchInput collapsed={!opened} />
-      {/* <UserControl opened={opened} /> */}
-      <UserSidebarMenuDropdown opened={opened} />
+
+      <Box
+        p={0}
+        sx={{
+          position: "absolute",
+          bottom: 0,
+        }}
+      >
+        <motion.div
+          animate={{
+            width: opened ? 300 : 70,
+          }}
+        >
+          <SearchInput collapsed={!opened} />
+        </motion.div>
+        <UserSidebarMenuDropdown opened={opened} />
+      </Box>
     </motion.div>
   )
 }

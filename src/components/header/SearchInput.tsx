@@ -28,7 +28,7 @@ export default function SearchInput(props: SearchInputProps) {
   }
   if (props.collapsed)
     return (
-      <Center mt="sm" mb="sm">
+      <Center mb={3}>
         <ActionIcon size="xl">
           <IconSearch size={20} />
         </ActionIcon>
@@ -36,7 +36,9 @@ export default function SearchInput(props: SearchInputProps) {
     )
   return (
     <Input
-      m="md"
+      ml="md"
+      mr="md"
+      mb={3}
       onClick={handleInputClick}
       icon={<IconSearch size={16} stroke={1.5} />}
       className={props.className}
