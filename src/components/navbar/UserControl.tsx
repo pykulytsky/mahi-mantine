@@ -7,7 +7,6 @@ import {
   createStyles,
   Loader,
 } from "@mantine/core"
-import { IconChevronRight } from "@tabler/icons"
 import { useUser } from "../../queries/user"
 import { IconSelector } from "@tabler/icons"
 
@@ -31,14 +30,20 @@ interface UserButtonProps extends UnstyledButtonProps {
   opened: boolean
 }
 
-export default function UserControl({ opened, ...others }: UserButtonProps) {
+export default function UserControl({
+  opened,
+  ...others
+}: UserButtonProps) {
   const { classes } = useStyles()
   const { data, isLoading, isError } = useUser()
 
   if (isLoading) return <Loader />
   if (isError) return <p>Error</p>
   return (
-    <UnstyledButton className={classes.user} {...others}>
+    <UnstyledButton
+      className={classes.user}
+      {...others}
+    >
       <Group>
         <Avatar src={data.avatar} radius="xl" />
         {opened && (
@@ -52,8 +57,7 @@ export default function UserControl({ opened, ...others }: UserButtonProps) {
             </Text>
           </div>
         )}
-
-        <IconSelector size={12} stroke={1.5} />
+        {opened && <IconSelector size={12} stroke={1.5} />}
       </Group>
     </UnstyledButton>
   )

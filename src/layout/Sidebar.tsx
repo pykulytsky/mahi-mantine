@@ -21,6 +21,8 @@ import Burger from "@animated-burgers/burger-squeeze"
 import "@animated-burgers/burger-squeeze/dist/styles.css"
 import SearchInput from "../components/header/SearchInput"
 import UserControl from "../components/navbar/UserControl"
+import UserMenu from "../components/user/UserMenu"
+import { UserSidebarMenuDropdown } from "../components/navbar/UserSidebarMenuDropdown"
 
 const builtInLinks = [
   { label: "Inbox", icon: IconInbox, color: "violet" },
@@ -139,7 +141,8 @@ export default function Sidebar(props: SidebarProps) {
         <Divider my="sm" />
       </Box>
       <SearchInput collapsed={!opened} />
-      <UserControl opened={opened} />
+      {/* <UserControl opened={opened} /> */}
+      <UserSidebarMenuDropdown opened={opened} />
     </motion.div>
   )
 }
