@@ -4,7 +4,6 @@ import {
   Center,
   useMantineTheme,
   Box,
-  ScrollArea,
 } from "@mantine/core"
 import {
   IconCalendarStats,
@@ -20,6 +19,8 @@ import { motion } from "framer-motion"
 // @ts-ignore
 import Burger from "@animated-burgers/burger-squeeze"
 import "@animated-burgers/burger-squeeze/dist/styles.css"
+import SearchInput from "../components/header/SearchInput"
+import UserControl from "../components/navbar/UserControl"
 
 const builtInLinks = [
   { label: "Inbox", icon: IconInbox, color: "violet" },
@@ -128,7 +129,7 @@ export default function Sidebar(props: SidebarProps) {
       </Center>
       <Box
         sx={{
-          height: "85vh",
+          height: "77vh",
           overflow: "auto",
         }}
       >
@@ -137,6 +138,8 @@ export default function Sidebar(props: SidebarProps) {
         <div className={classes.linksInner}>{pinnedLinks}</div>
         <Divider my="sm" />
       </Box>
+      <SearchInput collapsed={!opened} />
+      <UserControl opened={opened} />
     </motion.div>
   )
 }

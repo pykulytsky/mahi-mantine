@@ -2,6 +2,7 @@ import { useMatch } from "react-location"
 import {
   Container,
   createStyles,
+  LoadingOverlay,
   MantineProvider,
   Transition,
   useMantineTheme,
@@ -67,7 +68,7 @@ export default function ProjectRoot() {
     }
   }
 
-  if (isLoading) return <></>
+  if (isLoading) return <LoadingOverlay visible />
   if (isError) return <h1>Error...</h1>
   return (
     <MantineProvider
