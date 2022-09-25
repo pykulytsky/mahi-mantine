@@ -10,7 +10,7 @@ export default function NotFound() {
       }}
     >
       <Group spacing={0}>
-        <Stack pl={50} sx={{ width: "50%" }}>
+        <Stack spacing={0} pl={50} sx={{ width: "50%" }}>
           <Text weight={700} size={55}>
             You have reached
           </Text>
@@ -24,7 +24,7 @@ export default function NotFound() {
             Oops! We can seem to find the page what you are looking for. It
             might have been removed or it is temporary unavaliable.
           </Text>
-          <Group>
+          <Group p="xl">
             <Button size="lg">Go to home page</Button>
             <Button size="lg">Need a help?</Button>
           </Group>

@@ -39,6 +39,7 @@ export default function SearchInput(props: SearchInputProps) {
       ml="md"
       mr="md"
       mb={3}
+      radius="lg"
       onClick={handleInputClick}
       icon={<IconSearch size={16} stroke={1.5} />}
       className={props.className}

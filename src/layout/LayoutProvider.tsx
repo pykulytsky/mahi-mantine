@@ -1,6 +1,6 @@
 import { Outlet } from "react-location"
 import { AppShell, Box, LoadingOverlay } from "@mantine/core"
-import Sidebar from "./Sidebar"
+import Sidebar from "./Sidebar/Sidebar"
 import { useIsFetching } from "@tanstack/react-query"
 import { useUser } from "../queries/user"
 import { useOwnProjects } from "../queries/projects"

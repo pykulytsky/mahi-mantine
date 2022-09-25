@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     width: "100%",
-    padding: `7px 11px`,
+    padding: `7px 12px`,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.md,
@@ -109,6 +109,7 @@ export function LinksGroup({
         className={classes.control}
       >
         <Tooltip
+          zIndex={9999}
           disabled={sidebarOpened}
           label={label}
           transition="slide-right"

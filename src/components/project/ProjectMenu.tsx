@@ -1,8 +1,11 @@
 import { ActionIcon, Loader, Menu, useMantineTheme } from "@mantine/core"
+import { openModal } from "@mantine/modals"
+import { IconLayout2 } from "@tabler/icons"
 import { DotsThreeCircle, Eye, EyeSlash } from "phosphor-react"
 import { useMatch } from "react-location"
 import { useProject } from "../../queries/projects"
 import { useProjectMutation } from "../../queries/projects"
+import DisplaySelect from "./projectEditForms/DisplaySelect"
 
 export default function ProjectMenu() {
   const {
@@ -11,6 +14,14 @@ export default function ProjectMenu() {
   const theme = useMantineTheme()
   const { data, isLoading, isError } = useProject(id)
   const { mutate } = useProjectMutation(id)
+
+  function onEditViewSelect() {
+    openModal({
+      title: "Select project view",
+      children: <DisplaySelect />,
+    })
+  }
+
   if (isLoading) return <Loader />
   if (isError) return <p>Error</p> // TODO add error placeholder
   return (
@@ -44,6 +55,9 @@ export default function ProjectMenu() {
             Show completed tasks
           </Menu.Item>
         )}
+        <Menu.Item onClick={onEditViewSelect} icon={<IconLayout2 size={15} />}>
+          Display settings
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   )

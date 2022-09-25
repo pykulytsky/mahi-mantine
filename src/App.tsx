@@ -32,7 +32,7 @@ export default function App() {
       <MantineProvider
         theme={{
           colorScheme,
-          primaryColor: "indigo",
+          primaryColor: "light-green",
           fontFamily: "GT Walsheim, sans-serif",
           defaultRadius: "md",
           colors: {
@@ -47,6 +47,18 @@ export default function App() {
               "#0E99AC",
               "#128797",
               "#147885",
+            ],
+            "light-green": [
+              "#aed0ae",
+              "#a9d5a9",
+              "#a4daa4",
+              "#9fdf9f",
+              "#9ae49a",
+              "#95e995",
+              "#90ee90",
+              "#8bf38b",
+              "#86f886",
+              "#81fd81",
             ],
             dark: [
               "#939393",
