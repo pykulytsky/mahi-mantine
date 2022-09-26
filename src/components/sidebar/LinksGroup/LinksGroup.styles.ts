@@ -5,7 +5,7 @@ export const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     width: "100%",
-    padding: `7px 12px`,
+    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.md,
@@ -25,16 +25,12 @@ export const useStyles = createStyles((theme) => ({
     textDecoration: "none",
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
     paddingLeft: 31,
-    marginLeft: 30,
+    borderRadius: theme.radius.md,
     fontSize: theme.fontSizes.sm,
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
@@ -43,10 +39,12 @@ export const useStyles = createStyles((theme) => ({
       color: theme.colorScheme === "dark" ? theme.white : theme.black,
     },
   },
+  activeLink: {
+    backgroundColor: theme.colors[theme.primaryColor][9],
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+  },
 
   chevron: {
     transition: "transform 200ms ease",
   },
 }))
-
-

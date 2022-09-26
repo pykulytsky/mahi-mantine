@@ -11,6 +11,8 @@ import {
   MediaQuery,
   Transition,
   TextInput,
+  Progress,
+  Tooltip,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { Pencil, CheckCircle } from "phosphor-react"
@@ -164,10 +166,15 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           )}
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             {props.tasksCount && (
-              <Text italic size="sm">
-                <span>{props.tasksCount[0]} </span> of{" "}
-                <span>{props.tasksCount[1]}</span>
-              </Text>
+              <Tooltip
+                label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
+              >
+                <Progress
+                  className={classes.shownOnHover}
+                  sx={{ width: 100, cursor: "pointer" }}
+                  value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
+                />
+              </Tooltip>
             )}
           </MediaQuery>
         </Group>

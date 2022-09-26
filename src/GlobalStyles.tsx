@@ -4,6 +4,7 @@ import oblique from "./assets/fonts/GTWalsheimPro-RegularOblique.woff2"
 import medium from "./assets/fonts/GTWalsheimPro-Medium.woff2"
 import bold from "./assets/fonts/GTWalsheimPro-Bold.woff2"
 import black from "./assets/fonts/GTWalsheimPro-Black.woff2"
+import mackinac from "./assets/fonts/P22Mackinac-BookSC_8.otf"
 
 export default function GlobalStyles() {
   return (
@@ -57,6 +58,14 @@ export default function GlobalStyles() {
             fontStyle: "normal",
           },
         },
+		{
+		  "font-face": {
+			fontFamily: "Mackinac",
+			src: `url('${mackinac}') format("otf")`,
+			fontWeight: 500,
+			fontStyle: "normal"
+		  }
+		},
         {
           "::selection": {
             background:

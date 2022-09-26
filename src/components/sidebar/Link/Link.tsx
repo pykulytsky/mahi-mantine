@@ -6,61 +6,12 @@ import {
   ThemeIcon,
   Text,
   UnstyledButton,
-  createStyles,
   Transition,
   Tooltip,
 } from "@mantine/core"
 import { Link } from "react-location"
 import { TablerIcon, IconChevronLeft, IconChevronRight } from "@tabler/icons"
-
-const useStyles = createStyles((theme) => ({
-  control: {
-    fontWeight: 500,
-    display: "block",
-    width: "100%",
-    padding: `7px 12px`,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    fontSize: theme.fontSizes.sm,
-    borderRadius: theme.radius.md,
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  link: {
-    fontWeight: 500,
-    display: "block",
-    textDecoration: "none",
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-    paddingLeft: 31,
-    marginLeft: 30,
-    fontSize: theme.fontSizes.sm,
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  chevron: {
-    transition: "transform 200ms ease",
-  },
-}))
+import { useStyles } from "./Link.styles"
 
 interface LinksGroupProps {
   id?: number
@@ -70,7 +21,9 @@ interface LinksGroupProps {
   color?: string
   opened: boolean
   initiallyOpened?: boolean
-  links?: { label: string; link: string }[]
+  links?: { label: string; link: string; icon?: string }[]
+  isLink?: boolean
+  to?: string
 }
 
 export function LinksGroup({
@@ -82,6 +35,7 @@ export function LinksGroup({
   links,
   emoji,
   opened: sidebarOpened,
+  to,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles()
   const hasLinks = Array.isArray(links)
@@ -95,7 +49,7 @@ export function LinksGroup({
       key={link.label}
       onClick={(event) => event.preventDefault()}
     >
-      {link.label}
+      {link.icon} {link.label}
     </Text>
   ))
 
@@ -104,7 +58,7 @@ export function LinksGroup({
       <UnstyledButton
         ml={5}
         component={Link}
-        to={"/app/projects/" + id}
+        to={to}
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >

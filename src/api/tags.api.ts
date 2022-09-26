@@ -16,7 +16,7 @@ export const getTag = async (ID: string | number): Promise<Tag> => {
 }
 
 export const applyTag = async (tag: TagItemCreate): Promise<TagItem> => {
-  const { data } = await http.post<TagItem>("/tag_items", {
+  const { data } = await http.post<TagItem>("/tag_items/", {
     ...tag,
   })
 
