@@ -1,7 +1,7 @@
 import { Menu } from "@mantine/core"
 import UserMenuDropdown from "./UserMenuDropdown"
 import { useState } from "react"
-import UserControl from "../navbar/UserControl"
+import UserControl from "../sidebar/UserControl"
 
 type UserMenuProps = {
   opened: boolean
@@ -20,11 +20,7 @@ export default function UserMenu({ opened }: UserMenuProps) {
       opened={userMenuOpen}
     >
       <Menu.Target>
-        <UserControl
-          opened={opened}
-          userMenuOpen={userMenuOpen}
-          setUserMenuOpen={() => setUserMenuOpen(!userMenuOpen)}
-        />
+        <UserControl opened={opened} />
       </Menu.Target>
       <UserMenuDropdown />
     </Menu>
