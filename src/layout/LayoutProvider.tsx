@@ -6,8 +6,6 @@ import { useUser } from "../queries/user"
 import { useOwnProjects } from "../queries/projects"
 
 export default function AppProvider() {
-  const currentUser = useUser()
-  const ownProjects = useOwnProjects()
   const isFetching = useIsFetching(["projects", "user"])
 
   return (
@@ -27,7 +25,7 @@ export default function AppProvider() {
           paddingTop: 0,
         },
       }}
-      navbar={<Sidebar ownProjects={ownProjects.data} />}
+      navbar={<Sidebar />}
     >
       <Box>
         <LoadingOverlay
