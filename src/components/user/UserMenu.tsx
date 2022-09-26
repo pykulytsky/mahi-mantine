@@ -1,7 +1,7 @@
 import { Menu } from "@mantine/core"
 import UserMenuDropdown from "./UserMenuDropdown"
 import { useState } from "react"
-import UserControl from "../sidebar/UserControl"
+import UserControl from "../sidebar/UserControl/UserControl"
 
 type UserMenuProps = {
   opened: boolean

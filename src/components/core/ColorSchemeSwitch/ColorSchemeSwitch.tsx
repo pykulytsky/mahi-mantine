@@ -1,23 +1,15 @@
 import { useMantineColorScheme, ActionIcon } from "@mantine/core"
 import { IconSun, IconMoonStars } from "@tabler/icons"
+import { useStyles } from "./ColorSchemeSwitch.styles"
 
 export default function ColorSchemeSwitch() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-
+  const { classes } = useStyles()
   return (
     <ActionIcon
       onClick={() => toggleColorScheme()}
       size="lg"
-      sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
-        color:
-          theme.colorScheme === "dark"
-            ? theme.colors.yellow[4]
-            : theme.colors.dark[6],
-      })}
+      className={classes.control}
     >
       {colorScheme === "dark" ? (
         <IconSun size={18} />

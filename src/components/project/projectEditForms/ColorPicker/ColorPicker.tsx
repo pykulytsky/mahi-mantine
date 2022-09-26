@@ -8,36 +8,9 @@ import {
   CheckIcon,
   Transition,
 } from "@mantine/core"
-import { ProjectEdit } from "../../../types"
+import { ProjectEdit } from "../../../../types"
+import { useStyles } from "./ColorPicker.styles"
 
-const useStyles = createStyles((theme) => ({
-  color: {
-    height: 30,
-    width: 30,
-    borderRadius: theme.radius.xl,
-    transition: ".2s all linear",
-    cursor: "pinter",
-
-    "&:hover": {
-      transform: "scale(1.1)",
-      border: `2px solid ${theme.colors.gray[7]}`,
-    },
-  },
-  colorPicked: {
-    transform: "scale(1.1)",
-    border: `2px solid ${theme.colors.gray[7]}`,
-  },
-  col: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 10,
-    cursor: "pointer",
-  },
-  swatch: {
-    cursor: "pointer",
-  },
-}))
 
 type ColorPickerProps = {
   color?: string
