@@ -21,7 +21,6 @@ import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import {
   useIsFetching,
   useIsMutating,
-  useQueryClient,
 } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
 import ProjectActions from "../ProjectActions"

@@ -7,7 +7,7 @@ import {
   Transition,
   Tooltip,
 } from "@mantine/core"
-import { Link } from "react-location"
+import { Link } from "@tanstack/react-location"
 import { useStyles } from "./Link.styles"
 
 interface SidebarLinkProps {

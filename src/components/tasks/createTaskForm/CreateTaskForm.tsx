@@ -6,7 +6,7 @@ import TaskNameInputRTE from "./TaskNameInputRTE"
 import RichTextEditor from "@mantine/rte"
 import { CreateTaskFormType, Tag, Task } from "../../../types"
 import { useApplyTagMutation, useTaskAddMutation } from "../../../queries/tasks"
-import { useMatch } from "react-location"
+import { useMatch } from "@tanstack/react-location"
 import { useQueryClient } from "@tanstack/react-query"
 
 export type CreateTaskFormProps = {

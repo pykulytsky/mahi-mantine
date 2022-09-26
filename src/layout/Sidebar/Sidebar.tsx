@@ -62,6 +62,7 @@ export default function Sidebar() {
     ?.filter((project) => project.is_favorite)
     .map((project) => (
       <SidebarLink
+        key={project.id}
         opened={opened}
         label={project.name}
         icon={project.icon}

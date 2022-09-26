@@ -5,7 +5,7 @@ import {
 } from "@mantine/core"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { QueryClientProvider } from "@tanstack/react-query"
-import { Outlet, Router } from "react-location"
+import { Outlet, Router } from "@tanstack/react-location"
 import { routes, location, queryClient } from "./router"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"

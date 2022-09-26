@@ -1,4 +1,4 @@
-import { Outlet } from "react-location"
+import { Outlet } from "@tanstack/react-location"
 
 export default function Projects() {
   return <Outlet />

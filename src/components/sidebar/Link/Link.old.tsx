@@ -7,7 +7,7 @@ import {
   Text,
 } from "@mantine/core"
 import { useStyles } from "./Link.styles"
-import { Link } from "react-location"
+import { Link } from "@tanstack/react-location"
 import { ReactNode } from "react"
 
 type LinkProps = {
