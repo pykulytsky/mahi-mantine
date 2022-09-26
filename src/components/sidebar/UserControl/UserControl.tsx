@@ -7,43 +7,22 @@ import {
   createStyles,
   Loader,
 } from "@mantine/core"
-import { useUser } from "../../queries/user"
+import { useStyles } from "./UserControl.styles"
+import { useUser } from "../../../queries/user"
 import { IconSelector } from "@tabler/icons"
-
-const useStyles = createStyles((theme) => ({
-  user: {
-    display: "block",
-    width: "100%",
-    padding: theme.spacing.md,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[8]
-          : theme.colors.gray[0],
-    },
-  },
-}))
 
 interface UserButtonProps extends UnstyledButtonProps {
   opened: boolean
 }
 
-export default function UserControl({
-  opened,
-  ...others
-}: UserButtonProps) {
+export default function UserControl({ opened, ...others }: UserButtonProps) {
   const { classes } = useStyles()
   const { data, isLoading, isError } = useUser()
 
   if (isLoading) return <Loader />
   if (isError) return <p>Error</p>
   return (
-    <UnstyledButton
-      className={classes.user}
-      {...others}
-    >
+    <UnstyledButton className={classes.user} {...others}>
       <Group>
         <Avatar src={data.avatar} radius="xl" />
         {opened && (

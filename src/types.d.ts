@@ -1,4 +1,4 @@
-export type User = {
+export declare type User = {
   id: number
   email: string
   first_name?: string
@@ -8,7 +8,7 @@ export type User = {
   tasks_goal_per_day?: number
 }
 
-export type Project = {
+export declare type Project = {
   id: number
   name: string
   description?: string
@@ -22,7 +22,7 @@ export type Project = {
   tasks: Task[]
 }
 
-export type ProjectEdit = {
+export declare type ProjectEdit = {
   id?: number
   name?: string
   description?: string
@@ -34,14 +34,14 @@ export type ProjectEdit = {
   show_completed_tasks?: boolean
 }
 
-export type Section = {
+export declare type Section = {
   id: number
   order: number
   name: string
   tasks: Task[]
 }
 
-export interface Task {
+export declare interface Task {
   id: number
   order: number
   name: string
@@ -55,7 +55,7 @@ export interface Task {
   tags: Tag[]
 }
 
-export type TaskEdit = {
+export declare type TaskEdit = {
   id: number
   name?: string
   description?: string
@@ -67,7 +67,7 @@ export type TaskEdit = {
   remind_at?: Date
 }
 
-export type TaskReorder = {
+export declare type TaskReorder = {
   sourceID: string | number
   sourceOrder: string | number
   destinitionID: string | number
@@ -76,13 +76,13 @@ export type TaskReorder = {
   destinationOrder: string | number
 }
 
-export type Tag = {
+export declare type Tag = {
   id: number
   name: string
   color?: string
 }
 
-export type CreateTaskFormType = {
+export declare type CreateTaskFormType = {
   name: string
   description?: string
   project_id?: number | string
@@ -90,16 +90,16 @@ export type CreateTaskFormType = {
   tags: Tag[]
 }
 
-export interface TagItemCreate {
+export declare interface TagItemCreate {
   task_id: number
   tag_id: number
 }
 
-export interface TagItem extends TagItemCreate {
+export declare interface TagItem extends TagItemCreate {
   id: number
 }
 
-export interface SectionCreate {
+export declare interface SectionCreate {
   name: string
   project_id: number
 }

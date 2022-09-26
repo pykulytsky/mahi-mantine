@@ -13,7 +13,7 @@ import {
   IconCalendarStats,
 } from "@tabler/icons"
 import { useState } from "react"
-import { Link, useResolvePath } from "react-location"
+import { Link, useResolvePath } from "@tanstack/react-location"
 import { useStyles } from "./LinksGroup.styles"
 
 interface LinksGroupProps {

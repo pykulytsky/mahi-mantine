@@ -17,16 +17,16 @@ import {
 import { useHover } from "@mantine/hooks"
 import { Pencil, CheckCircle } from "phosphor-react"
 import { IconSection, IconCheck } from "@tabler/icons"
-import ColorEmojiPicker from "../project/projectEditForms/ColorEmojiPicker"
+import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import {
   useIsFetching,
   useIsMutating,
-  useQueryClient,
 } from "@tanstack/react-query"
-import { Project, ProjectEdit } from "../../types"
-import ProjectActions from "./ProjectActions"
+import { Project, ProjectEdit } from "../../../types"
+import ProjectActions from "../ProjectActions"
 import { useState } from "react"
-import { useProjectMutation } from "../../queries/projects"
+import { useStyles } from "./ProjectHeader.styles"
+import { useProjectMutation } from "../../../queries/projects"
 
 interface ProjectHeaderProps {
   project: Project
@@ -35,31 +35,6 @@ interface ProjectHeaderProps {
   toggleTaskForm: () => void
   toggleSectionForm: () => void
 }
-
-const useStyles = createStyles((theme, hovered: boolean) => ({
-  root: {
-    position: "sticky",
-    top: 0,
-    zIndex: 99,
-    height: 50,
-    backdropFilter: "blur(5px)",
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.fn.rgba(theme.colors.dark[7], 0.5)
-        : "white",
-  },
-  shownOnHover: {
-    opacity: hovered ? 1 : 0,
-    transition: "opacity .2s linear",
-  },
-  title: {
-    cursor: "pointer",
-  },
-  addBtnGroup: {
-    position: "absolute",
-    left: "40%",
-  },
-}))
 
 export default function ProjectHeader(props: ProjectHeaderProps) {
   const [isNameEditing, setNameEditing] = useState<boolean>(false)
@@ -170,8 +145,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                 label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
               >
                 <Progress
-                  className={classes.shownOnHover}
-                  sx={{ width: 100, cursor: "pointer" }}
+                  className={cx(classes.progress, classes.shownOnHover)}
                   value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
                 />
               </Tooltip>

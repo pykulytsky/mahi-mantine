@@ -19,6 +19,7 @@ export const useStyles = createStyles((theme) => ({
   mainSection: {
     overflow: "auto",
     height: "80vh",
+    padding: "0 6px",
     "::-webkit-scrollbar": {
       width: 0,
     },

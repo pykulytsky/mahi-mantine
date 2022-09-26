@@ -40,6 +40,10 @@ const useStyles = createStyles((theme, hovered: boolean) => ({
     position: "absolute",
     left: "45%",
   },
+  pointerText: {
+    cursor: "pointer",
+    userSelect: "none",
+  },
 }))
 
 export default function SectionHeader(props: ProjectHeaderProps) {
@@ -53,10 +57,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
           <DotsSixVertical />
         </ActionIcon>
         <Text
-          sx={{
-            cursor: "pointer",
-            userSelect: "none",
-          }}
+          className={classes.pointerText}
           onClick={props.onOpen}
           weight={700}
           size="lg"

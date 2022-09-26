@@ -1,4 +1,4 @@
-import { Divider, Center, useMantineTheme, Box } from "@mantine/core"
+import { Divider, Center, Box } from "@mantine/core"
 import { useLocalStorage } from "@mantine/hooks"
 import {
   IconCalendarStats,
@@ -9,8 +9,6 @@ import {
 } from "@tabler/icons"
 import { motion } from "framer-motion"
 
-import { Project } from "../../types"
-import { LinksGroup } from "../../components/sidebar/Link/Link"
 import { UserSidebarMenuDropdown } from "../../components/sidebar/UserSidebarMenuDropdown"
 // @ts-ignore
 import Burger from "@animated-burgers/burger-squeeze"
@@ -18,65 +16,58 @@ import "@animated-burgers/burger-squeeze/dist/styles.css"
 import SearchInput from "../../components/header/SearchInput"
 import { useStyles } from "./Sidebar.styles"
 import { ProjectorScreen } from "phosphor-react"
-import { NavbarLinksGroup } from "../../components/sidebar/LinksGroup/LinksGroup"
+import SidebarLink from "../../components/sidebar/Link/Link"
+import { useOwnProjects } from "../../queries/projects"
 
 const builtInLinks = [
-  { label: "Inbox", icon: IconInbox, color: "violet", to: "/app/inbox" },
-  { label: "Dashboard", icon: IconGauge, to: "/app/dashboard" },
+  {
+    label: "Inbox",
+    icon: <IconInbox size={20} />,
+    color: "violet",
+    to: "/app/inbox",
+  },
+  { label: "Dashboard", icon: <IconGauge size={20} />, to: "/app/dashboard" },
   {
     label: "Calendar",
-    icon: IconCalendarEvent,
+    icon: <IconCalendarEvent size={20} />,
     color: "green",
     to: "/app/calendar",
   },
   {
     label: "Today",
-    icon: IconCalendarStats,
+    icon: <IconCalendarStats size={20} />,
     color: "yellow",
     to: "/app/today",
   },
   {
     label: "Tags",
-    icon: IconTags,
+    icon: <IconTags size={20} />,
     color: "teal",
     to: "/app/tags",
   },
 ]
 
-interface SidebarProps {
-  ownProjects?: Project[]
-}
-
-export default function Sidebar(props: SidebarProps) {
+export default function Sidebar() {
   const [opened, setOpened] = useLocalStorage({
     key: "sidebar",
     defaultValue: false,
   })
+  const { data: projects } = useOwnProjects()
   const { classes } = useStyles()
   const defaultLinks = builtInLinks.map((item) => (
-    <LinksGroup opened={opened} {...item} key={item.label} />
+    <SidebarLink opened={opened} {...item} key={item.label} />
   ))
-  const projectsList = {
-    label: "Projects",
-    icon: ProjectorScreen,
-    links: props.ownProjects?.map((project) => ({
-      label: project.name,
-      link: "/app/projects/" + project.id,
-      icon: project.icon,
-    })),
-  }
-  const allProjects = <LinksGroup opened={opened} {...projectsList} key={999} />
-  const pinnedLinks = props.ownProjects
+
+  const favoriteProjects = projects
     ?.filter((project) => project.is_favorite)
     .map((project) => (
-      <LinksGroup
-        opened={opened}
+      <SidebarLink
         key={project.id}
+        opened={opened}
         label={project.name}
+        icon={project.icon}
+        to={"/app/projects/" + project.id}
         color={project.accent_color}
-        emoji={project.icon}
-        id={project.id}
-        to={`/app/projects/${project.id}`}
       />
     ))
 
@@ -99,12 +90,9 @@ export default function Sidebar(props: SidebarProps) {
         />
       </Center>
       <Box className={classes.mainSection}>
-        <div className={classes.linksInner}>{defaultLinks}</div>
-        <Divider my="xs" />
-        <div className={classes.linksInner}>{pinnedLinks}</div>
-        <Divider my="xs" />
-        {allProjects}
-        <NavbarLinksGroup />
+        {defaultLinks}
+        <Divider mb={3} mt={3} />
+        {favoriteProjects}
       </Box>
 
       <Box className={classes.footer}>

@@ -14,54 +14,14 @@ import {
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { editTask } from "../../api/tasks.api"
-import { useMatch, useNavigate } from "react-location"
+import { editTask } from "../../../api/tasks.api"
+import { useMatch, useNavigate } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck } from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
-import { Task as TaskType } from "../../types"
-
-const useStyles = createStyles((theme, isDraggable: boolean) => ({
-  root: {
-    borderRadius: theme.radius.md,
-    cursor: "pointer",
-    transition: "0.2s all ease-in-out",
-    "&:hover": {
-      background:
-        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-      boxShadow: theme.shadows.sm,
-    },
-  },
-  task: {
-    label: {
-      cursor: "pointer",
-    },
-    inner: {
-      cursor: "pointer",
-    },
-    input: {
-      cursor: "pointer",
-      border: `2px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[5]
-      }`,
-    },
-  },
-  draggingRoot: {
-    background:
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
-    boxShadow: theme.shadows.md,
-  },
-  dragControl: {
-    width: 10,
-    transition: "0.2s all ease-in-out",
-  },
-  dragControlUnvisible: {
-    opacity: 0,
-  },
-}))
+import { Task as TaskType } from "../../../types"
+import { useStyles } from "./Task.styles"
 
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
@@ -192,19 +152,7 @@ export default function Task(props: TaskProps) {
               showLabel="Show note"
               hideLabel="Hide"
             >
-              <TypographyStylesProvider
-                p={5}
-                sx={{
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : "white",
-                  borderRadius: theme.radius.md,
-                  "h1, h2, h3, h4, p": {
-                    marginTop: 0,
-                  },
-                }}
-              >
+              <TypographyStylesProvider p={5} className={classes.description}>
                 <div dangerouslySetInnerHTML={{ __html: props.description }} />
               </TypographyStylesProvider>
             </Spoiler>

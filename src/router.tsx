@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query"
-import { MakeGenerics, ReactLocation, Route } from "react-location"
+import { MakeGenerics, ReactLocation, Route } from "@tanstack/react-location"
 import LayoutProvider from "./layout/LayoutProvider"
 import About from "./routes/About"
 import ProjectRoot from "./routes/Project"

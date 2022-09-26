@@ -1,4 +1,4 @@
-import { useMatch } from "react-location"
+import { useMatch } from "@tanstack/react-location"
 import {
   Container,
   createStyles,
@@ -7,14 +7,14 @@ import {
   Transition,
   useMantineTheme,
 } from "@mantine/core"
-import ProjectHeader from "../components/project/ProjectHeader"
+import ProjectHeader from "../components/project/ProjectHeader/ProjectHeader"
 import {
   DragDropContext,
   Droppable,
   DraggableLocation,
   DropResult,
 } from "@hello-pangea/dnd"
-import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlaceholder"
+import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlaceholder/ProjectEmptyPlaceholder"
 import SectionComponent from "../components/section/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
 import { useProject, useReorderMutation } from "../queries/projects"

@@ -5,7 +5,7 @@ export const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     display: "block",
     width: "100%",
-    padding: `7px 12px`,
+    padding: "7px 12px",
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.md,
@@ -48,5 +48,3 @@ export const useStyles = createStyles((theme) => ({
     transition: "transform 200ms ease",
   },
 }))
-
-
