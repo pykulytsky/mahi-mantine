@@ -9,6 +9,7 @@ export const useStyles = createStyles((theme) => ({
     border: "none",
     position: "sticky",
     top: 0,
+    zIndex: 100,
   },
 
   header: {

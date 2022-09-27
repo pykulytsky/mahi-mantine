@@ -5,7 +5,6 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
     position: "sticky",
     top: 0,
     zIndex: 99,
-    height: 50,
     backdropFilter: "blur(5px)",
     backgroundColor:
       theme.colorScheme === "dark"

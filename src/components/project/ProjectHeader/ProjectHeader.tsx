@@ -6,7 +6,6 @@ import {
   ActionIcon,
   useMantineTheme,
   Button,
-  createStyles,
   Popover,
   MediaQuery,
   Transition,
@@ -15,18 +14,16 @@ import {
   Tooltip,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { Pencil, CheckCircle } from "phosphor-react"
+import { CheckCircle } from "phosphor-react"
 import { IconSection, IconCheck } from "@tabler/icons"
 import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
-import {
-  useIsFetching,
-  useIsMutating,
-} from "@tanstack/react-query"
+import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
 import ProjectActions from "../ProjectActions"
 import { useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
+import { Pen } from "../../icons"
 
 interface ProjectHeaderProps {
   project: Project
@@ -64,8 +61,8 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }
 
   return (
-    <Paper pl="lg" pr="lg" ref={ref} radius={0} className={classes.root}>
-      <Group p="md" position="apart">
+    <Paper m={0} pl={70} pr="lg" ref={ref} radius={0} className={classes.root}>
+      <Group p={5} mt={25} position="apart">
         <Group spacing={5}>
           {props.project.icon && (
             <Popover position="right-end">
@@ -73,10 +70,11 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                 <ActionIcon
                   loading={!!isFetching || !!isMutating}
                   variant="light"
-                  size={35}
+                  size={55}
+                  radius="lg"
                   color={theme.colors[theme.primaryColor][5]}
                 >
-                  <Title order={4}>{props.project.icon}</Title>
+                  <Title order={3}>{props.project.icon}</Title>
                 </ActionIcon>
               </Popover.Target>
               <Popover.Dropdown p={0}>
@@ -98,7 +96,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                 style={styles}
                 className={classes.title}
                 weight={700}
-                size="xl"
+                size={25}
               >
                 {props.project.name}
               </Text>
@@ -135,7 +133,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                 className={classes.shownOnHover}
                 variant="transparent"
               >
-                <Pencil weight="duotone" />
+                <Pen size={20} />
               </ActionIcon>
             </MediaQuery>
           )}
@@ -145,7 +143,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                 label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
               >
                 <Progress
-                  className={cx(classes.progress, classes.shownOnHover)}
+                  className={classes.progress}
                   value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
                 />
               </Tooltip>

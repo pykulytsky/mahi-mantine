@@ -10,9 +10,7 @@ export default function AppProvider() {
     <AppShell
       styles={{
         main: {
-          paddingTop: 0,
-          paddingRight: 0,
-          paddingBottom: 0,
+          padding: 0,
           transition: "0.5s all ease-out",
           "@media (max-width: 768px)": {
             paddingRight: 0,

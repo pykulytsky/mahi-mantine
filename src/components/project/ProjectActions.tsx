@@ -1,6 +1,6 @@
 import { Group, ActionIcon, useMantineTheme, MediaQuery } from "@mantine/core"
 import { Project, ProjectEdit } from "../../types"
-import { Star } from "../icons"
+import { Settings, Star } from "../icons"
 import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
@@ -12,13 +12,7 @@ type ProjectActionsProps = {
 export default function ProjectActions(props: ProjectActionsProps) {
   const theme = useMantineTheme()
   return (
-    <Group
-      spacing="xs"
-      sx={{
-        opacity: props.hovered ? 1 : 0,
-        transition: "opacity .2s linear",
-      }}
-    >
+    <Group spacing="xs">
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
         <ActionIcon
           onClick={() => {
@@ -31,6 +25,11 @@ export default function ProjectActions(props: ProjectActionsProps) {
             filled={props.project.is_favorite}
             color={theme.colors[theme.primaryColor][3]}
           />
+        </ActionIcon>
+      </MediaQuery>
+      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+        <ActionIcon variant="transparent">
+          <Settings size={25} />
         </ActionIcon>
       </MediaQuery>
       <ProjectMenu />

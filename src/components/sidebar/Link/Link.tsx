@@ -40,6 +40,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
             label={props.label}
             transition="slide-right"
             position="right"
+            zIndex={999}
           >
             <Group pr={0} spacing={0}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
