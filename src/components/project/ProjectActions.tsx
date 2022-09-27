@@ -1,6 +1,6 @@
 import { Group, ActionIcon, useMantineTheme, MediaQuery } from "@mantine/core"
-import { DotsThreeCircle, Star } from "phosphor-react"
 import { Project, ProjectEdit } from "../../types"
+import { Star } from "../icons"
 import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
@@ -27,8 +27,8 @@ export default function ProjectActions(props: ProjectActionsProps) {
           variant="transparent"
         >
           <Star
-            size={20}
-            weight={props.project.is_favorite ? "fill" : "duotone"}
+            size={25}
+            filled={props.project.is_favorite}
             color={theme.colors[theme.primaryColor][3]}
           />
         </ActionIcon>

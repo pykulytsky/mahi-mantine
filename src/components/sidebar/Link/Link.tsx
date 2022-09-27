@@ -45,6 +45,10 @@ export default function SidebarLink(props: SidebarLinkProps) {
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <ThemeIcon
                   color={props.color}
+                  sx={{
+                    backgroundColor: !props.color ? "inherit" : "none",
+                    borderRadius: theme.radius.md,
+                  }}
                   variant={
                     isActive
                       ? theme.colorScheme === "dark"

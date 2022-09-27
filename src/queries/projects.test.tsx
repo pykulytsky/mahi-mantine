@@ -9,7 +9,7 @@ let mock = new MockAdapter(http)
 
 const queryClient = new QueryClient()
 // @ts-ignore
-const wrapper = ({ children }) => (
+export const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 

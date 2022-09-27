@@ -80,6 +80,7 @@ export default function Task(props: TaskProps) {
       <Group spacing={0}>
         {props.draggableHandleProps && (
           <ActionIcon
+            aria-label="drag handle"
             variant="transparent"
             {...props.draggableHandleProps}
             className={cx(classes.dragControl, {

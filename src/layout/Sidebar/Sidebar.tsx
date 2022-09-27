@@ -1,13 +1,7 @@
 import { Divider, Center, Box } from "@mantine/core"
 import { useLocalStorage } from "@mantine/hooks"
-import {
-  IconCalendarStats,
-  IconGauge,
-  IconCalendarEvent,
-  IconInbox,
-  IconTags,
-} from "@tabler/icons"
 import { motion } from "framer-motion"
+import { Inbox, Dashboard, Tag, Calendar } from "../../components/icons"
 
 import { UserSidebarMenuDropdown } from "../../components/sidebar/UserSidebarMenuDropdown"
 // @ts-ignore
@@ -15,37 +9,9 @@ import Burger from "@animated-burgers/burger-squeeze"
 import "@animated-burgers/burger-squeeze/dist/styles.css"
 import SearchInput from "../../components/header/SearchInput"
 import { useStyles } from "./Sidebar.styles"
-import { ProjectorScreen } from "phosphor-react"
 import SidebarLink from "../../components/sidebar/Link/Link"
 import { useOwnProjects } from "../../queries/projects"
-
-const builtInLinks = [
-  {
-    label: "Inbox",
-    icon: <IconInbox size={20} />,
-    color: "violet",
-    to: "/app/inbox",
-  },
-  { label: "Dashboard", icon: <IconGauge size={20} />, to: "/app/dashboard" },
-  {
-    label: "Calendar",
-    icon: <IconCalendarEvent size={20} />,
-    color: "green",
-    to: "/app/calendar",
-  },
-  {
-    label: "Today",
-    icon: <IconCalendarStats size={20} />,
-    color: "yellow",
-    to: "/app/today",
-  },
-  {
-    label: "Tags",
-    icon: <IconTags size={20} />,
-    color: "teal",
-    to: "/app/tags",
-  },
-]
+import User from "../../components/icons/User"
 
 export default function Sidebar() {
   const [opened, setOpened] = useLocalStorage({
@@ -53,7 +19,36 @@ export default function Sidebar() {
     defaultValue: false,
   })
   const { data: projects } = useOwnProjects()
-  const { classes } = useStyles()
+  const { classes, theme } = useStyles()
+
+  const builtInLinks = [
+    {
+      label: "Inbox",
+      icon: <Inbox size={25} color={theme.colors.violet[3]} />,
+      to: "/app/inbox",
+    },
+    {
+      label: "Dashboard",
+      icon: <Dashboard size={25} color={theme.colors.teal[2]} />,
+      to: "/app/dashboard",
+    },
+    {
+      label: "Calendar",
+      icon: <Calendar size={25} color={theme.colors.yellow[2]} />,
+      to: "/app/calendar",
+    },
+    {
+      label: "Shared",
+      icon: <User size={25} color={theme.colors.blue[3]} />,
+      to: "/app/today",
+    },
+    {
+      label: "Tags",
+      icon: <Tag size={25} color={theme.colors.red[3]} />,
+      to: "/app/tags",
+    },
+  ]
+
   const defaultLinks = builtInLinks.map((item) => (
     <SidebarLink opened={opened} {...item} key={item.label} />
   ))
@@ -89,7 +84,13 @@ export default function Sidebar() {
           }}
         />
       </Center>
-      <Box className={classes.mainSection}>
+      <Box
+        className={classes.mainSection}
+        sx={{
+          padding: opened ? "0 6px" : "0 10px",
+          transition: ".2s padding linear",
+        }}
+      >
         {defaultLinks}
         <Divider mb={3} mt={3} />
         {favoriteProjects}

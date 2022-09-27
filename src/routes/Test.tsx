@@ -1,5 +1,10 @@
-import { Title } from "@mantine/core"
+import Activity from "../components/icons/Activity"
 
 export default function Test() {
-  return <Title>This is test page!</Title>
+  return (
+    <>
+      <h1>test</h1>
+      <Activity size={30} color="white" />
+    </>
+  )
 }
