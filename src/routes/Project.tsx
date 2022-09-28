@@ -56,10 +56,10 @@ export default function ProjectRoot() {
       reorderMutation.mutate({
         sourceOrder: Number(source.index),
         sourceID:
-          Number(source.droppableId) > 0 ? Number(source.droppableId) + 1 : id,
+          Number(source.droppableId) > 0 ? Number(source.droppableId) : id,
         destinitionID:
           Number(destination.droppableId) > 0
-            ? Number(source.droppableId) + 1
+            ? Number(destination.droppableId)
             : id,
         destinationType:
           Number(destination.droppableId) >= 0 ? "section" : "project",
@@ -102,7 +102,7 @@ export default function ProjectRoot() {
               await orderProject(source, destination)
             }
           >
-            <Droppable droppableId="droppableRoot" type="droppableItem">
+            <Droppable key={0} droppableId="droppableRoot" type="droppableItem">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef}>
                   {data.tasks.length > 0 && (

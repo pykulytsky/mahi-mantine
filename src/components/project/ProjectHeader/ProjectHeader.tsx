@@ -63,7 +63,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   return (
     <Paper m={0} pl={70} pr="lg" ref={ref} radius={0} className={classes.root}>
       <Group p={5} mt={25} position="apart">
-        <Group spacing={5}>
+        <Group spacing="md">
           <Popover position="right-end">
             <Popover.Target>
               <ActionIcon
@@ -90,50 +90,52 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
               />
             </Popover.Dropdown>
           </Popover>
-          <Stack justify="flex-start" spacing="xs">
-            <Transition
-              mounted={!isNameEditing}
-              transition="pop"
-              duration={400}
-              timingFunction="ease"
-            >
-              {(styles) => (
-                <Text
-                  onClick={() => {
-                    setNameEditing(!isNameEditing)
-                  }}
-                  style={styles}
-                  className={classes.title}
-                  weight={700}
-                  size={25}
-                >
-                  {props.project.name}
-                </Text>
+          <Stack justify="flex-start" spacing={0}>
+            <Group m={0} p={0} spacing={4}>
+              <Transition
+                mounted={!isNameEditing}
+                transition="pop"
+                duration={400}
+                timingFunction="ease"
+              >
+                {(styles) => (
+                  <Text
+                    onClick={() => {
+                      setNameEditing(!isNameEditing)
+                    }}
+                    style={styles}
+                    className={classes.title}
+                    weight={700}
+                    size={25}
+                  >
+                    {props.project.name}
+                  </Text>
+                )}
+              </Transition>
+              <Transition
+                mounted={isNameEditing}
+                transition="pop"
+                duration={400}
+                timingFunction="ease-out"
+              >
+                {(styles) => (
+                  <TextInput
+                    variant="filled"
+                    style={styles}
+                    value={name}
+                    error={nameError}
+                    onChange={(event: any) => {
+                      setName(event.target.value)
+                    }}
+                  />
+                )}
+              </Transition>
+              {isNameEditing && (
+                <ActionIcon onClick={onNameSave} variant="filled">
+                  <IconCheck size={16} />
+                </ActionIcon>
               )}
-            </Transition>
-            <Transition
-              mounted={isNameEditing}
-              transition="pop"
-              duration={400}
-              timingFunction="ease-out"
-            >
-              {(styles) => (
-                <TextInput
-                  variant="filled"
-                  style={styles}
-                  value={name}
-                  error={nameError}
-                  onChange={(event: any) => {
-                    setName(event.target.value)
-                  }}
-                />
-              )}
-            </Transition>
-            {isNameEditing && (
-              <ActionIcon onClick={onNameSave} variant="filled">
-                <IconCheck size={16} />
-              </ActionIcon>
-            )}
+            </Group>
             <MediaQuery smallerThan="md" styles={{ display: "none" }}>
               {props.tasksCount && (
                 <Tooltip

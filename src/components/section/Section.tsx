@@ -46,7 +46,7 @@ export default function SectionComponent(props: SectionProps) {
 
   let tasks = DraggableTaskList(tasksList, uuid)
 
-  let sectionID = isCustomSection ? props.section.order : -1
+  let sectionID = isCustomSection ? props.section.id : -1
   const { tasksCount } = useTasksHelper(
     isCustomSection ? props.section : undefined
   )
@@ -63,6 +63,7 @@ export default function SectionComponent(props: SectionProps) {
             <DotsSixVertical />
           </ActionIcon>
           <Droppable
+            key={sectionID}
             droppableId={sectionID.toString()}
             direction="vertical"
             type={`droppableSubItem`}
