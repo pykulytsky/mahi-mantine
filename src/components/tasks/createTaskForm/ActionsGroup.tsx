@@ -1,10 +1,7 @@
-import { Group, ActionIcon, Tooltip } from "@mantine/core"
-import {
-  IconAlarm,
-  IconCalendar,
-  IconPaperclip,
-} from "@tabler/icons"
-import { File } from "../../icons"
+import { Group, ActionIcon, Tooltip, useMantineTheme } from "@mantine/core"
+import { IconAlarm, IconCalendar, IconPaperclip } from "@tabler/icons"
+import { Calendar, File } from "../../icons"
+import Attach from "../../icons/Attach"
 
 type ActionsGroupProps = {
   toggleNote: () => void
@@ -12,6 +9,7 @@ type ActionsGroupProps = {
 }
 
 export default function ActionsGroup(props: ActionsGroupProps) {
+  const theme = useMantineTheme()
   return (
     <Group spacing={0}>
       <Tooltip
@@ -24,7 +22,7 @@ export default function ActionsGroup(props: ActionsGroupProps) {
           size="lg"
           variant={props.noteIsShown ? "filled" : "subtle"}
         >
-          <File size={20} />
+          <File size={20} color={theme.colors.indigo[3]} />
         </ActionIcon>
       </Tooltip>
       <Tooltip zIndex={9999} label="Add reminder">
@@ -35,12 +33,12 @@ export default function ActionsGroup(props: ActionsGroupProps) {
 
       <Tooltip zIndex={9999} label="Set due date">
         <ActionIcon color="yellow" size="lg" variant="subtle">
-          <IconCalendar size={20} />
+          <Calendar size={20} color={theme.colors.yellow[3]} />
         </ActionIcon>
       </Tooltip>
       <Tooltip zIndex={9999} label="Attach a file">
         <ActionIcon color="cyan" size="lg" variant="subtle">
-          <IconPaperclip size={20} />
+          <Attach size={20} color={theme.colors.cyan[3]} />
         </ActionIcon>
       </Tooltip>
     </Group>

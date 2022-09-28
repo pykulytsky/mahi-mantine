@@ -12,10 +12,10 @@ import {
   TextInput,
   Progress,
   Tooltip,
+  Stack,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { CheckCircle } from "phosphor-react"
-import { IconSection, IconCheck } from "@tabler/icons"
+import { IconCheck } from "@tabler/icons"
 import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
@@ -23,7 +23,7 @@ import ProjectActions from "../ProjectActions"
 import { useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
-import { Pen, Todo } from "../../icons"
+import { Todo, File as FileIcon } from "../../icons"
 
 interface ProjectHeaderProps {
   project: Project
@@ -64,116 +64,103 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
     <Paper m={0} pl={70} pr="lg" ref={ref} radius={0} className={classes.root}>
       <Group p={5} mt={25} position="apart">
         <Group spacing={5}>
-          {props.project.icon && (
-            <Popover position="right-end">
-              <Popover.Target>
-                <ActionIcon
-                  loading={!!isFetching || !!isMutating}
-                  variant="light"
-                  size={55}
-                  radius="lg"
-                  color={theme.colors[theme.primaryColor][5]}
-                >
-                  <Title order={3}>{props.project.icon}</Title>
-                </ActionIcon>
-              </Popover.Target>
-              <Popover.Dropdown p={0}>
-                <ColorEmojiPicker
-                  updateProject={updateProject}
-                  color={props.project.accent_color}
-                />
-              </Popover.Dropdown>
-            </Popover>
-          )}
-          <Transition
-            mounted={!isNameEditing}
-            transition="slide-right"
-            duration={400}
-            timingFunction="ease"
-          >
-            {(styles) => (
-              <Text
-                style={styles}
-                className={classes.title}
-                weight={700}
-                size={25}
-              >
-                {props.project.name}
-              </Text>
-            )}
-          </Transition>
-          <Transition
-            mounted={isNameEditing}
-            transition="slide-right"
-            duration={400}
-            timingFunction="ease"
-          >
-            {(styles) => (
-              <TextInput
-                variant="filled"
-                style={styles}
-                value={name}
-                error={nameError}
-                onChange={(event: any) => {
-                  setName(event.target.value)
-                }}
-              />
-            )}
-          </Transition>
-          {isNameEditing ? (
-            <ActionIcon onClick={onNameSave} variant="filled">
-              <IconCheck size={16} />
-            </ActionIcon>
-          ) : (
-            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+          <Popover position="right-end">
+            <Popover.Target>
               <ActionIcon
-                onClick={() => {
-                  setNameEditing(!isNameEditing)
-                }}
-                className={classes.shownOnHover}
-                variant="transparent"
+                loading={!!isFetching || !!isMutating}
+                variant="light"
+                size={55}
+                radius="lg"
+                color={theme.colors[theme.primaryColor][5]}
               >
-                <Pen size={20} />
+                {props.project.icon ? (
+                  <Title order={2}>{props.project.icon}</Title>
+                ) : (
+                  <FileIcon
+                    size={30}
+                    color={theme.colors[theme.primaryColor][2]}
+                  />
+                )}
               </ActionIcon>
-            </MediaQuery>
-          )}
-          <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-            {props.tasksCount && (
-              <Tooltip
-                label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
-              >
-                <Progress
-                  className={classes.progress}
-                  value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
+            </Popover.Target>
+            <Popover.Dropdown p={0}>
+              <ColorEmojiPicker
+                updateProject={updateProject}
+                color={props.project.accent_color}
+              />
+            </Popover.Dropdown>
+          </Popover>
+          <Stack justify="flex-start" spacing="xs">
+            <Transition
+              mounted={!isNameEditing}
+              transition="pop"
+              duration={400}
+              timingFunction="ease"
+            >
+              {(styles) => (
+                <Text
+                  onClick={() => {
+                    setNameEditing(!isNameEditing)
+                  }}
+                  style={styles}
+                  className={classes.title}
+                  weight={700}
+                  size={25}
+                >
+                  {props.project.name}
+                </Text>
+              )}
+            </Transition>
+            <Transition
+              mounted={isNameEditing}
+              transition="pop"
+              duration={400}
+              timingFunction="ease-out"
+            >
+              {(styles) => (
+                <TextInput
+                  variant="filled"
+                  style={styles}
+                  value={name}
+                  error={nameError}
+                  onChange={(event: any) => {
+                    setName(event.target.value)
+                  }}
                 />
-              </Tooltip>
+              )}
+            </Transition>
+            {isNameEditing && (
+              <ActionIcon onClick={onNameSave} variant="filled">
+                <IconCheck size={16} />
+              </ActionIcon>
             )}
-          </MediaQuery>
+            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+              {props.tasksCount && (
+                <Tooltip
+                  label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
+                >
+                  <Progress
+                    className={classes.progress}
+                    value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
+                  />
+                </Tooltip>
+              )}
+            </MediaQuery>
+          </Stack>
         </Group>
 
         {!props.formVisible && (
-          <Button.Group
+          <Button
             className={cx(classes.shownOnHover, classes.addBtnGroup)}
+            compact
+            leftIcon={
+              <Todo size={23} color={theme.colors[theme.primaryColor][3]} />
+            }
+            variant="subtle"
+            onClick={props.toggleTaskForm}
           >
-            <Button
-              compact
-              leftIcon={
-                <Todo size={23} color={theme.colors[theme.primaryColor][3]} />
-              }
-              variant="subtle"
-              onClick={props.toggleTaskForm}
-            >
-              Add task
-            </Button>
-            <Button
-              onClick={props.toggleSectionForm}
-              compact
-              rightIcon={<IconSection size={20} />}
-              variant="subtle"
-            >
-              Add section
-            </Button>
-          </Button.Group>
+            Add task
+          </Button>
         )}
         <ProjectActions
           updateProject={updateProject}

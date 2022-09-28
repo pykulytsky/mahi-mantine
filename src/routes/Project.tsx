@@ -23,6 +23,7 @@ import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 import { useMemo } from "react"
 import { useTags } from "../queries/tags"
 import SectionCreateForm from "../components/section/SectionCreateForm"
+import DividerAction from "../components/section/Divider/DividerAction"
 
 const useStyles = createStyles({})
 
@@ -105,19 +106,27 @@ export default function ProjectRoot() {
               {(provided, snapshot) => (
                 <div ref={provided.innerRef}>
                   {data.tasks.length > 0 && (
-                    <SectionComponent
-                      showCompletedtasks={data.show_completed_tasks}
-                      tasks={data.tasks}
-                      index={0}
-                    />
+                    <>
+                      <SectionComponent
+                        showCompletedtasks={data.show_completed_tasks}
+                        tasks={data.tasks}
+                        index={0}
+                      />
+
+                      <DividerAction projectID={data.id} />
+                    </>
                   )}
                   {data.sections.map((section, index) => (
-                    <SectionComponent
-                      showCompletedtasks={data.show_completed_tasks}
-                      key={index}
-                      section={section}
-                      index={index + 1}
-                    />
+                    <>
+                      <SectionComponent
+                        showCompletedtasks={data.show_completed_tasks}
+                        key={index}
+                        section={section}
+                        index={index + 1}
+                      />
+
+                      <DividerAction projectID={data.id} />
+                    </>
                   ))}
                   {provided.placeholder}
                 </div>

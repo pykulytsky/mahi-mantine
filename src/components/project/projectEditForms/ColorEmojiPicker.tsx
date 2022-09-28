@@ -22,6 +22,7 @@ export default function ColorEmojiPicker(props: ColorEmojiPickerProps) {
     <Container p={0}>
       <Picker
         perLine={8}
+        previewPosition="none"
         theme={theme.colorScheme}
         data={data}
         onEmojiSelect={onEmojiClick}
