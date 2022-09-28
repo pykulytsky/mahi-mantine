@@ -48,7 +48,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
                   color={props.color}
                   sx={{
                     backgroundColor: !props.color ? "inherit" : "none",
-                    borderRadius: theme.radius.md,
+                    borderRadius: 12,
                   }}
                   variant={
                     isActive

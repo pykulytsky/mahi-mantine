@@ -23,7 +23,7 @@ import ProjectActions from "../ProjectActions"
 import { useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
-import { Pen } from "../../icons"
+import { Pen, Todo } from "../../icons"
 
 interface ProjectHeaderProps {
   project: Project
@@ -157,7 +157,9 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           >
             <Button
               compact
-              leftIcon={<CheckCircle size={20} />}
+              leftIcon={
+                <Todo size={23} color={theme.colors[theme.primaryColor][3]} />
+              }
               variant="subtle"
               onClick={props.toggleTaskForm}
             >

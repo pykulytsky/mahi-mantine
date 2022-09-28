@@ -6,6 +6,7 @@ import { useMatch } from "@tanstack/react-location"
 import { useProject } from "../../queries/projects"
 import { useProjectMutation } from "../../queries/projects"
 import DisplaySelect from "./projectEditForms/DisplaySelect"
+import { Menu as MenuIcon } from "../icons"
 
 export default function ProjectMenu() {
   const {
@@ -28,11 +29,7 @@ export default function ProjectMenu() {
     <Menu width={260} position="bottom-end">
       <Menu.Target>
         <ActionIcon variant="transparent">
-          <DotsThreeCircle
-            size={25}
-            weight="duotone"
-            color={theme.colors[theme.primaryColor][3]}
-          />
+          <MenuIcon size={25} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>

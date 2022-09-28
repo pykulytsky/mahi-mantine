@@ -1,10 +1,10 @@
 import { Group, ActionIcon, Tooltip } from "@mantine/core"
 import {
-  IconNotes,
   IconAlarm,
   IconCalendar,
   IconPaperclip,
 } from "@tabler/icons"
+import { File } from "../../icons"
 
 type ActionsGroupProps = {
   toggleNote: () => void
@@ -24,7 +24,7 @@ export default function ActionsGroup(props: ActionsGroupProps) {
           size="lg"
           variant={props.noteIsShown ? "filled" : "subtle"}
         >
-          <IconNotes size={20} />
+          <File size={20} />
         </ActionIcon>
       </Tooltip>
       <Tooltip zIndex={9999} label="Add reminder">

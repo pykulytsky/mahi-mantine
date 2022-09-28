@@ -70,7 +70,7 @@ export default function Sidebar() {
     <motion.div
       className={classes.navbar}
       animate={{
-        width: opened ? 300 : 70,
+        width: opened ? 300 : 68,
       }}
     >
       <Center className={classes.header}>

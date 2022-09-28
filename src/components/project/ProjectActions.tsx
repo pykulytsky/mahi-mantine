@@ -20,11 +20,7 @@ export default function ProjectActions(props: ProjectActionsProps) {
           }}
           variant="transparent"
         >
-          <Star
-            size={25}
-            filled={props.project.is_favorite}
-            color={theme.colors[theme.primaryColor][3]}
-          />
+          <Star size={25} filled={props.project.is_favorite} />
         </ActionIcon>
       </MediaQuery>
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
