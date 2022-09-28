@@ -70,7 +70,7 @@ export declare type TaskEdit = {
 export declare type TaskReorder = {
   sourceID: string | number
   sourceOrder: string | number
-  destinitionID: string | number
+  destinationID: string | number
   sourceType: string
   destinationType: string
   destinationOrder: string | number
@@ -102,4 +102,5 @@ export declare interface TagItem extends TagItemCreate {
 export declare interface SectionCreate {
   name: string
   project_id: number
+  order?: number
 }

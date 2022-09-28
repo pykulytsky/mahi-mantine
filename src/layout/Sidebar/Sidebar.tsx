@@ -1,4 +1,4 @@
-import { Divider, Center, Box } from "@mantine/core"
+import { Divider, Center, Box, Container } from "@mantine/core"
 import { useLocalStorage } from "@mantine/hooks"
 import { motion } from "framer-motion"
 import { Inbox, Dashboard, Tag, Calendar } from "../../components/icons"

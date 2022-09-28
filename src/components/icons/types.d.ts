@@ -1,5 +1,5 @@
-export type IconProps = {
+export declare type IconProps = {
   size: number
   color?: string
-  filled: boolean
+  filled?: boolean | number
 }

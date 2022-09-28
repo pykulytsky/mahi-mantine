@@ -7,10 +7,13 @@ import {
   UnstyledButton,
   Loader,
   Transition,
+  ActionIcon,
+  Center,
 } from "@mantine/core"
 import { useUser } from "../../queries/user"
 import { IconSelector } from "@tabler/icons"
 import UserMenuDropdown from "../user/UserMenuDropdown"
+import { Config } from "../icons"
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   image?: string
@@ -27,7 +30,7 @@ export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
       sx={(theme) => ({
         display: "block",
         width: "100%",
-        padding: theme.spacing.md,
+        padding: 15,
         color:
           theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
 
@@ -71,12 +74,11 @@ export function UserSidebarMenuDropdown(props: UserMenuDropDownProps) {
   return (
     <Menu withArrow width={260}>
       <Menu.Target>
-        <UserButton
-          image={data.avatar}
-          name={`${data.first_name} ${data.last_name}`}
-          email={data.email}
-          opened={props.opened}
-        />
+        <Center mb={3}>
+          <ActionIcon size="xl">
+            <Config size={28} />
+          </ActionIcon>
+        </Center>
       </Menu.Target>
       <UserMenuDropdown />
     </Menu>

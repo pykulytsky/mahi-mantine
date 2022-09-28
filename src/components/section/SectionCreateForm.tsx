@@ -6,6 +6,7 @@ import { useSectionMutation } from "../../queries/sections"
 type SectionCreateFormProps = {
   projectID: number
   style?: React.CSSProperties
+  order?: number
   toggleForm: () => void
 }
 
@@ -22,6 +23,7 @@ export default function SectionCreateForm(props: SectionCreateFormProps) {
       {
         name,
         project_id: props.projectID,
+        order: props.order,
       },
       {
         onSuccess: () => {
@@ -40,13 +42,6 @@ export default function SectionCreateForm(props: SectionCreateFormProps) {
           width: "80%",
         }}
       />
-      <ActionIcon
-        onClick={() => {
-          props.toggleForm()
-        }}
-      >
-        <X />
-      </ActionIcon>
       <Button
         onClick={handleAddSection}
         disabled={name.length < 1}
@@ -55,6 +50,13 @@ export default function SectionCreateForm(props: SectionCreateFormProps) {
       >
         Create
       </Button>
+      <ActionIcon
+        onClick={() => {
+          props.toggleForm()
+        }}
+      >
+        <X />
+      </ActionIcon>
     </Group>
   )
 }

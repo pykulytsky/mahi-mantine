@@ -6,6 +6,7 @@ import SectionCreateForm from "../SectionCreateForm"
 
 type DividerActionProps = {
   projectID: number
+  order?: number
 }
 
 export default function DividerAction(props: DividerActionProps) {
@@ -21,6 +22,7 @@ export default function DividerAction(props: DividerActionProps) {
         color={theme.colors[theme.primaryColor][4]}
         sx={{
           opacity: hovered ? 1 : 0,
+          display: formVisible ? "none" : "inherit",
           transition: ".2s opacity linear",
         }}
         label={
@@ -42,6 +44,7 @@ export default function DividerAction(props: DividerActionProps) {
             exit={{ opacity: 0 }}
           >
             <SectionCreateForm
+              order={props.order}
               projectID={props.projectID}
               toggleForm={() => {
                 setFormVisible(!formVisible)

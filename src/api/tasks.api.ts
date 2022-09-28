@@ -14,7 +14,7 @@ export const reorder = async (reorder: TaskReorder): Promise<Project> => {
     `${BASE_URL}${reorder.sourceOrder}/reorder/`,
     {
       source_id: reorder.sourceID,
-      destination_id: reorder.destinitionID,
+      destination_id: reorder.destinationID,
       destination_type: reorder.destinationType,
       order: reorder.destinationOrder,
       source_type: reorder.sourceType,
@@ -36,7 +36,9 @@ export const editTask = async (task: TaskEdit): Promise<Task> => {
   return data
 }
 
-export const addTask = async (task: Omit<CreateTaskFormType, "tags">): Promise<Task> => {
+export const addTask = async (
+  task: Omit<CreateTaskFormType, "tags">
+): Promise<Task> => {
   const { data } = await http.post<Task>(BASE_URL, {
     ...task,
   })

@@ -9,6 +9,7 @@ import {
 import { reorder } from "../api/tasks.api"
 import { queryClient } from "../router"
 import { Project, TaskReorder } from "../types"
+import _ from "lodash"
 
 export const ownProjectsQuery = () => ({
   queryKey: ["projects", "user"],
@@ -39,6 +40,7 @@ export const useReorderMutation = (id: string) =>
     },
     onMutate: async (reorderData: TaskReorder) => {
       let oldProject = queryClient.getQueryData<Project>(["projects", { id }])
+
       let project = { ...oldProject }
 
       let source =
@@ -51,7 +53,7 @@ export const useReorderMutation = (id: string) =>
         reorderData.destinationType === "project"
           ? project
           : project.sections?.find(
-              (section) => section.id === Number(reorderData.destinitionID)
+              (section) => section.id === Number(reorderData.destinationID)
             )
       const task = source?.tasks?.splice(Number(reorderData.sourceOrder), 1)[0]
       if (task) {

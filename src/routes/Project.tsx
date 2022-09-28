@@ -51,13 +51,12 @@ export default function ProjectRoot() {
     source: DraggableLocation,
     destination: DraggableLocation | null
   ): Promise<DropResult | void> {
-    if (destination?.droppableId === "droppableRoot") {
-    } else if (destination && Number.isInteger(+destination?.droppableId)) {
+    if (destination && Number.isInteger(+destination?.droppableId)) {
       reorderMutation.mutate({
         sourceOrder: Number(source.index),
         sourceID:
           Number(source.droppableId) > 0 ? Number(source.droppableId) : id,
-        destinitionID:
+        destinationID:
           Number(destination.droppableId) > 0
             ? Number(destination.droppableId)
             : id,
@@ -102,7 +101,7 @@ export default function ProjectRoot() {
               await orderProject(source, destination)
             }
           >
-            <Droppable key={0} droppableId="droppableRoot" type="droppableItem">
+            <Droppable droppableId="droppableRoot" type="droppableItem">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef}>
                   {data.tasks.length > 0 && (
@@ -116,8 +115,9 @@ export default function ProjectRoot() {
                       <DividerAction projectID={data.id} />
                     </>
                   )}
+                  {provided.placeholder}
                   {data.sections.map((section, index) => (
-                    <>
+                    <div key={index}>
                       <SectionComponent
                         showCompletedtasks={data.show_completed_tasks}
                         key={index}
@@ -125,8 +125,12 @@ export default function ProjectRoot() {
                         index={index + 1}
                       />
 
-                      <DividerAction projectID={data.id} />
-                    </>
+                      <DividerAction
+                        key={`${index}_section_form`}
+                        projectID={data.id}
+                        order={index}
+                      />
+                    </div>
                   ))}
                   {provided.placeholder}
                 </div>

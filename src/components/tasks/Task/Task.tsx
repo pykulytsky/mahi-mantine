@@ -70,7 +70,7 @@ export default function Task(props: TaskProps) {
   return (
     <Container
       ref={ref}
-      p="sm"
+      p={5}
       pl={!!props.draggableHandleProps ? 0 : "xs"}
       className={cx(classes.root, {
         [classes.draggingRoot]: props.isDragging,
@@ -95,7 +95,7 @@ export default function Task(props: TaskProps) {
           sx={{
             width: "95%",
           }}
-          align="stretch"
+          align="self-start"
           spacing={0}
           p={0}
           m={0}
@@ -148,7 +148,6 @@ export default function Task(props: TaskProps) {
           {props.description && (
             <Spoiler
               ml={35}
-              mt="xs"
               maxHeight={0}
               showLabel="Show note"
               hideLabel="Hide"

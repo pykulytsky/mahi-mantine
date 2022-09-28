@@ -99,7 +99,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
         >
           {(styles) => (
             <RichTextEditor
-              stickyOffset={props.sectionID ? 90 : 50}
+              stickyOffset={props.sectionID ? 95 : 35}
               style={styles}
               mt="sm"
               {...form.getInputProps("description")}

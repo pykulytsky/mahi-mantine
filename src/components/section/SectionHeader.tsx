@@ -23,9 +23,9 @@ interface ProjectHeaderProps {
 const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     position: "sticky",
-    top: 50,
+    top: 65,
     zIndex: 98,
-    height: 45,
+    height: 35,
     backdropFilter: "blur(5px)",
     backgroundColor:
       theme.colorScheme === "dark"
@@ -51,8 +51,8 @@ export default function SectionHeader(props: ProjectHeaderProps) {
   const { classes, cx } = useStyles(hovered)
 
   return (
-    <Paper className={classes.root} ref={ref} radius={0} p="xs" pl="sm" pt={0}>
-      <Group p="xs">
+    <Paper className={classes.root} ref={ref} radius={0} p={0} m={0}>
+      <Group p={0} m={0}>
         <ActionIcon className={classes.shownOnHover} {...props.dragHandleProps}>
           <DotsSixVertical />
         </ActionIcon>

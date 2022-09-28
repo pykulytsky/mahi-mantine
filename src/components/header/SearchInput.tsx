@@ -29,7 +29,7 @@ export default function SearchInput(props: SearchInputProps) {
   if (props.collapsed)
     return (
       <Center mb={3}>
-        <ActionIcon size="xl">
+        <ActionIcon size="xl" onClick={handleInputClick}>
           <IconSearch size={20} />
         </ActionIcon>
       </Center>
