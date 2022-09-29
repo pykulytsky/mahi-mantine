@@ -4,10 +4,10 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
     paddingTop: 5,
     position: "sticky",
-    top: 65,
-    zIndex: 98,
+    top: 73,
+    zIndex: 2,
     height: 35,
-    backdropFilter: "blur(10px)",
+    backdropFilter: "blur(15px)",
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.fn.rgba(theme.colors.dark[6], 0.7)

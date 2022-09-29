@@ -26,7 +26,7 @@ export default function ProjectMenu() {
   if (isLoading) return <Loader />
   if (isError) return <p>Error</p> // TODO add error placeholder
   return (
-    <Menu width={260} position="bottom-end">
+    <Menu zIndex={99} width={260} position="bottom-end">
       <Menu.Target>
         <ActionIcon variant="transparent">
           <MenuIcon size={25} />

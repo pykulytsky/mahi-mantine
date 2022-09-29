@@ -6,6 +6,7 @@ import {
   UnstyledButton,
   Transition,
   Tooltip,
+  ActionIcon,
 } from "@mantine/core"
 import { Link } from "@tanstack/react-location"
 import { useStyles } from "./Link.styles"
@@ -17,6 +18,7 @@ interface SidebarLinkProps {
   color?: string
   opened: boolean
   to?: string
+  rightSection?: ReactNode
 }
 
 export default function SidebarLink(props: SidebarLinkProps) {
@@ -43,7 +45,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
             position="right"
             zIndex={999}
           >
-            <Group pr={0} spacing={0}>
+            <Group position="apart" pr={0} spacing={0}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <ThemeIcon
                   color={props.color}
@@ -75,6 +77,21 @@ export default function SidebarLink(props: SidebarLinkProps) {
                   )}
                 </Transition>
               </Box>
+              <Transition
+                transition="pop"
+                mounted={props.opened}
+                duration={10}
+                timingFunction="ease-in-out"
+              >
+                {(styles) => (
+                  <Box
+                    sx={{ display: "flex", alignItems: "center" }}
+                    style={styles}
+                  >
+                    {props.rightSection}
+                  </Box>
+                )}
+              </Transition>
             </Group>
           </Tooltip>
         </UnstyledButton>

@@ -6,8 +6,8 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
     padding: theme.spacing.sm,
     position: "sticky",
     top: 0,
-    zIndex: 97,
-    backdropFilter: "blur(10px)",
+    zIndex: 3,
+    backdropFilter: "blur(15px)",
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.fn.rgba(theme.colors.dark[6], 0.7)

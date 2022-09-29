@@ -9,7 +9,6 @@ import {
 import { reorder } from "../api/tasks.api"
 import { queryClient } from "../router"
 import { Project, TaskReorder } from "../types"
-import _ from "lodash"
 
 export const ownProjectsQuery = () => ({
   queryKey: ["projects", "user"],

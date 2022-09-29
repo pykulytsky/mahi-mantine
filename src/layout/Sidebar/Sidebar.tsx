@@ -1,7 +1,15 @@
-import { Divider, Center, Box, Container } from "@mantine/core"
+import { Divider, Center, Box, ActionIcon, Tooltip } from "@mantine/core"
 import { useClickOutside, useLocalStorage } from "@mantine/hooks"
 import { motion } from "framer-motion"
-import { Inbox, Dashboard, Tag, Calendar } from "../../components/icons"
+import {
+  Inbox,
+  Dashboard,
+  Tag,
+  Calendar,
+  File,
+  Project,
+  User,
+} from "../../components/icons"
 
 import { UserSidebarMenuDropdown } from "../../components/sidebar/UserSidebarMenuDropdown"
 // @ts-ignore
@@ -11,7 +19,7 @@ import SearchInput from "../../components/header/SearchInput"
 import { useStyles } from "./Sidebar.styles"
 import SidebarLink from "../../components/sidebar/Link/Link"
 import { useOwnProjects } from "../../queries/projects"
-import User from "../../components/icons/User"
+import { IconPlus } from "@tabler/icons"
 
 export default function Sidebar() {
   const [opened, setOpened] = useLocalStorage({
@@ -98,6 +106,19 @@ export default function Sidebar() {
         {defaultLinks}
         <Divider mb={3} mt={3} />
         {favoriteProjects}
+        <SidebarLink
+          opened={opened}
+          label="All Projects"
+          icon={<Project size={25} />}
+          to="/app/projects"
+          rightSection={
+            <Tooltip label="New project">
+              <ActionIcon>
+                <IconPlus size={15} />
+              </ActionIcon>
+            </Tooltip>
+          }
+        />
       </Box>
 
       <Box className={classes.footer}>
