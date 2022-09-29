@@ -28,9 +28,10 @@ export default function SidebarLink(props: SidebarLinkProps) {
         <UnstyledButton
           sx={{
             backgroundColor: isActive
-              ? theme.colorScheme === "dark"
-                ? theme.colors.dark[7]
-                : "white"
+              ? theme.fn.rgba(
+                  theme.colors[theme.primaryColor][5],
+                  theme.colorScheme === "dark" ? 0.1 : 0.5
+                )
               : "inherit",
           }}
           className={classes.control}

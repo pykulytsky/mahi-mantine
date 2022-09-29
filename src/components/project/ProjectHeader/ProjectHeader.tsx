@@ -61,7 +61,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }
 
   return (
-    <Paper m={0} pl={70} pr="lg" ref={ref} radius={0} className={classes.root}>
+    <Paper ref={ref} className={classes.root}>
       <Group p={5} mt={25} position="apart">
         <Group spacing="md">
           <Popover position="right-end">
