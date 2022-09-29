@@ -5,7 +5,7 @@ import {
 } from "@hello-pangea/dnd"
 import { useId, useToggle } from "@mantine/hooks"
 import { Collapse, ActionIcon, Transition } from "@mantine/core"
-import SectionHeader from "./SectionHeader"
+import SectionHeader from "./SectionHeader/SectionHeader"
 import { useMemo, useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
 import { DotsSixVertical } from "phosphor-react"

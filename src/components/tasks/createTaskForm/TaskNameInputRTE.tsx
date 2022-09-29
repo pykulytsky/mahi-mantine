@@ -20,6 +20,8 @@ export type TaskNameInputTREProps = {
   value: string
   onChange: (value: string) => void
   onTagApply: (tag: Tag) => void
+  onSubmit: () => void
+  toggleForm: () => void
 }
 
 export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
@@ -102,11 +104,23 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
 
   return (
     <RichTextEditor
+      onKeyDown={(event: any) => {
+        if (event.key === "Enter") {
+          props.onSubmit()
+        }
+        if (event.key === "Escape") {
+          props.toggleForm()
+        }
+      }}
       styles={{
         root: {
           minHeight: 46,
           zIndex: 9999,
           padding: 0,
+          width: "95%",
+          "@media (max-width: 576px)": {
+            width: "90%",
+          },
         },
         toolbar: {
           display: "none",
@@ -118,9 +132,6 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
       placeholder="Type @ or # to see mentions autocomplete"
       mentions={mentions}
       modules={modules}
-      onSelect={(el) => {
-        console.log(el)
-      }}
     />
   )
 }

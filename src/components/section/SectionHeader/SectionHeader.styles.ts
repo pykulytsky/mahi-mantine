@@ -2,35 +2,27 @@ import { createStyles } from "@mantine/core"
 
 export const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
-    margin: theme.spacing.xl,
-    padding: theme.spacing.sm,
+    paddingTop: 5,
     position: "sticky",
-    top: 0,
-    zIndex: 97,
+    top: 65,
+    zIndex: 98,
+    height: 35,
     backdropFilter: "blur(10px)",
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.fn.rgba(theme.colors.dark[6], 0.7)
         : "white",
-
-    "@media (max-width: 768px)": {
-      margin: 0,
-      borderRadius: 0,
-    },
   },
   shownOnHover: {
     opacity: hovered ? 1 : 0,
     transition: "opacity .2s linear",
   },
-  title: {
-    cursor: "pointer",
-  },
-  addBtnGroup: {
+  addBtn: {
     position: "absolute",
-    left: "40%",
+    left: "45%",
   },
-  progress: {
-    width: 100,
+  pointerText: {
     cursor: "pointer",
+    userSelect: "none",
   },
 }))

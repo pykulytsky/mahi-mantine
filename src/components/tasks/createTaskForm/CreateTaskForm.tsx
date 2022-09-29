@@ -1,4 +1,4 @@
-import { Container, Group, Button, Transition } from "@mantine/core"
+import { Container, Group, Button, Transition, ActionIcon } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useToggle } from "@mantine/hooks"
 import ActionsGroup from "./ActionsGroup"
@@ -8,6 +8,7 @@ import { CreateTaskFormType, Tag, Task } from "../../../types"
 import { useApplyTagMutation, useTaskAddMutation } from "../../../queries/tasks"
 import { useMatch } from "@tanstack/react-location"
 import { useQueryClient } from "@tanstack/react-query"
+import { IconDots } from "@tabler/icons"
 
 export type CreateTaskFormProps = {
   sectionID?: number | string
@@ -85,12 +86,21 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   return (
     <Container style={props.style} m="md" ml={0} mr={0} p="sm">
       <form>
-        <TaskNameInputRTE
-          onTagApply={(tag: Tag) => {
-            applyTag(tag)
-          }}
-          {...form.getInputProps("name")}
-        />
+        <Group position="apart" spacing={0}>
+          <TaskNameInputRTE
+            onSubmit={() => {
+              if (form.values.name.length > 1) handleAddTask()
+            }}
+            onTagApply={(tag: Tag) => {
+              applyTag(tag)
+            }}
+            toggleForm={props.toggleForm}
+            {...form.getInputProps("name")}
+          />
+          <ActionIcon>
+            <IconDots />
+          </ActionIcon>
+        </Group>
         <Transition
           mounted={noteIsShown}
           transition="pop"
@@ -113,19 +123,6 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
               toggleNote()
             }}
           />
-          <Group spacing="sm" position="right">
-            <Button onClick={handleClose} variant="subtle" color="red">
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAddTask}
-              variant="light"
-              color="green"
-              disabled={!form.isValid()}
-            >
-              Add
-            </Button>
-          </Group>
         </Group>
       </form>
     </Container>

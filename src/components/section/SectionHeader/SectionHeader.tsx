@@ -10,6 +10,7 @@ import {
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { DotsSixVertical, CheckCircle } from "phosphor-react"
+import { useStyles } from "./SectionHeader.styles"
 
 interface ProjectHeaderProps {
   name: string
@@ -19,40 +20,13 @@ interface ProjectHeaderProps {
   formVisible: boolean
   toggleTaskForm: () => void
 }
-
-const useStyles = createStyles((theme, hovered: boolean) => ({
-  root: {
-    position: "sticky",
-    top: 65,
-    zIndex: 98,
-    height: 35,
-    backdropFilter: "blur(5px)",
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.fn.rgba(theme.colors.dark[7], 0.5)
-        : "white",
-  },
-  shownOnHover: {
-    opacity: hovered ? 1 : 0,
-    transition: "opacity .2s linear",
-  },
-  addBtn: {
-    position: "absolute",
-    left: "45%",
-  },
-  pointerText: {
-    cursor: "pointer",
-    userSelect: "none",
-  },
-}))
-
 export default function SectionHeader(props: ProjectHeaderProps) {
   const { hovered, ref } = useHover()
   const { classes, cx } = useStyles(hovered)
 
   return (
-    <Paper className={classes.root} ref={ref} radius={0} p={0} m={0}>
-      <Group p={0} m={0}>
+    <Paper className={classes.root} ref={ref} p={0} pt={4} m={0}>
+      <Group spacing={5} p={0} m={0}>
         <ActionIcon className={classes.shownOnHover} {...props.dragHandleProps}>
           <DotsSixVertical />
         </ActionIcon>

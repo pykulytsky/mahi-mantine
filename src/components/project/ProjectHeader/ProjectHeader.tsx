@@ -61,8 +61,8 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }
 
   return (
-    <Paper ref={ref} className={classes.root}>
-      <Group p={5} mt={25} position="apart">
+    <Paper radius="lg" ref={ref} className={classes.root}>
+      <Group position="apart">
         <Group spacing="md">
           <Popover position="right-end">
             <Popover.Target>
@@ -142,6 +142,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
                   label={`${props.tasksCount[0]} of ${props.tasksCount[1]}`}
                 >
                   <Progress
+                    color={theme.colors[theme.primaryColor][5]}
                     className={classes.progress}
                     value={(props.tasksCount[0] * 100) / props.tasksCount[1]}
                   />

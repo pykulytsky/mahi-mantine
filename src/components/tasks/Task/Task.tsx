@@ -111,7 +111,6 @@ export default function Task(props: TaskProps) {
                 : {}
             }
             className={classes.task}
-            color={props.color}
             checked={isDone}
             onChange={handleTaskStatus}
             size="md"

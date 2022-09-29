@@ -1,5 +1,5 @@
 import { Divider, Center, Box, Container } from "@mantine/core"
-import { useLocalStorage } from "@mantine/hooks"
+import { useClickOutside, useLocalStorage } from "@mantine/hooks"
 import { motion } from "framer-motion"
 import { Inbox, Dashboard, Tag, Calendar } from "../../components/icons"
 
@@ -17,6 +17,9 @@ export default function Sidebar() {
   const [opened, setOpened] = useLocalStorage({
     key: "sidebar",
     defaultValue: false,
+  })
+  const ref = useClickOutside(() => {
+    if (opened) setOpened(!opened)
   })
   const { data: projects } = useOwnProjects()
   const { classes, theme } = useStyles()
@@ -68,6 +71,7 @@ export default function Sidebar() {
 
   return (
     <motion.div
+      ref={ref}
       className={classes.navbar}
       animate={{
         width: opened ? 300 : 68,

@@ -18,7 +18,7 @@ import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlace
 import SectionComponent from "../components/section/Section"
 import useTasksHelper from "../hooks/tasksHelpers"
 import { useProject, useReorderMutation } from "../queries/projects"
-import { useToggle } from "@mantine/hooks"
+import { useHotkeys, useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 import { useMemo } from "react"
 import { useTags } from "../queries/tags"
@@ -46,6 +46,11 @@ export default function ProjectRoot() {
   const reorderMutation = useReorderMutation(id)
 
   const { isEmpty, projectTasksCount } = useTasksHelper(data)
+
+  useHotkeys([
+    ["mod+A", () => toggleTaskForm()],
+    ["mod+Shift+A", () => toggleSectionForm()],
+  ])
 
   async function orderProject(
     source: DraggableLocation,
