@@ -14,19 +14,23 @@ import { useIsFetching } from "@tanstack/react-query"
 import { Task } from "../types"
 import DetailAside from "./Aside/DetailAside"
 
+export interface AsideTask extends Task {
+  projectID: number | string
+}
+
 type AsideContextType = {
-  data: Task | null
-  setData: (data: Task | null) => void
+  data: AsideTask | null
+  setData: (data: AsideTask | null) => void
 }
 
 export const AsideContext = createContext<AsideContextType>({
   data: null,
-  setData: (data: Task | null) => {},
+  setData: (data: AsideTask | null) => {},
 })
 
 export default function AppProvider() {
   const isFetching = useIsFetching(["projects", "user"])
-  const [asideData, setAsideData] = useState<Task | null>(null)
+  const [asideData, setAsideData] = useState<AsideTask | null>(null)
   return (
     <AsideContext.Provider value={{ data: asideData, setData: setAsideData }}>
       <AppShell

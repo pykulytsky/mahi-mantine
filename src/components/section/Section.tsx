@@ -12,6 +12,7 @@ import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
 import useTasksHelper from "../../hooks/tasksHelpers"
 import CreateTaskForm from "../tasks/createTaskForm/CreateTaskForm"
+import { AnimatePresence, motion } from "framer-motion"
 
 export interface BaseSectionProps {
   index: number
@@ -84,20 +85,29 @@ export default function SectionComponent(props: SectionProps) {
                     }}
                   />
                 )}
-                <Transition
-                  mounted={taskFormVisible}
-                  transition="pop"
-                  duration={400}
-                  timingFunction="ease-out"
-                >
-                  {(styles) => (
-                    <CreateTaskForm
-                      style={styles}
-                      sectionID={isCustomSection ? props.section.id : -1}
-                      toggleForm={toggleTaskForm}
-                    />
+                <AnimatePresence>
+                  {taskFormVisible && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 24,
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        y: 20,
+                        transition: { duration: 0.2 },
+                      }}
+                    >
+                      <CreateTaskForm toggleForm={toggleTaskForm} />
+                    </motion.div>
                   )}
-                </Transition>
+                </AnimatePresence>
                 {isCustomSection ? (
                   <Collapse in={opened}>{tasks}</Collapse>
                 ) : (

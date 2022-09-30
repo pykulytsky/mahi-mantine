@@ -70,14 +70,18 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
       },
       {
         onSuccess: (data: Task) => {
-          form.values.tags.forEach((tag) => {
+          form.values.tags.forEach((tag, index) => {
             applyTagMutation.mutate({
               tag_id: tag.id,
               task_id: data.id,
             })
+            if (index === form.values.tags.length - 1) {
+              props.toggleForm()
+              setTimeout(() => {
+                queryClient.invalidateQueries(["projects", { id }])
+              }, 500)
+            }
           })
-          queryClient.invalidateQueries(["projects", { id }])
-          props.toggleForm()
         },
       }
     )

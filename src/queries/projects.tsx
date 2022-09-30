@@ -74,7 +74,7 @@ export const useReorderMutation = (id: string) =>
 
 export const useProjectMutation = (id: string) =>
   useMutation(editProject, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["projects", { id }])
+    onSuccess: (data: Project) => {
+      queryClient.setQueryData(["projects", { id }], data)
     },
   })

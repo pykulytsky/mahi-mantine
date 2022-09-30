@@ -7,11 +7,9 @@ import {
   ActionIcon,
   Stack,
   TypographyStylesProvider,
-  useMantineTheme,
   Spoiler,
   Badge,
-  TextInput,
-  Textarea,
+  Box,
 } from "@mantine/core"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
@@ -20,12 +18,13 @@ import { editTask } from "../../../api/tasks.api"
 import { useMatch, useNavigate } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck, IconDots } from "@tabler/icons"
-import { MouseEventHandler, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { AsideContext } from "../../../layout/LayoutProvider"
 import { Menu } from "../../icons"
+import TagList from "../../tags/TagList/TagList"
 
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
@@ -48,27 +47,30 @@ export default function Task(props: TaskProps) {
     setDone(props.is_done)
   }, [props.is_done])
 
-  const taskMutation = useMutation(editTask, {
-    onSuccess: () => {
-      setDone(!props.is_done)
-      setTimeout(() => {
-        if (!props.is_done) {
-          showNotification({
-            title: `Task #${props.id} was completed`,
-            message: null,
-            icon: <IconCheck size={18} />,
-          })
-        }
-        queryClient.invalidateQueries(["projects", { id }])
-      }, 300)
-    },
-  })
+  const taskMutation = useMutation(editTask)
 
   function handleTaskStatus() {
-    taskMutation.mutate({
-      id: props.id,
-      is_done: !props.is_done,
-    })
+    taskMutation.mutate(
+      {
+        id: props.id,
+        is_done: !props.is_done,
+      },
+      {
+        onSuccess: () => {
+          setDone(!props.is_done)
+          setTimeout(() => {
+            if (!props.is_done) {
+              showNotification({
+                title: `Task #${props.id} was completed`,
+                message: null,
+                icon: <IconCheck size={18} />,
+              })
+            }
+            queryClient.invalidateQueries(["projects", { id }])
+          }, 300)
+        },
+      }
+    )
   }
 
   function toggleDetailAside(event: any) {
@@ -76,7 +78,7 @@ export default function Task(props: TaskProps) {
       event.target.classList.contains("mantine-Stack-root") ||
       event.target.classList.contains("mantine-Text-root")
     ) {
-      setData({ ...props })
+      setData({ projectID: id, ...props })
     }
   }
 
@@ -145,23 +147,9 @@ export default function Task(props: TaskProps) {
             }
           />
           {props.tags.length > 0 && (
-            <Group spacing="sm" ml={35} mt="xs">
-              {props.tags.map((tag) => (
-                <Badge
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    navigate({ to: `/app/tags/${tag.id}` })
-                  }}
-                  key={tag.id}
-                  radius="md"
-                  color={tag.color ?? undefined}
-                >
-                  #{tag.name}
-                </Badge>
-              ))}
-            </Group>
+            <Box ml={35}>
+              <TagList tags={props.tags} />
+            </Box>
           )}
           {props.description && (
             <Spoiler
