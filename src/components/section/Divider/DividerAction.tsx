@@ -39,9 +39,13 @@ export default function DividerAction(props: DividerActionProps) {
       <AnimatePresence>
         {formVisible && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: { type: "spring", stiffness: 300, damping: 24 },
+            }}
+            exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
           >
             <SectionCreateForm
               order={props.order}

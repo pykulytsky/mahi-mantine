@@ -34,7 +34,7 @@ export default function SectionCreateForm(props: SectionCreateFormProps) {
   }
 
   return (
-    <Group mt="sm" mb="sm" style={props.style} spacing="xs">
+    <Group noWrap mt="sm" mb="sm" style={props.style} spacing="xs">
       <TextInput
         onChange={onInput}
         placeholder="Section name..."

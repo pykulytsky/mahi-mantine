@@ -33,4 +33,12 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
     width: 100,
     cursor: "pointer",
   },
+  titleForm: {
+    width: 200,
+    input: {
+      paddingLeft: 0,
+      fontSize: 25,
+      fontWeight: 700,
+    },
+  },
 }))

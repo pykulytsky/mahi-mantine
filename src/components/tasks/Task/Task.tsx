@@ -10,6 +10,8 @@ import {
   useMantineTheme,
   Spoiler,
   Badge,
+  TextInput,
+  Textarea,
 } from "@mantine/core"
 import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
@@ -17,11 +19,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
 import { useMatch, useNavigate } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
-import { IconCheck } from "@tabler/icons"
-import { useEffect, useState } from "react"
+import { IconCheck, IconDots } from "@tabler/icons"
+import { MouseEventHandler, useContext, useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
+import { AsideContext } from "../../../layout/LayoutProvider"
+import { Menu } from "../../icons"
 
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
@@ -31,7 +35,6 @@ export interface TaskProps extends TaskType {
 
 export default function Task(props: TaskProps) {
   const { classes, cx } = useStyles(!!props.draggableHandleProps)
-  const theme = useMantineTheme()
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
   const {
@@ -39,6 +42,7 @@ export default function Task(props: TaskProps) {
   } = useMatch()
   const navigate = useNavigate()
   const [isDone, setDone] = useState<boolean>(props.is_done)
+  const { data, setData } = useContext(AsideContext)
 
   useEffect(() => {
     setDone(props.is_done)
@@ -67,6 +71,15 @@ export default function Task(props: TaskProps) {
     })
   }
 
+  function toggleDetailAside(event: any) {
+    if (
+      event.target.classList.contains("mantine-Stack-root") ||
+      event.target.classList.contains("mantine-Text-root")
+    ) {
+      setData({ ...props })
+    }
+  }
+
   return (
     <Container
       ref={ref}
@@ -76,8 +89,9 @@ export default function Task(props: TaskProps) {
         [classes.draggingRoot]: props.isDragging,
       })}
       fluid
+      onClick={toggleDetailAside}
     >
-      <Group spacing={0}>
+      <Group noWrap spacing={0}>
         {props.draggableHandleProps && (
           <ActionIcon
             aria-label="drag handle"
@@ -101,15 +115,6 @@ export default function Task(props: TaskProps) {
           m={0}
         >
           <Checkbox
-            sx={(theme) =>
-              props.color
-                ? {
-                    input: {
-                      border: `2px solid ${theme.colors[props.color][4]}`,
-                    },
-                  }
-                : {}
-            }
             className={classes.task}
             checked={isDone}
             onChange={handleTaskStatus}
@@ -123,6 +128,20 @@ export default function Task(props: TaskProps) {
               >
                 {props.name}
               </Text>
+              // <Textarea
+              //   sx={{
+              //     width: "58vw",
+              //     input: {
+              //       border: "none",
+              //     },
+              //   }}
+              //   radius="md"
+              //   size="md"
+              //   variant="unstyled"
+              //   value={props.name}
+              //   autosize
+              //   minRows={1}
+              // />
             }
           />
           {props.tags.length > 0 && (
@@ -157,6 +176,14 @@ export default function Task(props: TaskProps) {
             </Spoiler>
           )}
         </Stack>
+        <ActionIcon
+          sx={{
+            opacity: hovered ? 1 : 0,
+            transition: "opacity .2s linear",
+          }}
+        >
+          <Menu size={20} />
+        </ActionIcon>
       </Group>
     </Container>
   )

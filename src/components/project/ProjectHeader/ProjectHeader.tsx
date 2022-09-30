@@ -1,6 +1,5 @@
 import {
   Group,
-  Text,
   Title,
   Paper,
   ActionIcon,
@@ -8,19 +7,17 @@ import {
   Button,
   Popover,
   MediaQuery,
-  Transition,
   TextInput,
   Progress,
   Tooltip,
   Stack,
 } from "@mantine/core"
-import { useHover } from "@mantine/hooks"
-import { IconCheck } from "@tabler/icons"
+import { useFocusWithin, useHover, usePrevious } from "@mantine/hooks"
 import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
 import ProjectActions from "../ProjectActions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
 import { Todo, File as FileIcon } from "../../icons"
@@ -34,9 +31,10 @@ interface ProjectHeaderProps {
 }
 
 export default function ProjectHeader(props: ProjectHeaderProps) {
-  const [isNameEditing, setNameEditing] = useState<boolean>(false)
   const [name, setName] = useState<string>(props.project.name)
   const { hovered, ref } = useHover()
+  const { focused, ref: refFocus } = useFocusWithin()
+  const previousFocusedState = usePrevious(focused)
   const [nameError, setNameError] = useState<string>("")
   const theme = useMantineTheme()
   const { classes, cx } = useStyles(hovered)
@@ -55,10 +53,14 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
 
   function onNameSave(): void {
     if (name.length > 0) {
-      setNameEditing(false)
-      updateProject({ name })
+      if (name !== props.project.name) updateProject({ name })
     } else setNameError("Name is to short.")
   }
+  useEffect(() => {
+    if (previousFocusedState !== undefined && previousFocusedState) {
+      onNameSave()
+    }
+  }, [focused])
 
   return (
     <Paper radius="lg" ref={ref} className={classes.root}>
@@ -92,49 +94,16 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           </Popover>
           <Stack justify="flex-start" spacing={0}>
             <Group m={0} p={0} spacing={4}>
-              <Transition
-                mounted={!isNameEditing}
-                transition="pop"
-                duration={400}
-                timingFunction="ease"
-              >
-                {(styles) => (
-                  <Text
-                    onClick={() => {
-                      setNameEditing(!isNameEditing)
-                    }}
-                    style={styles}
-                    className={classes.title}
-                    weight={700}
-                    size={25}
-                  >
-                    {props.project.name}
-                  </Text>
-                )}
-              </Transition>
-              <Transition
-                mounted={isNameEditing}
-                transition="pop"
-                duration={400}
-                timingFunction="ease-out"
-              >
-                {(styles) => (
-                  <TextInput
-                    variant="filled"
-                    style={styles}
-                    value={name}
-                    error={nameError}
-                    onChange={(event: any) => {
-                      setName(event.target.value)
-                    }}
-                  />
-                )}
-              </Transition>
-              {isNameEditing && (
-                <ActionIcon onClick={onNameSave} variant="filled">
-                  <IconCheck size={16} />
-                </ActionIcon>
-              )}
+              <TextInput
+                ref={refFocus}
+                className={classes.titleForm}
+                variant={focused ? "default" : "unstyled"}
+                value={name}
+                error={nameError}
+                onChange={(event: any) => {
+                  setName(event.target.value)
+                }}
+              />
             </Group>
             <MediaQuery smallerThan="md" styles={{ display: "none" }}>
               {props.tasksCount && (

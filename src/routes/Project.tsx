@@ -24,6 +24,8 @@ import { useMemo } from "react"
 import { useTags } from "../queries/tags"
 import SectionCreateForm from "../components/section/SectionCreateForm"
 import DividerAction from "../components/section/Divider/DividerAction"
+import { AnimatePresence, motion } from "framer-motion"
+import { ProjectErrorPlaceholder } from "../components/project/ProjectErrorPlaceholder/ProjectErrorPlaceholder"
 
 const useStyles = createStyles({})
 
@@ -74,7 +76,7 @@ export default function ProjectRoot() {
   }
 
   if (isLoading) return <LoadingOverlay visible />
-  if (isError) return <h1>Error...</h1>
+  if (isError) return <ProjectErrorPlaceholder />
   return (
     <MantineProvider
       inherit
@@ -90,16 +92,21 @@ export default function ProjectRoot() {
         toggleSectionForm={toggleSectionForm}
       />
       <Container>
-        <Transition
-          mounted={taskFormVisible}
-          transition="pop"
-          duration={400}
-          timingFunction="ease-out"
-        >
-          {(styles) => (
-            <CreateTaskForm style={styles} toggleForm={toggleTaskForm} />
+        <AnimatePresence>
+          {taskFormVisible && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { type: "spring", stiffness: 300, damping: 24 },
+              }}
+              exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
+            >
+              <CreateTaskForm toggleForm={toggleTaskForm} />
+            </motion.div>
           )}
-        </Transition>
+        </AnimatePresence>
         {!isEmpty ? (
           <DragDropContext
             onDragEnd={async ({ source, destination }) =>
@@ -141,21 +148,24 @@ export default function ProjectRoot() {
                 </div>
               )}
             </Droppable>
-
-            <Transition
-              mounted={sectionFormVisible}
-              transition="pop"
-              duration={400}
-              timingFunction="ease-out"
-            >
-              {(styles) => (
-                <SectionCreateForm
-                  style={styles}
-                  projectID={data.id}
-                  toggleForm={toggleSectionForm}
-                />
+            <AnimatePresence>
+              {sectionFormVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: "spring", stiffness: 300, damping: 24 },
+                  }}
+                  exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
+                >
+                  <SectionCreateForm
+                    projectID={data.id}
+                    toggleForm={toggleSectionForm}
+                  />
+                </motion.div>
               )}
-            </Transition>
+            </AnimatePresence>
           </DragDropContext>
         ) : (
           <ProjectEmptyPlaceholder />

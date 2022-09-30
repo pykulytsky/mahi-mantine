@@ -47,4 +47,5 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
       marginTop: 0,
     },
   },
+
 }))
