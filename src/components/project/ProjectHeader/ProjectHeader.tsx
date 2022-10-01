@@ -20,7 +20,7 @@ import ProjectActions from "../ProjectActions"
 import { useEffect, useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
-import { Todo, File as FileIcon } from "../../icons"
+import { Todo, File as FileIcon, Task } from "../../icons"
 
 interface ProjectHeaderProps {
   project: Project
@@ -126,7 +126,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             className={cx(classes.shownOnHover, classes.addBtnGroup)}
             compact
             leftIcon={
-              <Todo size={23} color={theme.colors[theme.primaryColor][3]} />
+              <Task size={20} color={theme.colors[theme.primaryColor][3]} />
             }
             variant="subtle"
             onClick={props.toggleTaskForm}

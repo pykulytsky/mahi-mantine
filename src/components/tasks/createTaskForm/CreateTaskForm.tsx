@@ -8,7 +8,7 @@ import { CreateTaskFormType, Tag, Task } from "../../../types"
 import { useApplyTagMutation, useTaskAddMutation } from "../../../queries/tasks"
 import { useMatch } from "@tanstack/react-location"
 import { useQueryClient } from "@tanstack/react-query"
-import { IconDots } from "@tabler/icons"
+import { Menu } from "../../icons"
 
 export type CreateTaskFormProps = {
   sectionID?: number | string
@@ -102,7 +102,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             {...form.getInputProps("name")}
           />
           <ActionIcon>
-            <IconDots />
+            <Menu size={20} />
           </ActionIcon>
         </Group>
         <Transition

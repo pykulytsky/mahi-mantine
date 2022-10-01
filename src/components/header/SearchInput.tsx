@@ -7,7 +7,7 @@ import {
   Center,
 } from "@mantine/core"
 import { openSpotlight } from "@mantine/spotlight"
-import { IconSearch } from "@tabler/icons"
+import { Search } from "../icons"
 
 const useStyles = createStyles((theme) => ({
   badge: {
@@ -30,7 +30,7 @@ export default function SearchInput(props: SearchInputProps) {
     return (
       <Center mb={3}>
         <ActionIcon size="xl" onClick={handleInputClick}>
-          <IconSearch size={20} />
+          <Search size={23} />
         </ActionIcon>
       </Center>
     )
@@ -41,7 +41,7 @@ export default function SearchInput(props: SearchInputProps) {
       mb={3}
       radius="lg"
       onClick={handleInputClick}
-      icon={<IconSearch size={16} stroke={1.5} />}
+      icon={<Search size={16} />}
       className={props.className}
       placeholder="Search"
       rightSectionWidth={85}

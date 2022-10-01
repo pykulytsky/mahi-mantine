@@ -11,7 +11,6 @@ import {
   Center,
 } from "@mantine/core"
 import { useUser } from "../../queries/user"
-import { IconSelector } from "@tabler/icons"
 import UserMenuDropdown from "../user/UserMenuDropdown"
 import { Config } from "../icons"
 
@@ -56,7 +55,6 @@ export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
             </Text>
           </div>
         )}
-        {opened && <IconSelector size={16} />}
       </Group>
     </UnstyledButton>
   )

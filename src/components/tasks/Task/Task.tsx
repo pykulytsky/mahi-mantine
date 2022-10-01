@@ -11,19 +11,17 @@ import {
   Badge,
   Box,
 } from "@mantine/core"
-import { DotsSixVertical } from "phosphor-react"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
 import { useMatch, useNavigate } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
-import { IconCheck, IconDots } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { AsideContext } from "../../../layout/LayoutProvider"
-import { Menu } from "../../icons"
+import { Menu, Drag, Task as IconTask } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 
 export interface TaskProps extends TaskType {
@@ -63,7 +61,7 @@ export default function Task(props: TaskProps) {
               showNotification({
                 title: `Task #${props.id} was completed`,
                 message: null,
-                icon: <IconCheck size={18} />,
+                icon: <IconTask size={18} />,
               })
             }
             queryClient.invalidateQueries(["projects", { id }])
@@ -103,7 +101,7 @@ export default function Task(props: TaskProps) {
               [classes.dragControlUnvisible]: !hovered && !props.isDragging,
             })}
           >
-            <DotsSixVertical size={18} />
+            <Drag size={20} />
           </ActionIcon>
         )}
 

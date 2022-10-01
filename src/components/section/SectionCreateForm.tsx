@@ -1,7 +1,7 @@
 import { ActionIcon, Button, Group, TextInput } from "@mantine/core"
-import { X } from "phosphor-react"
 import { FormEvent, useState } from "react"
 import { useSectionMutation } from "../../queries/sections"
+import { Close } from "../icons"
 
 type SectionCreateFormProps = {
   projectID: number
@@ -55,7 +55,7 @@ export default function SectionCreateForm(props: SectionCreateFormProps) {
           props.toggleForm()
         }}
       >
-        <X />
+        <Close size={20} />
       </ActionIcon>
     </Group>
   )

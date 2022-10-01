@@ -1,6 +1,5 @@
 import { Group, ActionIcon, Tooltip, useMantineTheme } from "@mantine/core"
-import { IconAlarm, IconCalendar, IconPaperclip } from "@tabler/icons"
-import { Calendar, File } from "../../icons"
+import { Calendar, File, Alarm } from "../../icons"
 import Attach from "../../icons/Attach"
 
 type ActionsGroupProps = {
@@ -27,7 +26,7 @@ export default function ActionsGroup(props: ActionsGroupProps) {
       </Tooltip>
       <Tooltip zIndex={9999} label="Add reminder">
         <ActionIcon color="teal" size="lg" variant="subtle">
-          <IconAlarm size={20} />
+          <Alarm size={20} color={theme.colors.teal[3]} />
         </ActionIcon>
       </Tooltip>
 

@@ -9,8 +9,8 @@ import {
   Transition,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
-import { DotsSixVertical, CheckCircle } from "phosphor-react"
 import { useStyles } from "./SectionHeader.styles"
+import { Drag, Task } from "../../icons"
 
 interface ProjectHeaderProps {
   name: string
@@ -22,13 +22,17 @@ interface ProjectHeaderProps {
 }
 export default function SectionHeader(props: ProjectHeaderProps) {
   const { hovered, ref } = useHover()
-  const { classes, cx } = useStyles(hovered)
+  const { classes, cx, theme } = useStyles(hovered)
 
   return (
     <Paper className={classes.root} ref={ref} p={0} pt={4} m={0}>
       <Group spacing={5} p={0} m={0}>
-        <ActionIcon className={classes.shownOnHover} {...props.dragHandleProps}>
-          <DotsSixVertical />
+        <ActionIcon
+          variant="transparent"
+          className={classes.shownOnHover}
+          {...props.dragHandleProps}
+        >
+          <Drag size={20} />
         </ActionIcon>
         <Text
           className={classes.pointerText}
@@ -55,7 +59,9 @@ export default function SectionHeader(props: ProjectHeaderProps) {
               style={hovered ? style : undefined}
               className={cx(classes.addBtn, classes.shownOnHover)}
               compact
-              leftIcon={<CheckCircle size={20} />}
+              leftIcon={
+                <Task size={20} color={theme.colors[theme.primaryColor][3]} />
+              }
               variant="subtle"
               onClick={props.toggleTaskForm}
             >

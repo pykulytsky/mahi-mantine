@@ -1,7 +1,7 @@
 import { ActionIcon, Badge, useMantineTheme } from "@mantine/core"
-import { IconX } from "@tabler/icons"
 import { useNavigate } from "@tanstack/react-location"
 import { Tag as TagType } from "../../../types"
+import { Close } from "../../icons"
 
 interface TagProps extends TagType {
   editable: boolean
@@ -13,7 +13,7 @@ export default function Tag(props: TagProps) {
 
   const removeButton = (
     <ActionIcon size="xs" color="blue" radius="xl" variant="transparent">
-      <IconX size={10} />
+      <Close size={10} />
     </ActionIcon>
   )
 

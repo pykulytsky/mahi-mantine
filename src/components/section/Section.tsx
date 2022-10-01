@@ -8,11 +8,11 @@ import { Collapse, ActionIcon, Transition } from "@mantine/core"
 import SectionHeader from "./SectionHeader/SectionHeader"
 import { useMemo, useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
-import { DotsSixVertical } from "phosphor-react"
 import { Section, Task } from "../../types"
 import useTasksHelper from "../../hooks/tasksHelpers"
 import CreateTaskForm from "../tasks/createTaskForm/CreateTaskForm"
 import { AnimatePresence, motion } from "framer-motion"
+import { Drag } from "../icons"
 
 export interface BaseSectionProps {
   index: number
@@ -60,8 +60,12 @@ export default function SectionComponent(props: SectionProps) {
     >
       {(provided) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
-          <ActionIcon sx={{ display: "none" }} {...provided.dragHandleProps}>
-            <DotsSixVertical />
+          <ActionIcon
+            variant="transparent"
+            sx={{ display: "none" }}
+            {...provided.dragHandleProps}
+          >
+            <Drag size={25} />
           </ActionIcon>
           <Droppable
             key={sectionID}

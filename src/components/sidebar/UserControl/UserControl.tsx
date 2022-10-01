@@ -9,7 +9,6 @@ import {
 } from "@mantine/core"
 import { useStyles } from "./UserControl.styles"
 import { useUser } from "../../../queries/user"
-import { IconSelector } from "@tabler/icons"
 
 interface UserButtonProps extends UnstyledButtonProps {
   opened: boolean
@@ -36,7 +35,6 @@ export default function UserControl({ opened, ...others }: UserButtonProps) {
             </Text>
           </div>
         )}
-        {opened && <IconSelector size={12} stroke={1.5} />}
       </Group>
     </UnstyledButton>
   )

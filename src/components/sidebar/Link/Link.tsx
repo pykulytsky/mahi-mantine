@@ -27,7 +27,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
   return (
     <Link to={props.to} style={{ textDecoration: "none" }}>
       {({ isActive }) => (
-        <UnstyledButton
+        <Box
           sx={{
             backgroundColor: isActive
               ? theme.fn.rgba(
@@ -78,9 +78,9 @@ export default function SidebarLink(props: SidebarLinkProps) {
                 </Transition>
               </Box>
               <Transition
-                transition="pop"
+                transition="fade"
                 mounted={props.opened}
-                duration={10}
+                duration={1}
                 timingFunction="ease-in-out"
               >
                 {(styles) => (
@@ -94,7 +94,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
               </Transition>
             </Group>
           </Tooltip>
-        </UnstyledButton>
+        </Box>
       )}
     </Link>
   )
