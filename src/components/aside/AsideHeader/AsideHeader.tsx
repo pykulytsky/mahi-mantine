@@ -13,7 +13,7 @@ export default function AsideHeader(props: AsideHeaderProps) {
     <Paper className={classes.root}>
       <Group position="apart">
         <ActionIcon onClick={props.toggleAside} variant="transparent" size="lg">
-          <SiderClose size={20} />
+          <SiderClose size={25} />
         </ActionIcon>
         <Button disabled={props.saveButtonDisabled} variant="light">
           Save

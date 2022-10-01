@@ -60,7 +60,7 @@ export declare type TaskEdit = {
   name?: string
   description?: string
   is_done?: boolean
-  deadline?: Date
+  deadline?: Date | number | string
   done_at?: Date
   color?: string
   is_important?: boolean

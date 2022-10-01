@@ -12,7 +12,11 @@ export default function TagList(props: TagListProps) {
   return (
     <Group spacing="sm">
       {props.tags.map((tag) => (
-        <Tag editable={props.editable} key={tag.id} {...tag} />
+        <Tag
+          editable={props.editable}
+          key={tag.id}
+          {...tag}
+        />
       ))}
       {props.editable && (
         <ActionIcon size="sm" variant="subtle">

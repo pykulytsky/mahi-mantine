@@ -31,7 +31,7 @@ export interface TaskProps extends TaskType {
 }
 
 export default function Task(props: TaskProps) {
-  const { classes, cx } = useStyles(!!props.draggableHandleProps)
+  const { classes, cx, theme } = useStyles(!!props.draggableHandleProps)
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
   const {
@@ -115,6 +115,17 @@ export default function Task(props: TaskProps) {
           m={0}
         >
           <Checkbox
+            sx={{
+              input: {
+                border: props.is_important
+                  ? `2px solid ${theme.colors.red[5]}`
+                  : `2px solid ${
+                      theme.colorScheme === "dark"
+                        ? theme.colors.dark[4]
+                        : theme.colors.gray[5]
+                    }`,
+              },
+            }}
             className={classes.task}
             checked={isDone}
             onChange={handleTaskStatus}
