@@ -108,7 +108,10 @@ export default function SectionComponent(props: SectionProps) {
                         transition: { duration: 0.2 },
                       }}
                     >
-                      <CreateTaskForm toggleForm={toggleTaskForm} />
+                      <CreateTaskForm
+                        sectionID={sectionID > 0 ? sectionID : undefined}
+                        toggleForm={toggleTaskForm}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>

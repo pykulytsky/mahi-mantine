@@ -62,6 +62,10 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
     }
   }, [focused])
 
+  useEffect(() => {
+    setName(props.project.name)
+  }, [props.project.name])
+
   return (
     <Paper radius="lg" ref={ref} className={classes.root}>
       <Group position="apart">

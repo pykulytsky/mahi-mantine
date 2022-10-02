@@ -68,7 +68,7 @@ export const useReorderMutation = (id: string) =>
       queryClient.setQueryData(["projects", { id }], context?.oldProject)
     },
     onSettled: (data) => {
-      // queryClient.invalidateQueries(["projects", { id }])
+      queryClient.invalidateQueries(["projects", { id }])
     },
   })
 

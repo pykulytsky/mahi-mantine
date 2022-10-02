@@ -3,7 +3,6 @@ import {
   Center,
   Chip,
   Group,
-  Select,
   Space,
   Table,
   Textarea,
@@ -11,11 +10,12 @@ import {
 import { DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious } from "@mantine/hooks"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { AsideTask } from "../../../layout/LayoutProvider"
 import { useTaskEditMutation } from "../../../queries/tasks"
-import { Task, Tag as TagType } from "../../../types"
+import { Task } from "../../../types"
 import { Tag, Alert, Deadline, Alarm, Pen } from "../../icons"
+import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
 import { useStyles } from "./TaskEditForm.styles"
 
@@ -76,7 +76,7 @@ export default function TaskEditForm(props: AsideTask) {
         maxRows={4}
       />
       <Group my="md" ml="sm" position="apart">
-        <Select size="xs" placeholder="Select project" data={[]} />
+        <ProjectSelect {...props} />
         <Button variant="subtle" leftIcon={<Pen size={15} />}>
           Edit note
         </Button>

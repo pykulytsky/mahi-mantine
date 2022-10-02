@@ -53,6 +53,8 @@ export declare interface Task {
   is_important: boolean
   remind_at?: Date
   tags: Tag[]
+  project_id?: int
+  section_id?: int
 }
 
 export declare type TaskEdit = {

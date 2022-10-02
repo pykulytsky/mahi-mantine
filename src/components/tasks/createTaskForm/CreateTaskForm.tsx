@@ -70,6 +70,11 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
       },
       {
         onSuccess: (data: Task) => {
+          if (form.values.tags.length < 1) {
+            props.toggleForm()
+            queryClient.invalidateQueries(["projects", { id }])
+            return
+          }
           form.values.tags.forEach((tag, index) => {
             applyTagMutation.mutate({
               tag_id: tag.id,
@@ -79,7 +84,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
               props.toggleForm()
               setTimeout(() => {
                 queryClient.invalidateQueries(["projects", { id }])
-              }, 500)
+              }, 1)
             }
           })
         },
