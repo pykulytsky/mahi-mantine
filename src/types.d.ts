@@ -58,13 +58,13 @@ export declare interface Task {
 export declare type TaskEdit = {
   id: number
   name?: string
-  description?: string
+  description?: string | null
   is_done?: boolean
-  deadline?: Date | number | string
-  done_at?: Date
-  color?: string
+  deadline?: Date | number | string | null
+  done_at?: Date | null
+  color?: string | null
   is_important?: boolean
-  remind_at?: Date
+  remind_at?: Date | null
 }
 
 export declare type TaskReorder = {

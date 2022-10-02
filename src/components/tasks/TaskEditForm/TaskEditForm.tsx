@@ -1,4 +1,13 @@
-import { Center, Chip, Space, Table, Textarea } from "@mantine/core"
+import {
+  Button,
+  Center,
+  Chip,
+  Group,
+  Select,
+  Space,
+  Table,
+  Textarea,
+} from "@mantine/core"
 import { DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious } from "@mantine/hooks"
@@ -6,7 +15,7 @@ import { useEffect, useState } from "react"
 import { AsideTask } from "../../../layout/LayoutProvider"
 import { useTaskEditMutation } from "../../../queries/tasks"
 import { Task, Tag as TagType } from "../../../types"
-import { Tag, Alert } from "../../icons"
+import { Tag, Alert, Deadline, Alarm, Pen } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import { useStyles } from "./TaskEditForm.styles"
 
@@ -24,7 +33,6 @@ export default function TaskEditForm(props: AsideTask) {
 
   useEffect(() => {
     form.setValues(props)
-    console.log(props.deadline)
   }, [props])
 
   useEffect(() => {
@@ -45,7 +53,14 @@ export default function TaskEditForm(props: AsideTask) {
     )
   }
   function onDeadlineUpdate(value: Date) {
-    mutate({ id: props.id, deadline: value.getTime() })
+    mutate(
+      { id: props.id, deadline: value ? value.getTime() : null },
+      {
+        onSuccess: (data: Task) => {
+          form.setValues(data)
+        },
+      }
+    )
   }
 
   return (
@@ -58,8 +73,14 @@ export default function TaskEditForm(props: AsideTask) {
         {...form.getInputProps("name")}
         autosize
         minRows={1}
-        maxRows={5}
+        maxRows={4}
       />
+      <Group my="md" ml="sm" position="apart">
+        <Select size="xs" placeholder="Select project" data={[]} />
+        <Button variant="subtle" leftIcon={<Pen size={15} />}>
+          Edit note
+        </Button>
+      </Group>
       <Table verticalSpacing="md" fontSize="md">
         <tbody>
           <tr key="tags">
@@ -94,7 +115,7 @@ export default function TaskEditForm(props: AsideTask) {
           <tr key="deadline">
             <td>
               <Center inline>
-                <Alert size={18} />
+                <Deadline size={18} />
                 <Space w="xs" />
                 Deadline
               </Center>
@@ -104,11 +125,23 @@ export default function TaskEditForm(props: AsideTask) {
                 clearable
                 size="xs"
                 dropdownType="modal"
-                placeholder="Select deadline"
-                value={props.deadline}
+                placeholder="Set deadline"
+                value={
+                  form.values.deadline ? new Date(form.values.deadline) : null
+                }
                 onChange={onDeadlineUpdate}
               />
             </td>
+          </tr>
+          <tr key="remind">
+            <td>
+              <Center inline>
+                <Alarm size={18} />
+                <Space w="xs" />
+                Remind
+              </Center>
+            </td>
+            <td></td>
           </tr>
         </tbody>
       </Table>
