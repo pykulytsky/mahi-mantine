@@ -35,6 +35,7 @@ export default function App() {
           primaryColor: "emerald",
           fontFamily: "GT Walsheim, sans-serif",
           defaultRadius: "md",
+          black: "#181818",
           colors: {
             // dark: [
             //   "#939393",
@@ -73,7 +74,10 @@ export default function App() {
           <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
             <NotificationsProvider>
               <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools initialIsOpen={false} />
+                <ReactQueryDevtools
+                  position="bottom-right"
+                  initialIsOpen={false}
+                />
                 <Router location={location} routes={routes}>
                   <Outlet />
                 </Router>

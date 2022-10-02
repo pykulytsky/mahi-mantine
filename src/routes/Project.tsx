@@ -129,7 +129,7 @@ export default function ProjectRoot() {
                   )}
                   {provided.placeholder}
                   {data.sections.map((section, index) => (
-                    <div key={index}>
+                    <div id={`section-${section.id}`} key={index}>
                       <SectionComponent
                         showCompletedtasks={data.show_completed_tasks}
                         key={index}

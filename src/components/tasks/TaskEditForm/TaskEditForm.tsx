@@ -81,7 +81,8 @@ export default function TaskEditForm(props: AsideTask) {
           Edit note
         </Button>
       </Group>
-      <Table verticalSpacing="md" fontSize="md">
+      {/* @ts-ignore */}
+      <Table withColumnBorders verticalSpacing="md" fontSize="md">
         <tbody>
           <tr key="tags">
             <td>

@@ -132,6 +132,7 @@ export default function Task(props: TaskProps) {
             size="md"
             label={
               <Text
+                mt={-24} // 5.5.0 only
                 color={props.is_done ? "dimmed" : ""}
                 onClick={(e: any): void => {
                   e.preventDefault()
