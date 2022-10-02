@@ -1,20 +1,22 @@
 import {
+  Badge,
   Button,
   Center,
   Chip,
   Group,
+  Popover,
   Space,
   Table,
   Textarea,
 } from "@mantine/core"
-import { DatePicker } from "@mantine/dates"
+import { Calendar, DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious } from "@mantine/hooks"
 import { useEffect } from "react"
 import { AsideTask } from "../../../layout/LayoutProvider"
 import { useTaskEditMutation } from "../../../queries/tasks"
 import { Task } from "../../../types"
-import { Tag, Alert, Deadline, Alarm, Pen } from "../../icons"
+import { Tag, Alert, Deadline, Alarm, Pen, Close } from "../../icons"
 import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
 import { useStyles } from "./TaskEditForm.styles"
@@ -52,7 +54,7 @@ export default function TaskEditForm(props: AsideTask) {
       }
     )
   }
-  function onDeadlineUpdate(value: Date) {
+  function onDeadlineUpdate(value: Date | null) {
     mutate(
       { id: props.id, deadline: value ? value.getTime() : null },
       {
@@ -81,8 +83,13 @@ export default function TaskEditForm(props: AsideTask) {
           Edit note
         </Button>
       </Group>
-      {/* @ts-ignore */}
-      <Table withColumnBorders verticalSpacing="md" fontSize="md">
+      <Table
+        // @ts-ignore
+        withColumnBorders
+        className={classes.table}
+        verticalSpacing="md"
+        fontSize="md"
+      >
         <tbody>
           <tr key="tags">
             <td>
@@ -122,16 +129,42 @@ export default function TaskEditForm(props: AsideTask) {
               </Center>
             </td>
             <td>
-              <DatePicker
-                clearable
-                size="xs"
-                dropdownType="modal"
-                placeholder="Set deadline"
-                value={
-                  form.values.deadline ? new Date(form.values.deadline) : null
-                }
-                onChange={onDeadlineUpdate}
-              />
+              <Popover position="top" width={300} withArrow shadow="md">
+                <Popover.Target>
+                  <Badge
+                    rightSection={
+                      props.deadline ? (
+                        <Center
+                          onClick={() => {
+                            onDeadlineUpdate(null)
+                          }}
+                          inline
+                        >
+                          <Close size={15} />
+                        </Center>
+                      ) : undefined
+                    }
+                    sx={{
+                      cursor: "pointer",
+                      paddingRight: props.deadline ? 3 : 5,
+                    }}
+                    variant={props.deadline ? "light" : "outline"}
+                  >
+                    {props.deadline?.toString() || "Add deadline"}
+                  </Badge>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <Calendar
+                    className={classes.calendar}
+                    value={
+                      form.values.deadline
+                        ? new Date(form.values.deadline)
+                        : null
+                    }
+                    onChange={onDeadlineUpdate}
+                  />
+                </Popover.Dropdown>
+              </Popover>
             </td>
           </tr>
           <tr key="remind">
