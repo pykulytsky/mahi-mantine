@@ -20,7 +20,7 @@ import { useContext, useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
-import { AsideContext } from "../../../layout/LayoutProvider"
+import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { Menu, Drag, Task as IconTask } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 
@@ -39,7 +39,7 @@ export default function Task(props: TaskProps) {
   } = useMatch()
   const navigate = useNavigate()
   const [isDone, setDone] = useState<boolean>(props.is_done)
-  const { data, setData } = useContext(AsideContext)
+  const { setSelectedTask } = useContext(SelectedTaskContext)
 
   useEffect(() => {
     setDone(props.is_done)
@@ -64,7 +64,7 @@ export default function Task(props: TaskProps) {
                 icon: <IconTask size={18} />,
               })
             }
-            queryClient.invalidateQueries(["projects", { id }])
+            queryClient.invalidateQueries(["projects", { id: Number(id) }])
           }, 300)
         },
       }
@@ -76,7 +76,7 @@ export default function Task(props: TaskProps) {
       event.target.classList.contains("mantine-Stack-root") ||
       event.target.classList.contains("mantine-Text-root")
     ) {
-      setData({ projectID: id, ...props })
+      setSelectedTask({ id: props.id, projectID: props.project_id || id })
     }
   }
 

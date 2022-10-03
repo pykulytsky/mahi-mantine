@@ -15,6 +15,6 @@ export function useTags() {
 export const useTagRemoveMutation = (id: number | string) =>
   useMutation(removeTag, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects", { id }])
+      queryClient.invalidateQueries(["projects", { id: Number(id) }])
     },
   })

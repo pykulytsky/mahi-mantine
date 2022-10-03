@@ -1,7 +1,7 @@
 import { Group, Loader, Select, Text } from "@mantine/core"
 import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react"
-import { AsideTask } from "../../../layout/LayoutProvider"
 import { useOwnProjects, useReorderMutation } from "../../../queries/projects"
+import { Task } from "../../../types"
 import { Project } from "../../icons"
 
 export type SelectItemProps = {
@@ -22,23 +22,29 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   )
 )
 
-export default function ProjectSelect(props: AsideTask) {
+type ProjectSelect = {
+  project_id: string
+  section_id: number | string
+  order: number | string
+}
+
+export default function ProjectSelect(props: ProjectSelect) {
   const { data: projects, isLoading, isError } = useOwnProjects()
   const [value, setValue] = useState<string>(
-    props.project_id
-      ? props.project_id.toString()
-      : `section-${props.section_id}`
+    props.section_id
+      ? `section-${props.section_id}`
+      : props.project_id.toString()
   )
 
   useEffect(() => {
     setValue(
-      props.project_id
-        ? props.project_id.toString()
-        : `section-${props.section_id}`
+      props.section_id
+        ? `section-${props.section_id}`
+        : props.project_id.toString()
     )
-  }, [props])
+  }, [props.project_id, props.section_id])
 
-  const { mutate } = useReorderMutation(props.projectID.toString())
+  const { mutate } = useReorderMutation(props.project_id)
 
   const data = useMemo<SelectItemProps[]>(() => {
     let res: SelectItemProps[] = []
@@ -62,7 +68,7 @@ export default function ProjectSelect(props: AsideTask) {
 
   function handleProjectChange(value: string) {
     const tokens: string[] = value.split("-")
-    let destinationID: string = props.project_id || props.projectID
+    let destinationID: string = props.project_id
     let destinationType: string = "project"
     if (tokens.length == 1) {
       // project
@@ -73,7 +79,7 @@ export default function ProjectSelect(props: AsideTask) {
     }
     mutate(
       {
-        sourceID: props.project_id || props.section_id,
+        sourceID: props.section_id || props.project_id,
         sourceOrder: props.order,
         destinationID,
         sourceType: props.section_id ? "section" : "project",
@@ -83,9 +89,9 @@ export default function ProjectSelect(props: AsideTask) {
       {
         onSuccess: (data) => {
           setValue(
-            data.project_id
-              ? data.project_id.toString()
-              : `section-${data.section_id}`
+            data.section_id
+              ? `section-${data.section_id}`
+              : data.project_id.toString()
           )
         },
       }

@@ -72,7 +72,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
         onSuccess: (data: Task) => {
           if (form.values.tags.length < 1) {
             props.toggleForm()
-            queryClient.invalidateQueries(["projects", { id }])
+            queryClient.invalidateQueries(["projects", { id: Number(id) }])
             return
           }
           form.values.tags.forEach((tag, index) => {
@@ -83,7 +83,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             if (index === form.values.tags.length - 1) {
               props.toggleForm()
               setTimeout(() => {
-                queryClient.invalidateQueries(["projects", { id }])
+                queryClient.invalidateQueries(["projects", { id: Number(id) }])
               }, 1)
             }
           })

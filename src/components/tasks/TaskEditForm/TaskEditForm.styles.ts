@@ -24,4 +24,16 @@ export const useStyles = createStyles((theme) => ({
       border: "none !important",
     },
   },
+  deadlineRemove: {
+    borderRadius: "0 10px 10px 0",
+    padding: 2,
+    cursor: "pointer",
+    "&:hover": {
+      background: theme.colors.red[5],
+    },
+  },
+  deadlineCell: {
+    display: "flex",
+    alignItems: "baseline",
+  },
 }))

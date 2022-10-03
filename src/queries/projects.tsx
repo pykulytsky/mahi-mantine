@@ -20,7 +20,7 @@ export function useOwnProjects() {
 }
 
 export const projectQuery = (id: string | number) => ({
-  queryKey: ["projects", { id }],
+  queryKey: ["projects", { id: Number(id) }],
   queryFn: async () => fetchProject(id),
 })
 
@@ -65,16 +65,16 @@ export const useReorderMutation = (id: string) =>
       return { project, oldProject }
     },
     onError: (error, newProject, context) => {
-      queryClient.setQueryData(["projects", { id }], context?.oldProject)
+      queryClient.setQueryData(["projects", { id: Number(id) }], context?.oldProject)
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["projects", { id }])
+      queryClient.invalidateQueries(["projects", { id: Number(id) }])
     },
   })
 
 export const useProjectMutation = (id: string) =>
   useMutation(editProject, {
     onSuccess: (data: Project) => {
-      queryClient.setQueryData(["projects", { id }], data)
+      queryClient.setQueryData(["projects", { id: Number(id) }], data)
     },
   })

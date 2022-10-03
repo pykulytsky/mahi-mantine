@@ -1,7 +1,7 @@
 import { ActionIcon, Badge, useMantineTheme } from "@mantine/core"
 import { useNavigate } from "@tanstack/react-location"
 import { useContext } from "react"
-import { AsideContext } from "../../../layout/LayoutProvider"
+import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { useTagRemoveMutation } from "../../../queries/tags"
 import { Tag as TagType } from "../../../types"
 import { Close } from "../../icons"
@@ -13,18 +13,21 @@ interface TagProps extends TagType {
 export default function Tag(props: TagProps) {
   const navigate = useNavigate()
   const theme = useMantineTheme()
-  const { data: currentTask, setData } = useContext(AsideContext)
+  const { selectedTask, setSelectedTask } = useContext(SelectedTaskContext)
 
-  const tagRemoveMutation = useTagRemoveMutation(currentTask?.projectID || 0)
+  const tagRemoveMutation = useTagRemoveMutation(selectedTask?.projectID || 0)
   const removeButton = (
     <ActionIcon
       onClick={() => {
-        if (currentTask) {
+        if (selectedTask) {
           tagRemoveMutation.mutate(
-            { tag_id: props.id, task_id: currentTask.id },
+            { tag_id: props.id, task_id: Number(selectedTask.id) },
             {
               onSuccess: (data) => {
-                setData({ projectID: currentTask.projectID, ...data })
+                setSelectedTask({
+                  id: data.id,
+                  projectID: data.project_id || selectedTask.projectID,
+                })
               },
             }
           )

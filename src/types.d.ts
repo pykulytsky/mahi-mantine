@@ -47,7 +47,7 @@ export declare interface Task {
   name: string
   description?: string
   is_done: boolean
-  deadline?: Date
+  deadline?: Date | null
   done_at?: Date
   color?: string
   is_important: boolean
@@ -58,7 +58,7 @@ export declare interface Task {
 }
 
 export declare type TaskEdit = {
-  id: number
+  id?: number | string
   name?: string
   description?: string | null
   is_done?: boolean

@@ -1,46 +1,64 @@
 import {
   Badge,
+  Box,
   Button,
   Center,
   Chip,
   Group,
+  Loader,
   Popover,
   Space,
   Table,
+  Text,
   Textarea,
 } from "@mantine/core"
 import { Calendar, DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious } from "@mantine/hooks"
-import { useEffect } from "react"
-import { AsideTask } from "../../../layout/LayoutProvider"
-import { useTaskEditMutation } from "../../../queries/tasks"
-import { Task } from "../../../types"
+import { useQueryClient } from "@tanstack/react-query"
+import { useEffect, useMemo } from "react"
+import { SelectedTask } from "../../../layout/LayoutProvider"
+import { useTaskEditMutation, useTaskQuery } from "../../../queries/tasks"
+import { Task, TaskEdit } from "../../../types"
 import { Tag, Alert, Deadline, Alarm, Pen, Close } from "../../icons"
 import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
 import { useStyles } from "./TaskEditForm.styles"
 
-export default function TaskEditForm(props: AsideTask) {
+export default function TaskEditForm(props: SelectedTask) {
+  const queryClient = useQueryClient()
+  const { data, isError, isLoading } = useTaskQuery(props.id)
   const { mutate } = useTaskEditMutation(props.projectID)
-  const form = useForm<Task>({
+  const form = useForm<TaskEdit>({
     initialValues: {
-      ...props,
+      ...data,
     },
   })
   const { ref, focused } = useFocusWithin()
   const previousFocusedState = usePrevious(focused)
 
-  const { classes } = useStyles()
+  const { classes, theme } = useStyles()
+
+  const deadline = useMemo(() => {
+    const value = data?.deadline ? new Date(data.deadline) : null
+    return value
+  }, [data?.deadline])
 
   useEffect(() => {
-    form.setValues(props)
-  }, [props])
+    form.setValues({ ...data })
+  }, [data])
 
   useEffect(() => {
     if (previousFocusedState !== undefined && previousFocusedState) {
-      if (form.values.name !== props.name)
-        mutate({ id: props.id, name: form.values.name })
+      if (form.values.name !== data?.name)
+        mutate(
+          { id: props.id, name: form.values.name },
+          {
+            onSuccess: (data: Task) => {
+              queryClient.setQueryData(["tasks", { id: data.id }], data)
+            },
+          }
+        )
     }
   }, [focused])
 
@@ -49,7 +67,8 @@ export default function TaskEditForm(props: AsideTask) {
       { id: props.id, is_important: value },
       {
         onSuccess: (data: Task) => {
-          form.setValues(data)
+          form.setValues({ is_important: data.is_important })
+          queryClient.setQueryData(["tasks", { id: data.id }], data)
         },
       }
     )
@@ -60,11 +79,18 @@ export default function TaskEditForm(props: AsideTask) {
       {
         onSuccess: (data: Task) => {
           form.setValues(data)
+          queryClient.setQueryData(["tasks", { id: data.id }], data)
         },
       }
     )
   }
-
+  if (isLoading)
+    return (
+      <Center>
+        <Loader />
+      </Center>
+    )
+  if (isError) return <h1>Error</h1> // TODO set error placeholder
   return (
     <form>
       <Textarea
@@ -78,7 +104,11 @@ export default function TaskEditForm(props: AsideTask) {
         maxRows={4}
       />
       <Group my="md" ml="sm" position="apart">
-        <ProjectSelect {...props} />
+        <ProjectSelect
+          order={data.order}
+          project_id={props.projectID.toString()}
+          section_id={data.section_id}
+        />
         <Button variant="subtle" leftIcon={<Pen size={15} />}>
           Edit note
         </Button>
@@ -100,7 +130,7 @@ export default function TaskEditForm(props: AsideTask) {
               </Center>
             </td>
             <td>
-              <TagList editable tags={props.tags} />
+              <TagList editable tags={data.tags} />
             </td>
           </tr>
           <tr key="importance">
@@ -128,43 +158,42 @@ export default function TaskEditForm(props: AsideTask) {
                 Deadline
               </Center>
             </td>
-            <td>
+            <td className={classes.deadlineCell}>
               <Popover position="top" width={300} withArrow shadow="md">
                 <Popover.Target>
-                  <Badge
-                    rightSection={
-                      props.deadline ? (
-                        <Center
-                          onClick={() => {
-                            onDeadlineUpdate(null)
-                          }}
-                          inline
-                        >
-                          <Close size={15} />
-                        </Center>
-                      ) : undefined
-                    }
-                    sx={{
-                      cursor: "pointer",
-                      paddingRight: props.deadline ? 3 : 5,
-                    }}
-                    variant={props.deadline ? "light" : "outline"}
-                  >
-                    {props.deadline?.toString() || "Add deadline"}
-                  </Badge>
+                  <Box>
+                    <Badge
+                      sx={{
+                        marginBottom: 5,
+                        marginLeft: 5,
+                        cursor: "pointer",
+                        paddingRight: deadline ? 3 : 5,
+                        borderRadius: deadline ? "10px 0 0 10px" : "10px",
+                      }}
+                      variant={deadline ? "light" : "outline"}
+                    >
+                      {deadline?.toISOString() || "Add deadline"}
+                    </Badge>
+                  </Box>
                 </Popover.Target>
                 <Popover.Dropdown>
                   <Calendar
                     className={classes.calendar}
-                    value={
-                      form.values.deadline
-                        ? new Date(form.values.deadline)
-                        : null
-                    }
+                    value={deadline}
                     onChange={onDeadlineUpdate}
                   />
                 </Popover.Dropdown>
               </Popover>
+              {deadline && (
+                <Badge
+                  onClick={() => {
+                    onDeadlineUpdate(null)
+                  }}
+                  className={classes.deadlineRemove}
+                >
+                  x
+                </Badge>
+              )}
             </td>
           </tr>
           <tr key="remind">

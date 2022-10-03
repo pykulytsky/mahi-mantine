@@ -12,27 +12,28 @@ import {
 import Sidebar from "./Sidebar/Sidebar"
 import { useIsFetching } from "@tanstack/react-query"
 import { Task } from "../types"
-import DetailAside from "./Aside/DetailAside"
+import DetailAside from "./Aside/TaskEditAside"
 
-export interface AsideTask extends Task {
+export interface SelectedTask {
+  id: number | string
   projectID: number | string
 }
 
-type AsideContextType = {
-  data: AsideTask | null
-  setData: (data: AsideTask | null) => void
+type SelectedTaskContextType = {
+  selectedTask: SelectedTask | null
+  setSelectedTask: (data: SelectedTask | null) => void
 }
 
-export const AsideContext = createContext<AsideContextType>({
-  data: null,
-  setData: (data: AsideTask | null) => {},
+export const SelectedTaskContext = createContext<SelectedTaskContextType>({
+  selectedTask: null,
+  setSelectedTask: (data: SelectedTask | null) => {},
 })
 
 export default function AppProvider() {
   const isFetching = useIsFetching(["projects", "user"])
-  const [asideData, setAsideData] = useState<AsideTask | null>(null)
+  const [selectedTask, setSelectedTask] = useState<SelectedTask | null>(null)
   return (
-    <AsideContext.Provider value={{ data: asideData, setData: setAsideData }}>
+    <SelectedTaskContext.Provider value={{ selectedTask, setSelectedTask }}>
       <AppShell
         styles={{
           main: {
@@ -62,6 +63,6 @@ export default function AppProvider() {
           <Outlet />
         </Box>
       </AppShell>
-    </AsideContext.Provider>
+    </SelectedTaskContext.Provider>
   )
 }
