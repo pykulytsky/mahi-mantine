@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { applyTag } from "../api/tags.api"
 import { addTask, editTask, getTask } from "../api/tasks.api"
 import { queryClient } from "../router"
-import { Task } from "../types"
+import { Project, Task } from "../types"
 
 export const taskQuery = (id: string | number) => ({
   queryKey: ["tasks", { id }],

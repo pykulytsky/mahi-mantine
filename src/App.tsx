@@ -35,7 +35,7 @@ export default function App() {
           primaryColor: "emerald",
           fontFamily: "GT Walsheim, sans-serif",
           defaultRadius: "md",
-          black: "#181818",
+          black: "#292d34",
           colors: {
             // dark: [
             //   "#939393",

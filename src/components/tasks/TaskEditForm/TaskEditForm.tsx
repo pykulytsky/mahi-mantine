@@ -20,7 +20,16 @@ import { useEffect, useMemo } from "react"
 import { SelectedTask } from "../../../layout/LayoutProvider"
 import { useTaskEditMutation, useTaskQuery } from "../../../queries/tasks"
 import { Task, TaskEdit } from "../../../types"
-import { Tag, Alert, Deadline, Alarm, Pen, Close } from "../../icons"
+import {
+  Tag,
+  Alert,
+  Deadline,
+  Alarm,
+  Pen,
+  Close,
+  Attach,
+  File,
+} from "../../icons"
 import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
 import { useStyles } from "./TaskEditForm.styles"
@@ -74,8 +83,12 @@ export default function TaskEditForm(props: SelectedTask) {
     )
   }
   function onDeadlineUpdate(value: Date | null) {
+    if (value) value.setDate(value.getDate() + 1)
     mutate(
-      { id: props.id, deadline: value ? value.getTime() : null },
+      {
+        id: props.id,
+        deadline: value ? value.toISOString().split("T")[0] : null,
+      },
       {
         onSuccess: (data: Task) => {
           form.setValues(data)
@@ -103,13 +116,19 @@ export default function TaskEditForm(props: SelectedTask) {
         minRows={1}
         maxRows={4}
       />
-      <Group my="md" ml="sm" position="apart">
+      <Group noWrap my="md" ml="sm" position="apart">
         <ProjectSelect
+          id={data.id}
           order={data.order}
           project_id={props.projectID.toString()}
           section_id={data.section_id}
         />
-        <Button variant="subtle" leftIcon={<Pen size={15} />}>
+        <Button
+          variant="subtle"
+          leftIcon={
+            <File size={20} color={theme.colors[theme.primaryColor][2]} />
+          }
+        >
           Edit note
         </Button>
       </Group>
@@ -169,15 +188,17 @@ export default function TaskEditForm(props: SelectedTask) {
                         cursor: "pointer",
                         paddingRight: deadline ? 3 : 5,
                         borderRadius: deadline ? "10px 0 0 10px" : "10px",
+                        borderRight: deadline ? 0 : "1px solid currentColor",
                       }}
-                      variant={deadline ? "light" : "outline"}
+                      variant={deadline ? "dot" : "outline"}
                     >
-                      {deadline?.toISOString() || "Add deadline"}
+                      {deadline?.toISOString().split("T")[0] || "Add deadline"}
                     </Badge>
                   </Box>
                 </Popover.Target>
                 <Popover.Dropdown>
                   <Calendar
+                    excludeDate={(date: Date) => date < new Date()}
                     className={classes.calendar}
                     value={deadline}
                     onChange={onDeadlineUpdate}
@@ -202,6 +223,16 @@ export default function TaskEditForm(props: SelectedTask) {
                 <Alarm size={18} />
                 <Space w="xs" />
                 Remind
+              </Center>
+            </td>
+            <td></td>
+          </tr>
+          <tr key="files">
+            <td>
+              <Center inline>
+                <Attach size={18} />
+                <Space w="xs" />
+                Attached files
               </Center>
             </td>
             <td></td>

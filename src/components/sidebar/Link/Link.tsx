@@ -12,7 +12,6 @@ import { Link } from "@tanstack/react-location"
 import { useStyles } from "./Link.styles"
 
 interface SidebarLinkProps {
-  id?: number
   icon?: ReactNode | string
   label: string
   color?: string
@@ -52,6 +51,8 @@ export default function SidebarLink(props: SidebarLinkProps) {
                   sx={{
                     backgroundColor: !props.color ? "inherit" : "none",
                     borderRadius: 12,
+                    transform: isActive ? "scale(1.1)" : "none",
+                    transition: "transform .2s ease-in-out",
                   }}
                   variant={
                     isActive

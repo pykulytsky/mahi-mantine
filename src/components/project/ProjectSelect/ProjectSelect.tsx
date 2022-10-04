@@ -1,4 +1,5 @@
 import { Group, Loader, Select, Text } from "@mantine/core"
+import { useQueryClient } from "@tanstack/react-query"
 import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react"
 import { useOwnProjects, useReorderMutation } from "../../../queries/projects"
 import { Task } from "../../../types"
@@ -23,12 +24,14 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
 )
 
 type ProjectSelect = {
+  id: number
   project_id: string
   section_id: number | string
   order: number | string
 }
 
 export default function ProjectSelect(props: ProjectSelect) {
+  const queryClient = useQueryClient()
   const { data: projects, isLoading, isError } = useOwnProjects()
   const [value, setValue] = useState<string>(
     props.section_id
@@ -88,6 +91,7 @@ export default function ProjectSelect(props: ProjectSelect) {
       },
       {
         onSuccess: (data) => {
+          queryClient.invalidateQueries(["tasks", { id: props.id }])
           setValue(
             data.section_id
               ? `section-${data.section_id}`

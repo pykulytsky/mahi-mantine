@@ -26,10 +26,11 @@ export const useStyles = createStyles((theme) => ({
   },
   deadlineRemove: {
     borderRadius: "0 10px 10px 0",
-    padding: 2,
+    padding: 3,
     cursor: "pointer",
+    background: theme.colors.red[5],
     "&:hover": {
-      background: theme.colors.red[5],
+      background: theme.colors.red[7],
     },
   },
   deadlineCell: {
