@@ -78,10 +78,13 @@ export declare type TaskReorder = {
   destinationOrder: string | number
 }
 
-export declare type Tag = {
-  id: number
+export declare interface TagCreate {
   name: string
   color?: string
+}
+
+export declare interface Tag extends TagCreate {
+  id: number
 }
 
 export declare type CreateTaskFormType = {

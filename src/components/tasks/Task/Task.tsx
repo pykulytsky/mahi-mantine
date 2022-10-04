@@ -10,6 +10,7 @@ import {
   Spoiler,
   Badge,
   Box,
+  Tooltip,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -21,7 +22,7 @@ import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { Menu, Drag, Task as IconTask } from "../../icons"
+import { Menu, Drag, Task as IconTask, Deadline, Calendar } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 
 export interface TaskProps extends TaskType {
@@ -140,26 +141,29 @@ export default function Task(props: TaskProps) {
               >
                 {props.name}
               </Text>
-              // <Textarea
-              //   sx={{
-              //     width: "58vw",
-              //     input: {
-              //       border: "none",
-              //     },
-              //   }}
-              //   radius="md"
-              //   size="md"
-              //   variant="unstyled"
-              //   value={props.name}
-              //   autosize
-              //   minRows={1}
-              // />
             }
           />
           {props.tags.length > 0 && (
-            <Box ml={35}>
+            <Group spacing={5} ml={35}>
+              {props.deadline && (
+                <Tooltip position="bottom" label={props.deadline.toString()}>
+                  <Badge
+                    sx={{
+                      span: {
+                        lineHeight: 1,
+                      },
+                    }}
+                    variant="dot"
+                    color={
+                      new Date(props.deadline) <= new Date() ? "red" : "green"
+                    }
+                  >
+                    <Calendar size={15} />
+                  </Badge>
+                </Tooltip>
+              )}
               <TagList tags={props.tags} />
-            </Box>
+            </Group>
           )}
           {props.description && (
             <Spoiler

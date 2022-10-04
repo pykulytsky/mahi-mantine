@@ -1,4 +1,4 @@
-import { Tag, TagItem, TagItemCreate, Task } from "../types"
+import { Tag, TagCreate, TagItem, TagItemCreate, Task } from "../types"
 import http from "./axios"
 
 const BASE_URL: string = "/tags/"
@@ -23,10 +23,17 @@ export const applyTag = async (tag: TagItemCreate): Promise<TagItem> => {
   return data
 }
 
-
 export const removeTag = async (tag: TagItemCreate): Promise<Task> => {
   const { data } = await http.post<Task>("/tag_items/remove", {
-    ...tag
+    ...tag,
+  })
+
+  return data
+}
+
+export const createTag = async (tag: TagCreate): Promise<Tag> => {
+  const { data } = await http.post<Tag>(BASE_URL, {
+    ...tag,
   })
 
   return data

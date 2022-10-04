@@ -11,7 +11,7 @@ type TagListProps = {
 
 export default function TagList(props: TagListProps) {
   return (
-    <Group spacing="xs">
+    <Group spacing={5}>
       {props.tags.map((tag) => (
         <Tag editable={props.editable} key={tag.id} {...tag} />
       ))}

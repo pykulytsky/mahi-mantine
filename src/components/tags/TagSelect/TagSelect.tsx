@@ -3,7 +3,7 @@ import { IconPlus } from "@tabler/icons"
 import { useQueryClient } from "@tanstack/react-query"
 import { forwardRef, useContext, useMemo, useState } from "react"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { useTags } from "../../../queries/tags"
+import { useTagCreateMutation, useTags } from "../../../queries/tags"
 import { useApplyTagMutation } from "../../../queries/tasks"
 import { Tag } from "../../../types"
 
@@ -40,6 +40,7 @@ export default function TagSelect(props: TagSelectProps) {
   const [opened, setOpened] = useState(false)
   const { data, isLoading, isError } = useTags()
   const { mutate } = useApplyTagMutation()
+  const tagCreateMutation = useTagCreateMutation()
   const queryClient = useQueryClient()
   const tags = useMemo(() => {
     return (
@@ -56,7 +57,7 @@ export default function TagSelect(props: TagSelectProps) {
   }, [data, props.tags])
 
   function onTagApply(value: any) {
-    if (selectedTask) {
+    if (selectedTask && value) {
       mutate(
         {
           task_id: Number(selectedTask.id),
@@ -77,6 +78,24 @@ export default function TagSelect(props: TagSelectProps) {
         }
       )
     }
+  }
+
+  function onTagCreate(query: string): string {
+    let newTaskID: string = ""
+    if (query.length > 1) {
+      tagCreateMutation.mutate(
+        {
+          name: query,
+        },
+        {
+          onSuccess: (data) => {
+            console.log("success")
+            newTaskID = data.id.toString()
+          },
+        }
+      )
+    }
+    return newTaskID
   }
 
   if (isLoading) return <Loader size="xs" />
@@ -101,7 +120,10 @@ export default function TagSelect(props: TagSelectProps) {
           searchable
           itemComponent={TagSelectItem}
           data={tags}
+          creatable
           onChange={onTagApply}
+          getCreateLabel={(query) => `+ Create ${query}`}
+          onCreate={onTagCreate}
         />
       </Popover.Dropdown>
     </Popover>
