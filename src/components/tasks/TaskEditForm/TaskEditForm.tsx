@@ -162,10 +162,15 @@ export default function TaskEditForm(props: SelectedTask) {
             </td>
             <td>
               <Chip
+                sx={{
+                  label: {
+                    paddingLeft: `${theme.spacing.lg}px !important`,
+                  },
+                }}
                 onChange={onImportanceUpdate}
                 checked={form.values.is_important}
               >
-                {form.values.is_important ? "true" : "false"}
+                {form.values.is_important ? "" : "~"}
               </Chip>
             </td>
           </tr>
@@ -177,44 +182,45 @@ export default function TaskEditForm(props: SelectedTask) {
                 Deadline
               </Center>
             </td>
-            <td className={classes.deadlineCell}>
-              <Popover position="top" width={300} withArrow shadow="md">
-                <Popover.Target>
-                  <Box>
-                    <Badge
-                      sx={{
-                        marginBottom: 5,
-                        marginLeft: 5,
-                        cursor: "pointer",
-                        paddingRight: deadline ? 3 : 5,
-                        borderRadius: deadline ? "10px 0 0 10px" : "10px",
-                        borderRight: deadline ? 0 : "1px solid currentColor",
-                      }}
-                      variant={deadline ? "dot" : "outline"}
-                    >
-                      {deadline?.toISOString().split("T")[0] || "Add deadline"}
-                    </Badge>
-                  </Box>
-                </Popover.Target>
-                <Popover.Dropdown>
-                  <Calendar
-                    excludeDate={(date: Date) => date < new Date()}
-                    className={classes.calendar}
-                    value={deadline}
-                    onChange={onDeadlineUpdate}
-                  />
-                </Popover.Dropdown>
-              </Popover>
-              {deadline && (
-                <Badge
-                  onClick={() => {
-                    onDeadlineUpdate(null)
-                  }}
-                  className={classes.deadlineRemove}
-                >
-                  x
-                </Badge>
-              )}
+            <td>
+              <Box className={classes.deadlineCell}>
+                <Popover position="top" width={300} withArrow shadow="md">
+                  <Popover.Target>
+                    <Box>
+                      <Badge
+                        sx={{
+                          marginBottom: 5,
+                          cursor: "pointer",
+                          borderRadius: deadline ? "10px 0 0 10px" : "10px",
+                          borderRight: deadline ? 0 : "1px solid currentColor",
+                        }}
+                        variant={deadline ? "dot" : "outline"}
+                      >
+                        {deadline?.toISOString().split("T")[0] ||
+                          "Add deadline"}
+                      </Badge>
+                    </Box>
+                  </Popover.Target>
+                  <Popover.Dropdown>
+                    <Calendar
+                      excludeDate={(date: Date) => date < new Date()}
+                      className={classes.calendar}
+                      value={deadline}
+                      onChange={onDeadlineUpdate}
+                    />
+                  </Popover.Dropdown>
+                </Popover>
+                {deadline && (
+                  <Badge
+                    onClick={() => {
+                      onDeadlineUpdate(null)
+                    }}
+                    className={classes.deadlineRemove}
+                  >
+                    x
+                  </Badge>
+                )}
+              </Box>
             </td>
           </tr>
           <tr key="remind">

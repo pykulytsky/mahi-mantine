@@ -81,21 +81,32 @@ export default function TagSelect(props: TagSelectProps) {
   }
 
   function onTagCreate(query: string): string {
-    let newTaskID: string = ""
     if (query.length > 1) {
-      tagCreateMutation.mutate(
-        {
+      if (query.split(":").length == 1) {
+        tagCreateMutation.mutate({
           name: query,
-        },
-        {
-          onSuccess: (data) => {
-            console.log("success")
-            newTaskID = data.id.toString()
-          },
+        })
+      } else if (query.split(":").length == 2) {
+        const [name, color] = query.split(":")
+        if (props.tags.map((tag) => tag.name).includes(name)) {
+          return ""
         }
-      )
+        tagCreateMutation.mutate({
+          name,
+          color: color.length > 2 ? color : undefined,
+        })
+      }
     }
-    return newTaskID
+    return ""
+  }
+
+  function getCreateLabel(query: string): string {
+    if (query.split(":").length == 2) {
+      const [name, color] = query.split(":")
+
+      if (color.length > 2) return `+ Create ${name} with ${color} color`
+    }
+    return "+ Create " + query
   }
 
   if (isLoading) return <Loader size="xs" />
@@ -122,7 +133,7 @@ export default function TagSelect(props: TagSelectProps) {
           data={tags}
           creatable
           onChange={onTagApply}
-          getCreateLabel={(query) => `+ Create ${query}`}
+          getCreateLabel={getCreateLabel}
           onCreate={onTagCreate}
         />
       </Popover.Dropdown>

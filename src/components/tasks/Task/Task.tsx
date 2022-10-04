@@ -150,7 +150,7 @@ export default function Task(props: TaskProps) {
                   <Badge
                     sx={{
                       span: {
-                        lineHeight: 1,
+                        lineHeight: 0.1,
                       },
                     }}
                     variant="dot"
