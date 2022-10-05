@@ -56,47 +56,6 @@ export default function GlobalStyles() {
         },
 
         {
-          "@font-face": {
-            fontFamily: "GT Maru",
-            src: `url('${regularMaru}') format("woff2")`,
-            fontWeight: 400,
-            fontStyle: "normal",
-          },
-        },
-        {
-          "@font-face": {
-            fontFamily: "GT Maru",
-            src: `url('${obliqueMaru}') format("woff2")`,
-            fontWeight: 400,
-            fontStyle: "oblique",
-          },
-        },
-        {
-          "@font-face": {
-            fontFamily: "GT Maru",
-            src: `url('${mediumMaru}') format("woff2")`,
-            fontWeight: 500,
-            fontStyle: "normal",
-          },
-        },
-        {
-          "@font-face": {
-            fontFamily: "GT Maru",
-            src: `url('${boldMaru}') format("woff2")`,
-            fontWeight: 700,
-            fontStyle: "normal",
-          },
-        },
-        {
-          "@font-face": {
-            fontFamily: "GT Maru",
-            src: `url('${blackMaru}') format("woff2")`,
-            fontWeight: 900,
-            fontStyle: "normal",
-          },
-        },
-
-        {
           "::selection": {
             background:
               theme.colors[theme.primaryColor][

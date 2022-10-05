@@ -24,6 +24,7 @@ import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { Menu, Drag, Task as IconTask, Deadline, Calendar } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
+import TaskMenu from "../TaskMenu/TaskMenu"
 
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
@@ -178,14 +179,11 @@ export default function Task(props: TaskProps) {
             </Spoiler>
           )}
         </Stack>
-        <ActionIcon
-          sx={{
-            opacity: hovered ? 1 : 0,
-            transition: "opacity .2s linear",
-          }}
-        >
-          <Menu size={20} />
-        </ActionIcon>
+        <TaskMenu
+          hovered={hovered}
+          taskID={props.id}
+          projectID={props.project_id}
+        />
       </Group>
     </Container>
   )
