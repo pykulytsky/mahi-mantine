@@ -12,6 +12,10 @@ export const useStyles = createStyles((theme) => ({
     margin: 8,
     top: 0,
     zIndex: 100,
+    boxShadow:
+      theme.colorScheme === "light"
+        ? "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"
+        : "rgba(14, 14, 14, 0.2) 0px 7px 29px 0px;",
   },
 
   header: {

@@ -11,10 +11,12 @@ import {
   Table,
   Text,
   Textarea,
+  CheckIcon,
 } from "@mantine/core"
 import { Calendar, DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
-import { useFocusWithin, usePrevious } from "@mantine/hooks"
+import { useFocusWithin, usePrevious, useToggle } from "@mantine/hooks"
+import RichTextEditor from "@mantine/rte"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
 import { SelectedTask } from "../../../layout/LayoutProvider"
@@ -43,6 +45,7 @@ export default function TaskEditForm(props: SelectedTask) {
       ...data,
     },
   })
+  const [noteVisible, setNoteVisible] = useToggle()
   const { ref, focused } = useFocusWithin()
   const previousFocusedState = usePrevious(focused)
 
@@ -97,6 +100,27 @@ export default function TaskEditForm(props: SelectedTask) {
       }
     )
   }
+
+  function onNoteButtonClick() {
+    if (noteVisible) {
+      if (form.values.description !== data?.description) {
+        mutate(
+          {
+            id: props.id,
+            description: form.values.description,
+          },
+          {
+            onSuccess: (data: Task) => {
+              form.setValues(data)
+              queryClient.setQueryData(["tasks", { id: data.id }], data)
+            },
+          }
+        )
+      }
+    }
+    setNoteVisible()
+  }
+
   if (isLoading)
     return (
       <Center>
@@ -125,18 +149,29 @@ export default function TaskEditForm(props: SelectedTask) {
         />
         <Button
           variant="subtle"
+          onClick={onNoteButtonClick}
           leftIcon={
-            <File size={20} color={theme.colors[theme.primaryColor][2]} />
+            noteVisible ? (
+              <CheckIcon
+                width={15}
+                color={theme.colors[theme.primaryColor][2]}
+              />
+            ) : (
+              <File size={20} color={theme.colors[theme.primaryColor][2]} />
+            )
           }
         >
-          Edit note
+          {noteVisible ? "Save" : "Edit note"}
         </Button>
       </Group>
+      {noteVisible && (
+        <RichTextEditor mb="md" {...form.getInputProps("description")} />
+      )}
       <Table
         // @ts-ignore
         withColumnBorders
         className={classes.table}
-        verticalSpacing="md"
+        verticalSpacing="sm"
         fontSize="md"
       >
         <tbody>

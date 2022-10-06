@@ -33,7 +33,7 @@ export default function App() {
         theme={{
           colorScheme,
           primaryColor: "indigo",
-          fontFamily: "GT Walsheim, sans-serif",
+          fontFamily: "Kanit, sans-serif",
           defaultRadius: "md",
           black: "#292d34",
           colors: {

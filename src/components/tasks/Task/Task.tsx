@@ -1,6 +1,5 @@
 import {
   Checkbox,
-  createStyles,
   Container,
   Text,
   Group,
@@ -9,20 +8,19 @@ import {
   TypographyStylesProvider,
   Spoiler,
   Badge,
-  Box,
   Tooltip,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
-import { useMatch, useNavigate } from "@tanstack/react-location"
+import { useMatch } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
 import { useContext, useEffect, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { Menu, Drag, Task as IconTask, Deadline, Calendar } from "../../icons"
+import { Drag, Task as IconTask, Calendar } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
 
@@ -39,7 +37,6 @@ export default function Task(props: TaskProps) {
   const {
     params: { projectID: id },
   } = useMatch()
-  const navigate = useNavigate()
   const [isDone, setDone] = useState<boolean>(props.is_done)
   const { setSelectedTask } = useContext(SelectedTaskContext)
 
@@ -150,6 +147,7 @@ export default function Task(props: TaskProps) {
                 <Tooltip position="bottom" label={props.deadline.toString()}>
                   <Badge
                     sx={{
+                      paddingInline: 5,
                       span: {
                         lineHeight: 0.1,
                       },

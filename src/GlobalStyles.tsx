@@ -72,7 +72,7 @@ export default function GlobalStyles() {
             backgroundColor:
               theme.colorScheme === "dark"
                 ? theme.colors.dark[3]
-                : theme.colors.gray[6],
+                : theme.colors.gray[4],
             borderRadius: 5,
           },
           "::-webkit-scrollbar-thumb:window-inactive": {

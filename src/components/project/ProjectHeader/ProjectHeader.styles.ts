@@ -11,7 +11,7 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.fn.rgba(theme.colors.dark[6], 0.7)
-        : "white",
+        : theme.fn.rgba(theme.white, 0.5),
 
     "@media (max-width: 768px)": {
       margin: 0,

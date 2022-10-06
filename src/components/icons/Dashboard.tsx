@@ -12,19 +12,10 @@ const Dashboard = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M7.483 10.261v6.694M12.037 7.057v9.898M16.516 13.798v3.157"
+        d="M8.88 15.12v-4.16m6.24 4.16V12M12 14.08v-5.2m-8.647 6.17a13.354 13.354 0 0 1 0-6.1A7.511 7.511 0 0 1 8.95 3.353c2.006-.47 4.094-.47 6.1 0a7.511 7.511 0 0 1 5.597 5.597c.47 2.006.47 4.094 0 6.1a7.511 7.511 0 0 1-5.597 5.597c-2.006.47-4.094.47-6.1 0a7.511 7.511 0 0 1-5.597-5.597Z"
         stroke={color}
         strokeWidth={1.5}
         strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        clipRule="evenodd"
-        d="M2.3 12.037C2.3 4.735 4.735 2.3 12.037 2.3s9.737 2.435 9.737 9.737-2.435 9.737-9.737 9.737S2.3 19.339 2.3 12.037Z"
-        stroke={color}
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   )

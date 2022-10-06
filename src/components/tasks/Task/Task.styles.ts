@@ -8,7 +8,6 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
     "&:hover": {
       background:
         theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-      boxShadow: theme.shadows.sm,
     },
   },
   task: {
