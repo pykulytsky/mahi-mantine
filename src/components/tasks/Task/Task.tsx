@@ -15,12 +15,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
 import { useMatch } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { Drag, Task as IconTask, Calendar } from "../../icons"
+import { Drag, Task as IconTask, Calendar, Plus } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
 import ReactionList from "../../tags/Reaction/ReactionList"
@@ -44,6 +44,10 @@ export default function Task(props: TaskProps) {
   useEffect(() => {
     setDone(props.is_done)
   }, [props.is_done])
+
+  const extraActionsVisible = useMemo(() => {
+    return !!props.tags.length || !!props.reactions.length || !!props.deadline
+  }, [props.tags, props.reactions, props.deadline])
 
   const taskMutation = useMutation(editTask)
 
@@ -172,6 +176,17 @@ export default function Task(props: TaskProps) {
                   reactions={props.reactions}
                   projectID={props.project_id || id}
                 />
+              )}
+              {extraActionsVisible && (
+                <Tooltip label="Add...">
+                  <ActionIcon
+                    size="sm"
+                    variant="light"
+                    color={theme.primaryColor}
+                  >
+                    <Plus size={20} />
+                  </ActionIcon>
+                </Tooltip>
               )}
             </Group>
           )}

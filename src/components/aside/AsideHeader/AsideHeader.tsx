@@ -9,6 +9,7 @@ import {
 } from "@mantine/core"
 import { useContext } from "react"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
+import { useReactionAddMutation } from "../../../queries/tasks"
 import { SiderClose, Trash, Comment, Plus, Face } from "../../icons"
 import { useStyles } from "./AsideHeader.styles"
 
@@ -20,6 +21,8 @@ type AsideHeaderProps = {
 export default function AsideHeader(props: AsideHeaderProps) {
   const { classes, theme } = useStyles()
   const { selectedTask } = useContext(SelectedTaskContext)
+  const add = useReactionAddMutation(selectedTask?.projectID || -1)
+
   return (
     <Paper className={classes.root}>
       <Group position="apart">

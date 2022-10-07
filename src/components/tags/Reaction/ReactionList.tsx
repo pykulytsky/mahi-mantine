@@ -8,7 +8,7 @@ import {
 } from "@mantine/core"
 import { useUser } from "../../../queries/user"
 import { Reaction } from "../../../types"
-import { Plus } from "../../icons"
+import { FaceAdd, Plus } from "../../icons"
 import ReactionTag from "./Reaction"
 // @ts-ignore
 import Picker from "@emoji-mart/react"
@@ -42,25 +42,23 @@ export default function ReactionList(props: ReactionListProps) {
   if (isError) return <p>Error</p>
   return (
     <Group spacing={3}>
-      {props.reactions
-        .filter((reaction) => reaction.users.length > 0)
-        .map((reaction) => (
-          <ReactionTag
-            projectID={props.projectID}
-            key={reaction.id}
-            {...reaction}
-            userID={user.id}
-          />
-        ))}
+      {props.reactions.map((reaction) => (
+        <ReactionTag
+          projectID={props.projectID}
+          key={reaction.id}
+          {...reaction}
+          userID={user.id}
+        />
+      ))}
       <Popover>
         <Popover.Target>
           <Tooltip label="Add reaction">
             <ActionIcon variant="light" color={theme.primaryColor} size="sm">
-              <Plus size={20} />
+              <FaceAdd size={15} />
             </ActionIcon>
           </Tooltip>
         </Popover.Target>
-        <Popover.Dropdown>
+        <Popover.Dropdown sx={{ padding: 0 }}>
           <Picker
             perLine={8}
             previewPosition="none"

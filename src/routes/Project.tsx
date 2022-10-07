@@ -81,7 +81,7 @@ export default function ProjectRoot() {
     <MantineProvider
       inherit
       theme={{
-        primaryColor: accentColor,
+        primaryColor: accentColor || "indigo",
       }}
     >
       <ProjectHeader

@@ -1,7 +1,7 @@
 import useColor from "./color"
 import { IconProps } from "./types"
 
-const Face = (props: IconProps) => {
+const FaceAdd = (props: IconProps) => {
   const color = useColor(props.color)
   return (
     <svg
@@ -18,8 +18,9 @@ const Face = (props: IconProps) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <path stroke={color} strokeLinecap="round" d="M20.5.5v6M23.5 3.5h-6" />
     </svg>
   )
 }
 
-export default Face
+export default FaceAdd
