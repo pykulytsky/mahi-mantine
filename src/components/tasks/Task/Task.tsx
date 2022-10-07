@@ -23,6 +23,7 @@ import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { Drag, Task as IconTask, Calendar } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
+import ReactionList from "../../tags/Reaction/ReactionList"
 
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
@@ -166,6 +167,12 @@ export default function Task(props: TaskProps) {
                 </Tooltip>
               )}
               <TagList tags={props.tags} />
+              {props.reactions.length > 0 && (
+                <ReactionList
+                  reactions={props.reactions}
+                  projectID={props.project_id || id}
+                />
+              )}
             </Group>
           )}
           {props.description && (

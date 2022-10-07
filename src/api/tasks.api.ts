@@ -1,4 +1,10 @@
-import { CreateTaskFormType, Task, TaskEdit, TaskReorder } from "../types"
+import {
+  CreateTaskFormType,
+  ReactionCreate,
+  Task,
+  TaskEdit,
+  TaskReorder,
+} from "../types"
 import http from "./axios"
 
 const BASE_URL = "/tasks/"
@@ -41,4 +47,18 @@ export const addTask = async (
 
 export const deleteTask = async (task: Pick<TaskEdit, "id">): Promise<void> => {
   await http.delete(BASE_URL + task.id)
+}
+
+export const addReaction = async (reaction: ReactionCreate): Promise<Task> => {
+  const { data } = await http.post("/reactions/", { ...reaction })
+
+  return data
+}
+
+export const removeReaction = async (
+  reaction: ReactionCreate
+): Promise<Task> => {
+  const { data } = await http.post("/reactions/remove", { ...reaction })
+
+  return data
 }

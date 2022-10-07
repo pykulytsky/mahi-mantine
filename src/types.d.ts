@@ -41,6 +41,16 @@ export declare type Section = {
   tasks: Task[]
 }
 
+export interface ReactionCreate {
+  task_id: number
+  emoji: string
+}
+
+export interface Reaction extends ReactionCreate {
+  id: number
+  users: User[]
+}
+
 export declare interface Task {
   id: number
   order: number
@@ -53,6 +63,7 @@ export declare interface Task {
   is_important: boolean
   remind_at?: Date
   tags: Tag[]
+  reactions: Reaction[]
   project_id?: int
   section_id?: int
 }
