@@ -109,7 +109,7 @@ export default function Sidebar() {
         <SidebarLink
           opened={opened}
           label="All Projects"
-          icon={<Project size={20} />}
+          icon={<Project size={25} />}
           to="/app/projects"
           rightSection={
             <Tooltip label="New project">

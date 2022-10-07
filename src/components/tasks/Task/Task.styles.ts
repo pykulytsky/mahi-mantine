@@ -1,4 +1,34 @@
-import { createStyles } from "@mantine/core"
+import { createStyles, keyframes } from "@mantine/core"
+
+export const jelly = keyframes({
+  from: {
+    transform: "scale(1, 1)",
+  },
+
+  "30%": {
+    transform: "scale(1.25, 0.75)",
+  },
+
+  "40%": {
+    transform: "scale(0.75, 1.25)",
+  },
+
+  "50%": {
+    transform: "scale(1.15, 0.85)",
+  },
+
+  "65%": {
+    transform: "scale(0.95, 1.05)",
+  },
+
+  "75%": {
+    transform: "scale(1.05, 0.95)",
+  },
+
+  to: {
+    transform: "scale(1, 1)",
+  },
+})
 
 export const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
@@ -24,6 +54,9 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
           ? theme.colors.dark[4]
           : theme.colors.gray[5]
       }`,
+      "&:checked": {
+        animation: `${jelly} 0.6s ease`,
+      },
     },
   },
   draggingRoot: {

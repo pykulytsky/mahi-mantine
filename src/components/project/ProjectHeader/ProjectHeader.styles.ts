@@ -2,6 +2,7 @@ import { createStyles } from "@mantine/core"
 
 export const useStyles = createStyles((theme, hovered: boolean) => ({
   root: {
+    boxShadow: theme.shadows.sm,
     margin: theme.spacing.xl,
     padding: theme.spacing.sm,
     position: "sticky",

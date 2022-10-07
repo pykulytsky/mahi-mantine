@@ -218,7 +218,7 @@ export default function TaskEditForm(props: SelectedTask) {
               </Center>
             </td>
             <td>
-              <Box className={classes.deadlineCell}>
+              <Center inline className={classes.deadlineCell}>
                 <Popover position="top" width={300} withArrow shadow="md">
                   <Popover.Target>
                     <Box>
@@ -252,10 +252,10 @@ export default function TaskEditForm(props: SelectedTask) {
                     }}
                     className={classes.deadlineRemove}
                   >
-                    x
+                    <Close size={10} color="white" />
                   </Badge>
                 )}
-              </Box>
+              </Center>
             </td>
           </tr>
           <tr key="remind">

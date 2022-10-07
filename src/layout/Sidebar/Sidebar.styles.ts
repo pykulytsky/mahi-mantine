@@ -2,7 +2,7 @@ import { createStyles } from "@mantine/core"
 
 export const useStyles = createStyles((theme) => ({
   navbar: {
-    height: "98vh",
+    height: "calc(100vh - 16px)",
     borderRadius: theme.radius.lg,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,

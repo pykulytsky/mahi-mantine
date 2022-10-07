@@ -10,14 +10,6 @@ export const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.lg,
     transition: ".2s all ease-in",
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
   },
 
   link: {

@@ -2,21 +2,17 @@ import { createContext, useState } from "react"
 import { Outlet } from "@tanstack/react-location"
 import {
   AppShell,
-  Aside,
   Box,
   LoadingOverlay,
-  MediaQuery,
-  Text,
-  Transition,
 } from "@mantine/core"
 import Sidebar from "./Sidebar/Sidebar"
 import { useIsFetching } from "@tanstack/react-query"
-import { Task } from "../types"
 import DetailAside from "./Aside/TaskEditAside"
 
 export interface SelectedTask {
   id: number | string
   projectID: number | string
+  color?: string
 }
 
 type SelectedTaskContextType = {

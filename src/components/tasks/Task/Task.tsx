@@ -75,7 +75,11 @@ export default function Task(props: TaskProps) {
       event.target.classList.contains("mantine-Stack-root") ||
       event.target.classList.contains("mantine-Text-root")
     ) {
-      setSelectedTask({ id: props.id, projectID: props.project_id || id })
+      setSelectedTask({
+        id: props.id,
+        projectID: props.project_id || id,
+        color: theme.primaryColor,
+      })
     }
   }
 
@@ -117,7 +121,7 @@ export default function Task(props: TaskProps) {
             sx={{
               input: {
                 border: props.is_important
-                  ? `2px solid ${theme.colors.red[5]}`
+                  ? `2px solid ${theme.colors.red[4]}`
                   : `2px solid ${
                       theme.colorScheme === "dark"
                         ? theme.colors.dark[4]

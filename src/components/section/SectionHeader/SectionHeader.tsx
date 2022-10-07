@@ -4,9 +4,9 @@ import {
   Text,
   Paper,
   ActionIcon,
-  createStyles,
   Button,
   Transition,
+  Badge,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { useStyles } from "./SectionHeader.styles"
@@ -43,10 +43,7 @@ export default function SectionHeader(props: ProjectHeaderProps) {
           {props.name}
         </Text>
         {props.tasksCount && (
-          <Text italic size="sm">
-            <span>{props.tasksCount[0]}</span> of{" "}
-            <span>{props.tasksCount[1]}</span>
-          </Text>
+          <Badge>{props.tasksCount[1] - props.tasksCount[0]}</Badge>
         )}
         <Transition
           mounted={!props.formVisible}
