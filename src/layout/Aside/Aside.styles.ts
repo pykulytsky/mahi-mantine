@@ -4,7 +4,7 @@ export const useStyles = createStyles((theme) => ({
   root: {
     padding: 0,
     position: "sticky",
-    top: 0,
+    top: 8,
     height: "calc(100vh - 16px)",
     overflow: "hidden",
     borderRadius: theme.radius.lg,

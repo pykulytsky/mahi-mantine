@@ -2,7 +2,6 @@ import { Group, Loader, Select, Text } from "@mantine/core"
 import { useQueryClient } from "@tanstack/react-query"
 import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react"
 import { useOwnProjects, useReorderMutation } from "../../../queries/projects"
-import { Task } from "../../../types"
 import { Project } from "../../icons"
 
 export type SelectItemProps = {

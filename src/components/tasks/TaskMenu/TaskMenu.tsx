@@ -6,6 +6,7 @@ import { useTaskDeleteMutation } from "../../../queries/tasks"
 import { Menu as MenuIcon, Pen } from "../../icons"
 import SimpleArrowDown from "../../icons/SimpleArrowDown"
 import SimpleArrowTop from "../../icons/SimpleArrowTop"
+import Subtask from "../../icons/Subtask"
 import Trash from "../../icons/Trash"
 
 type TaskMenuProps = {
@@ -65,6 +66,7 @@ export default function TaskMenu(props: TaskMenuProps) {
         <Menu.Item icon={<SimpleArrowDown size={15} />}>
           Add task below
         </Menu.Item>
+        <Menu.Item icon={<Subtask size={15} />}>Add subtask</Menu.Item>
         <Menu.Item
           onClick={onTaskDelete}
           color="red"

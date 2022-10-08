@@ -1,8 +1,6 @@
 import {
   Group,
-  Title,
   Paper,
-  ActionIcon,
   useMantineTheme,
   Button,
   Popover,
@@ -20,7 +18,8 @@ import ProjectActions from "../ProjectActions"
 import { useEffect, useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
-import { Todo, File as FileIcon, Task } from "../../icons"
+import { Task } from "../../icons"
+import { ProjectButton } from "../ProjectButton"
 
 interface ProjectHeaderProps {
   project: Project
@@ -72,22 +71,10 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
         <Group spacing="md">
           <Popover position="right-end">
             <Popover.Target>
-              <ActionIcon
+              <ProjectButton
                 loading={!!isFetching || !!isMutating}
-                variant="light"
-                size={55}
-                radius="lg"
-                color={theme.colors[theme.primaryColor][5]}
-              >
-                {props.project.icon ? (
-                  <Title order={2}>{props.project.icon}</Title>
-                ) : (
-                  <FileIcon
-                    size={30}
-                    color={theme.colors[theme.primaryColor][2]}
-                  />
-                )}
-              </ActionIcon>
+                icon={props.project.icon}
+              />
             </Popover.Target>
             <Popover.Dropdown p={0}>
               <ColorEmojiPicker

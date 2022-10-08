@@ -10,6 +10,7 @@ export type AsideProps = {
   opened: boolean
   toggle: () => void
   content: ReactNode
+  actions?: ReactNode
 }
 
 export default function Aside(props: AsideProps) {
@@ -24,7 +25,7 @@ export default function Aside(props: AsideProps) {
         }}
       >
         <AsideComponent className={classes.root}>
-          <AsideHeader toggleAside={props.toggle} />
+          <AsideHeader toggleAside={props.toggle} actions={props.actions} />
           <AsideContent>{props.content}</AsideContent>
           <AsideBottom />
         </AsideComponent>

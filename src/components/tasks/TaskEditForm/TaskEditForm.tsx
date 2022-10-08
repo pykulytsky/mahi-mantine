@@ -1,19 +1,14 @@
 import {
-  Badge,
-  Box,
   Button,
   Center,
   Chip,
   Group,
   Loader,
-  Popover,
-  Space,
   Table,
-  Text,
   Textarea,
   CheckIcon,
+  Space,
 } from "@mantine/core"
-import { Calendar, DatePicker } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious, useToggle } from "@mantine/hooks"
 import RichTextEditor from "@mantine/rte"
@@ -22,18 +17,10 @@ import { useEffect, useMemo } from "react"
 import { SelectedTask } from "../../../layout/LayoutProvider"
 import { useTaskEditMutation, useTaskQuery } from "../../../queries/tasks"
 import { Task, TaskEdit } from "../../../types"
-import {
-  Tag,
-  Alert,
-  Deadline,
-  Alarm,
-  Pen,
-  Close,
-  Attach,
-  File,
-} from "../../icons"
+import { Tag, Alert, Deadline, Alarm, Attach, File } from "../../icons"
 import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
+import DeadlinePicker from "./DeadlinePicker"
 import { useStyles } from "./TaskEditForm.styles"
 
 export default function TaskEditForm(props: SelectedTask) {
@@ -218,44 +205,10 @@ export default function TaskEditForm(props: SelectedTask) {
               </Center>
             </td>
             <td>
-              <Center inline className={classes.deadlineCell}>
-                <Popover position="top" width={300} withArrow shadow="md">
-                  <Popover.Target>
-                    <Box>
-                      <Badge
-                        sx={{
-                          marginBottom: 5,
-                          cursor: "pointer",
-                          borderRadius: deadline ? "10px 0 0 10px" : "10px",
-                          borderRight: deadline ? 0 : "1px solid currentColor",
-                        }}
-                        variant={deadline ? "dot" : "outline"}
-                      >
-                        {deadline?.toISOString().split("T")[0] ||
-                          "Add deadline"}
-                      </Badge>
-                    </Box>
-                  </Popover.Target>
-                  <Popover.Dropdown>
-                    <Calendar
-                      excludeDate={(date: Date) => date < new Date()}
-                      className={classes.calendar}
-                      value={deadline}
-                      onChange={onDeadlineUpdate}
-                    />
-                  </Popover.Dropdown>
-                </Popover>
-                {deadline && (
-                  <Badge
-                    onClick={() => {
-                      onDeadlineUpdate(null)
-                    }}
-                    className={classes.deadlineRemove}
-                  >
-                    <Close size={10} color="white" />
-                  </Badge>
-                )}
-              </Center>
+              <DeadlinePicker
+                deadline={deadline}
+                onDeadlineUpdate={onDeadlineUpdate}
+              />
             </td>
           </tr>
           <tr key="remind">
