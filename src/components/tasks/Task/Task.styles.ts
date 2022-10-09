@@ -34,7 +34,7 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
   root: {
     borderRadius: theme.radius.md,
     cursor: "pointer",
-    transition: "0.2s all ease-in-out",
+    transition: "0.2s background-color ease-in-out",
     "&:hover": {
       background:
         theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
@@ -66,7 +66,7 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
   },
   dragControl: {
     width: 10,
-    transition: "0.2s all ease-in-out",
+    transition: "0.2s opacity ease-in-out",
   },
   dragControlUnvisible: {
     opacity: 0,

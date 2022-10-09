@@ -9,7 +9,7 @@ export const useStyles = createStyles((theme) => ({
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
     borderRadius: theme.radius.lg,
-    transition: ".2s all ease-in",
+    transition: ".2s color ease-in",
   },
 
   link: {

@@ -42,7 +42,7 @@ export default function TaskMenu(props: TaskMenuProps) {
         <ActionIcon
           sx={{
             opacity: props.hovered ? 1 : 0,
-            transition: "opacity .2s linear",
+            transition: "opacity .2s ease-in-out",
           }}
         >
           <MenuIcon size={20} />

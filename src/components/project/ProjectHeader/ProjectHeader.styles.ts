@@ -21,7 +21,7 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
   },
   shownOnHover: {
     opacity: hovered ? 1 : 0,
-    transition: "opacity .2s linear",
+    transition: "opacity .2s ease-out",
   },
   title: {
     cursor: "pointer",

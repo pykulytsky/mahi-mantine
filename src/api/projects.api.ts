@@ -1,5 +1,5 @@
 import http from "./axios"
-import { Project, ProjectEdit } from "../types"
+import { Project, ProjectCreate, ProjectEdit } from "../types"
 
 const BASE_URL: string = "/projects/"
 
@@ -18,6 +18,16 @@ export const fetchProject = async (
 
 export const editProject = async (project: ProjectEdit): Promise<Project> => {
   const { data } = await http.patch<Project>(BASE_URL + project.id, {
+    ...project,
+  })
+
+  return data
+}
+
+export const createProject = async (
+  project: ProjectCreate
+): Promise<Project> => {
+  const { data } = await http.post<Project>(BASE_URL, {
     ...project,
   })
 

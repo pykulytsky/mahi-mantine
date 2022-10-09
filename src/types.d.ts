@@ -8,12 +8,17 @@ export declare type User = {
   tasks_goal_per_day?: number
 }
 
-export declare type Project = {
-  id: number
-  name: string
+export declare interface ProjectCreate {
+  name?: string
   description?: string
   icon?: string
   accent_color?: string
+  is_favorite?: boolean
+}
+
+export declare interface Project extends ProjectCreate {
+  id: number
+  name: string
   is_favorite: boolean
   is_pinned: boolean
   is_editable: boolean
@@ -22,13 +27,8 @@ export declare type Project = {
   tasks: Task[]
 }
 
-export declare type ProjectEdit = {
+export declare interface ProjectEdit extends ProjectCreate {
   id?: number
-  name?: string
-  description?: string
-  icon?: string
-  accent_color?: string
-  is_favorite?: boolean
   is_pinned?: boolean
   is_editable?: boolean
   show_completed_tasks?: boolean

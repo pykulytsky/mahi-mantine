@@ -19,6 +19,8 @@ import { useStyles } from "./Sidebar.styles"
 import SidebarLink from "../../components/sidebar/Link/Link"
 import { useOwnProjects } from "../../queries/projects"
 import { IconPlus } from "@tabler/icons"
+import { openModal } from "@mantine/modals"
+import ProjectCreateForm from "../../components/project/ProjectCreateForm/ProjectCreateForm"
 
 export default function Sidebar() {
   const [opened, setOpened] = useLocalStorage({
@@ -76,6 +78,15 @@ export default function Sidebar() {
       />
     ))
 
+  function onProjectCreate(e: any) {
+    e.preventDefault()
+    openModal({
+      title: "Create new project",
+      children: <ProjectCreateForm />,
+      radius: "lg",
+    })
+  }
+
   return (
     <motion.div
       ref={ref}
@@ -99,7 +110,7 @@ export default function Sidebar() {
         className={classes.mainSection}
         sx={{
           padding: opened ? "0 6px" : "0 10px",
-          transition: ".2s padding linear",
+          transition: ".2s padding ease-out",
         }}
       >
         {defaultLinks}
@@ -112,7 +123,7 @@ export default function Sidebar() {
           to="/app/projects"
           rightSection={
             <Tooltip label="New project">
-              <ActionIcon>
+              <ActionIcon onClick={onProjectCreate}>
                 <IconPlus size={15} />
               </ActionIcon>
             </Tooltip>

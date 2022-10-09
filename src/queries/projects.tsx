@@ -81,3 +81,10 @@ export const useProjectMutation = (id: string) =>
       queryClient.setQueryData(["projects", { id: Number(id) }], data)
     },
   })
+
+export const useProjectCreateMutation = () =>
+  useMutation(createProject, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects", "user"])
+    },
+  })

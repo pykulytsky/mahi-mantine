@@ -5,7 +5,7 @@ export const useStyles = createStyles((theme) => ({
     height: 30,
     width: 30,
     borderRadius: theme.radius.xl,
-    transition: ".2s all linear",
+    transition: ".2s scale, border ease-out",
     cursor: "pinter",
 
     "&:hover": {

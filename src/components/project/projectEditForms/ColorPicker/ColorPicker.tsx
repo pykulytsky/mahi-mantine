@@ -10,7 +10,6 @@ import {
 import { ProjectEdit } from "../../../../types"
 import { useStyles } from "./ColorPicker.styles"
 
-
 type ColorPickerProps = {
   color?: string
   updateProject: (project: ProjectEdit) => void
@@ -47,9 +46,6 @@ export default function ColorPicker(props: ColorPickerProps) {
 
   return (
     <Container p={0} pl="lg" pr="lg" mb="sm" mt="sm">
-      <Title m="sm" order={5}>
-        Pick a color
-      </Title>
       <Group mb="xs" position="apart" spacing="xs">
         {swatches.slice(0, 7)}
       </Group>
