@@ -7,7 +7,6 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core"
-import { closeAllModals } from "@mantine/modals"
 import { useForm } from "@mantine/form"
 import { ProjectCreate } from "../../../types"
 import { ProjectButton } from "../ProjectButton"
@@ -16,13 +15,18 @@ import ColorPicker from "../projectEditForms/ColorPicker/ColorPicker"
 import Picker from "@emoji-mart/react"
 import data from "@emoji-mart/data"
 
-export default function ProjectCreateForm() {
+type ProjectCreateFormProps = {
+  onSubmit: (project: ProjectCreate) => void
+}
+
+export default function ProjectCreateForm(props: ProjectCreateFormProps) {
   const theme = useMantineTheme()
   const form = useForm<ProjectCreate>({
     initialValues: {
-      name: undefined,
+      name: "",
       accent_color: undefined,
       icon: undefined,
+      is_favorite: false,
     },
   })
 
@@ -31,7 +35,7 @@ export default function ProjectCreateForm() {
   }
 
   function createProject() {
-    
+    props.onSubmit(form.values)
   }
 
   return (
@@ -64,8 +68,19 @@ export default function ProjectCreateForm() {
         placeholder="Project name..."
         {...form.getInputProps("name")}
       />
-      <Switch label="Add to favorites" />
-      <Button size="lg" radius="lg" fullWidth variant="filled" color="green">
+      <Switch
+        {...form.getInputProps("is_favorite")}
+        label="Add to favorites"
+        color={form.values.accent_color || theme.primaryColor}
+      />
+      <Button
+        onClick={createProject}
+        size="lg"
+        radius="lg"
+        fullWidth
+        variant="filled"
+        color="green"
+      >
         Create
       </Button>
     </Stack>

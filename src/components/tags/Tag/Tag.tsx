@@ -14,7 +14,7 @@ interface TagProps extends TagType {
 export default function Tag(props: TagProps) {
   const navigate = useNavigate()
   const theme = useMantineTheme()
-  const { selectedTask, setSelectedTask } = useContext(SelectedTaskContext)
+  const { selectedTask } = useContext(SelectedTaskContext)
   const queryClient = useQueryClient()
 
   const tagRemoveMutation = useTagRemoveMutation(selectedTask?.projectID || 0)
@@ -25,7 +25,7 @@ export default function Tag(props: TagProps) {
           tagRemoveMutation.mutate(
             { tag_id: props.id, task_id: Number(selectedTask.id) },
             {
-              onSuccess: (data) => {
+              onSuccess: () => {
                 queryClient.invalidateQueries([
                   "tasks",
                   { id: Number(selectedTask.id) },

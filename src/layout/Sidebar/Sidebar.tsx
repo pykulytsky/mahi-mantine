@@ -6,7 +6,7 @@ import {
   Dashboard,
   Tag,
   Calendar,
-  Project,
+  Project as ProjectIcon,
   User,
 } from "../../components/icons"
 
@@ -17,12 +17,21 @@ import "@animated-burgers/burger-squeeze/dist/styles.css"
 import SearchInput from "../../components/header/SearchInput"
 import { useStyles } from "./Sidebar.styles"
 import SidebarLink from "../../components/sidebar/Link/Link"
-import { useOwnProjects } from "../../queries/projects"
+import {
+  useOwnProjects,
+  useProjectCreateMutation,
+} from "../../queries/projects"
 import { IconPlus } from "@tabler/icons"
 import { openModal } from "@mantine/modals"
 import ProjectCreateForm from "../../components/project/ProjectCreateForm/ProjectCreateForm"
+import { useNavigate } from "@tanstack/react-location"
+import { ProjectCreate, Project } from "../../types"
+import { closeAllModals } from "@mantine/modals"
+import { showNotification } from "@mantine/notifications"
 
 export default function Sidebar() {
+  const { mutate } = useProjectCreateMutation()
+  const navigate = useNavigate()
   const [opened, setOpened] = useLocalStorage({
     key: "sidebar",
     defaultValue: false,
@@ -82,9 +91,30 @@ export default function Sidebar() {
     e.preventDefault()
     openModal({
       title: "Create new project",
-      children: <ProjectCreateForm />,
+      children: <ProjectCreateForm onSubmit={onProjectCreateConfirm} />,
       radius: "lg",
     })
+  }
+
+  function onProjectCreateConfirm(project: ProjectCreate) {
+    mutate(
+      {
+        name: project.name || "Untitled project",
+        accent_color: project.accent_color,
+        icon: project.icon,
+        is_favorite: project.is_favorite,
+      },
+      {
+        onSuccess: (data: Project) => {
+          closeAllModals()
+          navigate({ to: `/app/projects/${data.id}` })
+          showNotification({
+            message: `New project ${data.name} was created`,
+            icon: <ProjectIcon size={20} />,
+          })
+        },
+      }
+    )
   }
 
   return (
@@ -119,7 +149,7 @@ export default function Sidebar() {
         <SidebarLink
           opened={opened}
           label="All Projects"
-          icon={<Project size={25} />}
+          icon={<ProjectIcon size={25} />}
           to="/app/projects"
           rightSection={
             <Tooltip label="New project">

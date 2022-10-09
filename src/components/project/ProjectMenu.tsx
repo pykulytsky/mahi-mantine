@@ -1,5 +1,5 @@
 import { ActionIcon, Loader, Menu, useMantineTheme } from "@mantine/core"
-import { Eye, EyeSlash, Menu as MenuIcon } from "../icons"
+import { Eye, EyeSlash, Menu as MenuIcon, Trash } from "../icons"
 import { useMatch } from "@tanstack/react-location"
 import { useProject } from "../../queries/projects"
 import { useProjectMutation } from "../../queries/projects"
@@ -40,6 +40,9 @@ export default function ProjectMenu() {
             Show completed tasks
           </Menu.Item>
         )}
+        <Menu.Item color="red" icon={<Trash size={15} color="red" />}>
+          Delete project
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   )
