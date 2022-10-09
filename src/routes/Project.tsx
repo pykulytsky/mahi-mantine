@@ -1,10 +1,9 @@
+import { useMemo } from "react"
 import { useMatch } from "@tanstack/react-location"
 import {
   Container,
-  createStyles,
   LoadingOverlay,
   MantineProvider,
-  Transition,
   useMantineTheme,
 } from "@mantine/core"
 import ProjectHeader from "../components/project/ProjectHeader/ProjectHeader"
@@ -20,22 +19,16 @@ import useTasksHelper from "../hooks/tasksHelpers"
 import { useProject, useReorderMutation } from "../queries/projects"
 import { useHotkeys, useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
-import { useEffect, useMemo } from "react"
-import { useTags } from "../queries/tags"
 import SectionCreateForm from "../components/section/SectionCreateForm"
 import DividerAction from "../components/section/Divider/DividerAction"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProjectErrorPlaceholder } from "../components/project/ProjectErrorPlaceholder/ProjectErrorPlaceholder"
 
-const useStyles = createStyles({})
-
 export default function ProjectRoot() {
-  const { classes } = useStyles()
   const {
     params: { projectID: id },
   } = useMatch()
   const { data, isLoading, isError } = useProject(id)
-  const tags = useTags()
 
   const [taskFormVisible, toggleTaskForm] = useToggle()
   const [sectionFormVisible, toggleSectionForm] = useToggle()

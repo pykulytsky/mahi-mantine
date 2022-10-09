@@ -9,7 +9,7 @@ import {
   removeReaction,
 } from "../api/tasks.api"
 import { queryClient } from "../router"
-import { Project, Task } from "../types"
+import { Task } from "../types"
 
 export const taskQuery = (id: string | number) => ({
   queryKey: ["tasks", { id }],

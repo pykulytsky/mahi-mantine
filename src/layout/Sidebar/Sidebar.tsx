@@ -6,7 +6,6 @@ import {
   Dashboard,
   Tag,
   Calendar,
-  File,
   Project,
   User,
 } from "../../components/icons"
