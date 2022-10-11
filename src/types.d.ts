@@ -23,6 +23,7 @@ export declare interface Project extends ProjectCreate {
   is_pinned: boolean
   is_editable: boolean
   show_completed_tasks: boolean
+  participants: User[]
   sections: Section[]
   tasks: Task[]
 }

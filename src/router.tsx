@@ -28,10 +28,6 @@ export const location = new ReactLocation<LocationGenerics>()
 
 export const routes: Route<LocationGenerics>[] = [
   {
-    path: "/test",
-    element: <Test />,
-  },
-  {
     path: "/about",
     element: <About />,
   },
@@ -54,6 +50,10 @@ export const routes: Route<LocationGenerics>[] = [
             element: <ProjectRoot />,
           },
         ],
+      },
+      {
+        path: "/test",
+        element: <Test />,
       },
     ],
   },

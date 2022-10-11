@@ -1,4 +1,4 @@
-import { Badge } from "@mantine/core"
+import { Badge, Tooltip } from "@mantine/core"
 import { useMemo } from "react"
 import {
   useReactionAddMutation,
@@ -35,14 +35,23 @@ export default function ReactionTag(props: ReactionTagProps) {
       })
     }
   }
+
+  const userReactionInfo = props.users.map((user) => (
+    <div key={user.id} style={{ textAlign: "center" }}>
+      {user.email}
+    </div>
+  ))
+
   return (
-    <Badge
-      onClick={onReactionClick}
-      className={cx(classes.root, { [classes.active]: active })}
-      variant="outline"
-      leftSection={props.emoji}
-    >
-      {props.users.length}
-    </Badge>
+    <Tooltip label={<>{userReactionInfo}</>}>
+      <Badge
+        onClick={onReactionClick}
+        className={cx(classes.root, { [classes.active]: active })}
+        variant="outline"
+        leftSection={props.emoji}
+      >
+        {props.users.length}
+      </Badge>
+    </Tooltip>
   )
 }

@@ -79,4 +79,14 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
       marginTop: 0,
     },
   },
+  deadline: {
+    paddingInline: 0,
+    border: "none",
+    span: {
+      lineHeight: 0.1,
+    },
+    "&::before": {
+      marginRight: 3,
+    },
+  },
 }))

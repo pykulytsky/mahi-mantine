@@ -26,6 +26,7 @@ export default function SearchInput(props: SearchInputProps) {
     event.preventDefault()
     openSpotlight()
   }
+  
   if (props.collapsed)
     return (
       <Center mb={3}>
@@ -34,6 +35,7 @@ export default function SearchInput(props: SearchInputProps) {
         </ActionIcon>
       </Center>
     )
+
   return (
     <Input
       ml="md"

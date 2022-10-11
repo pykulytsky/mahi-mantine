@@ -1,6 +1,13 @@
-import { Group, ActionIcon, useMantineTheme, MediaQuery } from "@mantine/core"
+import {
+  Group,
+  ActionIcon,
+  useMantineTheme,
+  MediaQuery,
+  Tooltip,
+} from "@mantine/core"
 import { Project, ProjectEdit } from "../../types"
-import { Settings, Star } from "../icons"
+import { Settings, Star, Users } from "../icons"
+import ParticipantsButton from "./Participants"
 import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
@@ -10,23 +17,35 @@ type ProjectActionsProps = {
 }
 
 export default function ProjectActions(props: ProjectActionsProps) {
-  const theme = useMantineTheme()
   return (
     <Group spacing="xs">
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <ActionIcon
-          onClick={() => {
-            props.updateProject({ is_favorite: !props.project.is_favorite })
-          }}
-          variant="transparent"
-        >
-          <Star size={25} filled={+props.project.is_favorite} />
-        </ActionIcon>
+        <ParticipantsButton project={props.project} />
       </MediaQuery>
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
-        <ActionIcon variant="transparent">
-          <Settings size={25} />
-        </ActionIcon>
+        <Tooltip
+          label={
+            props.project.is_favorite
+              ? "Remove from favorites"
+              : "Add to favorites"
+          }
+        >
+          <ActionIcon
+            onClick={() => {
+              props.updateProject({ is_favorite: !props.project.is_favorite })
+            }}
+            variant="transparent"
+          >
+            <Star size={25} filled={+props.project.is_favorite} />
+          </ActionIcon>
+        </Tooltip>
+      </MediaQuery>
+      <MediaQuery smallerThan="md" styles={{ display: "none" }}>
+        <Tooltip label="Project settings">
+          <ActionIcon variant="transparent">
+            <Settings size={25} />
+          </ActionIcon>
+        </Tooltip>
       </MediaQuery>
       <ProjectMenu />
     </Group>

@@ -123,6 +123,7 @@ export default function Task(props: TaskProps) {
           m={0}
         >
           <Checkbox
+            radius={10}
             sx={{
               input: {
                 border: props.is_important
@@ -155,12 +156,7 @@ export default function Task(props: TaskProps) {
               {props.deadline && (
                 <Tooltip position="bottom" label={props.deadline.toString()}>
                   <Badge
-                    sx={{
-                      paddingInline: 5,
-                      span: {
-                        lineHeight: 0.1,
-                      },
-                    }}
+                    className={classes.deadline}
                     variant="dot"
                     color={
                       new Date(props.deadline) <= new Date() ? "red" : "green"

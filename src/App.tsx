@@ -70,21 +70,18 @@ export default function App() {
         withNormalizeCSS
       >
         <GlobalStyles />
-        <ModalsProvider>
-          <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
-            <NotificationsProvider>
-              <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools
-                  position="bottom-right"
-                  initialIsOpen={false}
-                />
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
+          <ModalsProvider>
+            <SpotlightProvider shortcut={["mod + K", "/"]} actions={[]}>
+              <NotificationsProvider>
                 <Router location={location} routes={routes}>
                   <Outlet />
                 </Router>
-              </QueryClientProvider>
-            </NotificationsProvider>
-          </SpotlightProvider>
-        </ModalsProvider>
+              </NotificationsProvider>
+            </SpotlightProvider>
+          </ModalsProvider>
+        </QueryClientProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )
