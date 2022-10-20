@@ -18,17 +18,7 @@ export default function SidebarLink(props: SidebarLinkProps) {
   return (
     <Link to={props.to} style={{ textDecoration: "none" }}>
       {({ isActive }) => (
-        <Box
-          sx={{
-            backgroundColor: isActive
-              ? theme.fn.rgba(
-                  theme.colors[theme.primaryColor][5],
-                  theme.colorScheme === "dark" ? 0.1 : 0.5
-                )
-              : "inherit",
-          }}
-          className={classes.control}
-        >
+        <Box className={classes.control}>
           <Tooltip
             disabled={props.opened}
             label={props.label}

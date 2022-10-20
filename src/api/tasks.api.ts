@@ -1,9 +1,10 @@
-import {
+import type {
   CreateTaskFormType,
   ReactionCreate,
   Task,
   TaskEdit,
   TaskReorder,
+  Assignee,
 } from "../types"
 import http from "./axios"
 
@@ -50,7 +51,9 @@ export const deleteTask = async (task: Pick<TaskEdit, "id">): Promise<void> => {
 }
 
 export const addReaction = async (reaction: ReactionCreate): Promise<Task> => {
-  const { data } = await http.post("/reactions/", { ...reaction })
+  const { data } = await http.post(`${BASE_URL}${reaction.task_id}/reactions`, {
+    emoji: reaction.emoji,
+  })
 
   return data
 }
@@ -58,7 +61,28 @@ export const addReaction = async (reaction: ReactionCreate): Promise<Task> => {
 export const removeReaction = async (
   reaction: ReactionCreate
 ): Promise<Task> => {
-  const { data } = await http.post("/reactions/remove", { ...reaction })
+  const { data } = await http.post(
+    `${BASE_URL}${reaction.task_id}/reactions/remove`,
+    {
+      emoji: reaction.emoji,
+    }
+  )
+
+  return data
+}
+
+export const assignTask = async (assignee: Assignee): Promise<Task> => {
+  const { data } = await http.post<Task>(
+    `${BASE_URL}${assignee.task_id}/assign/${assignee.user_id}`
+  )
+
+  return data
+}
+
+export const removeAssign = async (assignee: Assignee): Promise<Task> => {
+  const { data } = await http.post<Task>(
+    `${BASE_URL}${assignee.task_id}/assign/${assignee.user_id}/remove`
+  )
 
   return data
 }

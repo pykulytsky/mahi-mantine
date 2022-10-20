@@ -7,6 +7,8 @@ import {
   deleteTask,
   addReaction,
   removeReaction,
+  assignTask,
+  removeAssign,
 } from "../api/tasks.api"
 import { queryClient } from "../router"
 import { Task } from "../types"
@@ -49,5 +51,27 @@ export const useReactionRemoveMutation = (id: number | string) =>
   useMutation(removeReaction, {
     onSuccess: () => {
       queryClient.invalidateQueries(["projects", { id: Number(id) }])
+    },
+  })
+
+export const useTaskAssignMutation = (
+  projectId: number | string,
+  id: number | string
+) =>
+  useMutation(assignTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects", { id: Number(projectId) }])
+      queryClient.invalidateQueries(["tasks", { id: Number(id) }])
+    },
+  })
+
+export const useTaskAssignRemoveMutation = (
+  projectId: number | string,
+  id: number | string
+) =>
+  useMutation(removeAssign, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects", { id: Number(projectId) }])
+      queryClient.invalidateQueries(["tasks", { id: Number(id) }])
     },
   })

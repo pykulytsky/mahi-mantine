@@ -15,18 +15,18 @@ export const getTag = async (ID: string | number): Promise<Tag> => {
   return data
 }
 
-export const applyTag = async (tag: TagItemCreate): Promise<TagItem> => {
-  const { data } = await http.post<TagItem>("/tag_items/", {
-    ...tag,
-  })
+export const applyTag = async (tag: TagItemCreate): Promise<Task> => {
+  const { data } = await http.post<Task>(
+    `/tasks/${tag.task_id}/tags/${tag.tag_id}`
+  )
 
   return data
 }
 
 export const removeTag = async (tag: TagItemCreate): Promise<Task> => {
-  const { data } = await http.post<Task>("/tag_items/remove", {
-    ...tag,
-  })
+  const { data } = await http.post<Task>(
+    `/tasks/${tag.task_id}/tags/${tag.tag_id}/remove`
+  )
 
   return data
 }

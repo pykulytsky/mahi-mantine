@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from "@mantine/core"
+import { Badge, Tooltip, Text } from "@mantine/core"
 import { useMemo } from "react"
 import {
   useReactionAddMutation,
@@ -48,7 +48,7 @@ export default function ReactionTag(props: ReactionTagProps) {
         onClick={onReactionClick}
         className={cx(classes.root, { [classes.active]: active })}
         variant="outline"
-        leftSection={props.emoji}
+        leftSection={<Text size="sm">{props.emoji}</Text>}
       >
         {props.users.length}
       </Badge>

@@ -38,16 +38,21 @@ export default function Task(props: TaskProps) {
   const {
     params: { projectID: id },
   } = useMatch()
-  const [isDone, setDone] = useState<boolean>(props.is_done)
+  const [isDone, setDone] = useState<boolean>(props.is_completed)
   const { setSelectedTask } = useContext(SelectedTaskContext)
 
   useEffect(() => {
-    setDone(props.is_done)
-  }, [props.is_done])
+    setDone(props.is_completed)
+  }, [props.is_completed])
 
   const extraActionsVisible = useMemo(() => {
-    return !!props.tags.length || !!props.reactions.length || !!props.deadline
-  }, [props.tags, props.reactions, props.deadline])
+    return (
+      !!props.tags.length ||
+      !!props.reactions.length ||
+      !!props.deadline ||
+      !!props.assigned_to.length
+    )
+  }, [props.tags, props.reactions, props.deadline, props.assigned_to])
 
   const taskMutation = useMutation(editTask)
 
@@ -55,17 +60,17 @@ export default function Task(props: TaskProps) {
     taskMutation.mutate(
       {
         id: props.id,
-        is_done: !props.is_done,
+        is_completed: !props.is_completed,
       },
       {
         onSuccess: () => {
-          setDone(!props.is_done)
+          setDone(!props.is_completed)
           setTimeout(() => {
-            if (!props.is_done) {
+            if (!props.is_completed) {
               showNotification({
                 title: `Task #${props.id} was completed`,
                 message: null,
-                icon: <IconTask size={18} />,
+                icon: <IconTask color="white" size={18} />,
               })
             }
             queryClient.invalidateQueries(["projects", { id: Number(id) }])
@@ -142,7 +147,7 @@ export default function Task(props: TaskProps) {
             label={
               <Text
                 mt={-24} // 5.5.0 only
-                color={props.is_done ? "dimmed" : ""}
+                color={props.is_completed ? "dimmed" : ""}
                 onClick={(e: any): void => {
                   e.preventDefault()
                 }}
@@ -151,8 +156,15 @@ export default function Task(props: TaskProps) {
               </Text>
             }
           />
-          {props.tags.length > 0 && (
+          {extraActionsVisible && (
             <Group spacing={5} ml={35}>
+              {props.assigned_to.map((user) => (
+                <Tooltip key={user.id} position="bottom" label="Assignee">
+                  <Badge variant="outline" key={user.id}>
+                    {user.first_name} {user.last_name}
+                  </Badge>
+                </Tooltip>
+              ))}
               {props.deadline && (
                 <Tooltip position="bottom" label={props.deadline.toString()}>
                   <Badge
@@ -199,11 +211,7 @@ export default function Task(props: TaskProps) {
             </Spoiler>
           )}
         </Stack>
-        <TaskMenu
-          hovered={hovered}
-          taskID={props.id}
-          projectID={props.project_id}
-        />
+        <TaskMenu hovered={hovered} taskID={props.id} projectID={id} />
       </Group>
     </Container>
   )

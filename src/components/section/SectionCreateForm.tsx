@@ -12,7 +12,7 @@ type SectionCreateFormProps = {
 
 export default function SectionCreateForm(props: SectionCreateFormProps) {
   const [name, setName] = useState("")
-  const sectionAddMutation = useSectionMutation(props.projectID.toString())
+  const sectionAddMutation = useSectionMutation(props.projectID)
 
   function onInput(event: FormEvent<HTMLInputElement>): void {
     setName(event.currentTarget.value)

@@ -116,7 +116,7 @@ export default function TagSelect(props: TagSelectProps) {
       <Popover.Target>
         <ActionIcon
           onClick={() => {
-            setOpened(!opened)
+            setOpened(value => !value)
           }}
           size="sm"
           variant="subtle"

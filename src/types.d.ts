@@ -26,6 +26,7 @@ export declare interface Project extends ProjectCreate {
   participants: User[]
   sections: Section[]
   tasks: Task[]
+  owner: User
 }
 
 export declare interface ProjectEdit extends ProjectCreate {
@@ -57,26 +58,27 @@ export declare interface Task {
   order: number
   name: string
   description?: string
-  is_done: boolean
+  is_completed: boolean
   deadline?: Date | null
   done_at?: Date
-  color?: string
+  created?: Date
+  updated?: Date
   is_important: boolean
   remind_at?: Date
   tags: Tag[]
   reactions: Reaction[]
+  owner?: User
   project_id?: int
   section_id?: int
+  assigned_to: User[]
 }
 
 export declare type TaskEdit = {
   id?: number | string
   name?: string
   description?: string | null
-  is_done?: boolean
+  is_completed?: boolean
   deadline?: Date | number | string | null
-  done_at?: Date | null
-  color?: string | null
   is_important?: boolean
   remind_at?: Date | null
 }
@@ -104,6 +106,7 @@ export declare type CreateTaskFormType = {
   description?: string
   project_id?: number | string
   section_id?: number | string
+  owner_id?: number | string
   tags: Tag[]
 }
 
@@ -120,4 +123,9 @@ export declare interface SectionCreate {
   name: string
   project_id: number
   order?: number
+}
+
+export declare interface Assignee {
+  task_id: number
+  user_id: number
 }

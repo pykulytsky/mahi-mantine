@@ -1,4 +1,4 @@
-import { Container, Group, Button, Transition, ActionIcon } from "@mantine/core"
+import { Container, Group, Transition, ActionIcon } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useToggle } from "@mantine/hooks"
 import ActionsGroup from "./ActionsGroup"
@@ -9,6 +9,7 @@ import { useApplyTagMutation, useTaskAddMutation } from "../../../queries/tasks"
 import { useMatch } from "@tanstack/react-location"
 import { useQueryClient } from "@tanstack/react-query"
 import { Menu } from "../../icons"
+import { useUser } from "../../../queries/user"
 
 export type CreateTaskFormProps = {
   sectionID?: number | string
@@ -18,6 +19,7 @@ export type CreateTaskFormProps = {
 
 export default function CreateTaskForm(props: CreateTaskFormProps) {
   const [noteIsShown, toggleNote] = useToggle()
+  const { data } = useUser()
   const tasksAddMutation = useTaskAddMutation()
   const applyTagMutation = useApplyTagMutation()
   const queryClient = useQueryClient()
@@ -30,6 +32,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
       description: "",
       section_id: props.sectionID,
       tags: [],
+      owner_id: data?.id || undefined,
     },
     validate: {
       name: (value) =>
@@ -38,11 +41,6 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
           : "Fill the title",
     },
   })
-
-  function handleClose(e: any): void {
-    e.preventDefault()
-    props.toggleForm()
-  }
 
   function trimTitle(): string {
     let value: string = form.getInputProps("name").value
@@ -67,6 +65,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
         description: form.values.description,
         project_id: !props.sectionID ? id : undefined,
         section_id: props.sectionID,
+        owner_id: form.values.owner_id,
       },
       {
         onSuccess: (data: Task) => {

@@ -11,7 +11,7 @@ test("is task draggable", () => {
         id={1}
         name="test"
         order={0}
-        is_done
+        is_completed
         is_important
         tags={[]}
         draggableHandleProps={null}

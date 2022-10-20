@@ -11,6 +11,7 @@ export type AsideProps = {
   toggle: () => void
   content: ReactNode
   actions?: ReactNode
+  bottom?: ReactNode
 }
 
 export default function Aside(props: AsideProps) {
@@ -27,7 +28,7 @@ export default function Aside(props: AsideProps) {
         <AsideComponent className={classes.root}>
           <AsideHeader toggleAside={props.toggle} actions={props.actions} />
           <AsideContent>{props.content}</AsideContent>
-          <AsideBottom />
+          <AsideBottom>{props.bottom}</AsideBottom>
         </AsideComponent>
       </motion.div>
     </MediaQuery>

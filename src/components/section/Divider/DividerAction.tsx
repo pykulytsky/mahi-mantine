@@ -51,7 +51,7 @@ export default function DividerAction(props: DividerActionProps) {
               order={props.order}
               projectID={props.projectID}
               toggleForm={() => {
-                setFormVisible(!formVisible)
+                setFormVisible(value => !value)
               }}
             />
           </motion.div>

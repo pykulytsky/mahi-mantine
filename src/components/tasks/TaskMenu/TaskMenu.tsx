@@ -1,6 +1,6 @@
 import { Menu, ActionIcon, useMantineTheme, Text } from "@mantine/core"
 import { openConfirmModal } from "@mantine/modals"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { useTaskDeleteMutation } from "../../../queries/tasks"
 import { Menu as MenuIcon, Pen } from "../../icons"
@@ -11,7 +11,7 @@ import Trash from "../../icons/Trash"
 
 type TaskMenuProps = {
   taskID: number
-  projectID: number
+  projectID: number | string
   hovered: boolean
 }
 

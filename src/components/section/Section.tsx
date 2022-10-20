@@ -41,7 +41,7 @@ export default function SectionComponent(props: SectionProps) {
       return isCustomSection ? props.section.tasks : props.tasks
     } else {
       let list = isCustomSection ? props.section.tasks : props.tasks
-      return list.filter((task) => !task.is_done)
+      return list.filter((task) => !task.is_completed)
     }
   }, [props])
 
@@ -82,7 +82,7 @@ export default function SectionComponent(props: SectionProps) {
                     dragHandleProps={provided.dragHandleProps}
                     formVisible={taskFormVisible}
                     onOpen={() => {
-                      setOpened(!opened)
+                      setOpened((value) => !value)
                     }}
                     toggleTaskForm={() => {
                       toggleTaskForm()

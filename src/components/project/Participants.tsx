@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Tooltip, useMantineTheme } from "@mantine/core"
 import { useUser } from "../../queries/user"
 import { Project } from "../../types"
-import { User, Users } from "../icons"
+import { Plus, User, Users } from "../icons"
 
 type ParticipantsButtonProps = {
   project: Project
@@ -14,11 +14,27 @@ export default function ParticipantsButton(props: ParticipantsButtonProps) {
     return (
       <Avatar.Group>
         <Tooltip label={data.email}>
-          <Avatar radius="xl" size="md" src={data.avatar} />
+          <Avatar
+            sx={{
+              transition: "200ms transform ease-out",
+              "&:hover": {
+                transform: "translate(-10%, 0)",
+              },
+            }}
+            radius="xl"
+            size="md"
+            src={data.avatar}
+          />
         </Tooltip>
         {props.project.participants.map((user) => (
           <Tooltip key={user.id} label={user.email}>
             <Avatar
+              sx={{
+                transition: "200ms transform ease-out",
+                "&:hover": {
+                  transform: "translate(-10%, 0)",
+                },
+              }}
               color={props.project.accent_color || theme.primaryColor}
               radius="xl"
               size="md"
@@ -31,6 +47,18 @@ export default function ParticipantsButton(props: ParticipantsButtonProps) {
             </Avatar>
           </Tooltip>
         ))}
+        <Tooltip label="Add user">
+          <Avatar
+            color={props.project.accent_color || theme.primaryColor}
+            radius="xl"
+            size="md"
+          >
+            <Plus
+              size={25}
+              color={props.project.accent_color || theme.primaryColor}
+            />
+          </Avatar>
+        </Tooltip>
       </Avatar.Group>
     )
   else
