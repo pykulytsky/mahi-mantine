@@ -1,12 +1,13 @@
-import Activity from "../components/icons/Activity"
 import { showNotification } from "@mantine/notifications"
 import { Button, Checkbox } from "@mantine/core"
-import Task from "../components/tasks/Task/Task"
+import { useSearch } from "@tanstack/react-location"
+import { LocationGenerics } from "../router"
 
 export default function Test() {
+  const search = useSearch<LocationGenerics>()
   return (
     <>
-      <h1>test</h1>
+      <h1>{JSON.stringify(search)}</h1>
       <Button
         onClick={() => {
           showNotification({

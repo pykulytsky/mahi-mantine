@@ -11,6 +11,7 @@ export default function ParticipantsList(props: ParticipantsListProps) {
     <Box>
       {props.participants.map((participant) => (
         <Participant
+          key={participant.id}
           avatar={participant.avatar}
           name={participant.first_name + "" + participant.last_name}
         />

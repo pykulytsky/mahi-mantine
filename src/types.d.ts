@@ -129,3 +129,7 @@ export declare interface Assignee {
   task_id: number
   user_id: number
 }
+
+export declare interface InvitationCode {
+  code: str
+}

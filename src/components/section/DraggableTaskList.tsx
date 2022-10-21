@@ -4,11 +4,7 @@ import Task from "../tasks/Task/Task"
 
 export default function DraggableTaskList(tasks: TaskProp[], uuid?: string) {
   return tasks.map((task, index) => (
-    <Draggable
-      key={task.id}
-      draggableId={`${task.id}`}
-      index={index}
-    >
+    <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
           <Task

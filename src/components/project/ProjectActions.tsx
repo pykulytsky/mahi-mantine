@@ -1,12 +1,6 @@
-import {
-  Group,
-  ActionIcon,
-  useMantineTheme,
-  MediaQuery,
-  Tooltip,
-} from "@mantine/core"
+import { Group, ActionIcon, MediaQuery, Tooltip } from "@mantine/core"
 import { Project, ProjectEdit } from "../../types"
-import { Settings, Star, Users } from "../icons"
+import { Settings, Star } from "../icons"
 import ParticipantsButton from "./Participants"
 import ProjectMenu from "./ProjectMenu"
 

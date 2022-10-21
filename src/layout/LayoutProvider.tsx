@@ -1,9 +1,10 @@
-import { createContext, useState } from "react"
-import { Outlet } from "@tanstack/react-location"
+import { createContext, useEffect, useState } from "react"
+import { Outlet, useNavigate, useSearch } from "@tanstack/react-location"
 import { AppShell, Box, LoadingOverlay } from "@mantine/core"
 import Sidebar from "./Sidebar/Sidebar"
 import { useIsFetching } from "@tanstack/react-query"
 import DetailAside from "./Aside/TaskEditAside"
+import { LocationGenerics } from "../router"
 
 export interface SelectedTask {
   id: number | string
@@ -22,6 +23,15 @@ export const SelectedTaskContext = createContext<SelectedTaskContextType>({
 })
 
 export default function AppProvider() {
+  const navigate = useNavigate()
+  const search = useSearch<LocationGenerics>()
+
+  useEffect(() => {
+    if (search.share) {
+      navigate({ to: "/app/projects/1", replace: true })
+    }
+  }, [])
+
   const isFetching = useIsFetching(["projects", "user"])
   const [selectedTask, setSelectedTask] = useState<SelectedTask | null>(null)
   return (

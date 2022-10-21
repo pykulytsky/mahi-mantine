@@ -13,6 +13,9 @@ export type LocationGenerics = MakeGenerics<{
   Params: {
     projectID: string
   }
+  Search: {
+    share?: string
+  }
 }>
 
 export const queryClient = new QueryClient({

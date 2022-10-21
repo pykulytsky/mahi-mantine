@@ -9,6 +9,7 @@ import {
   Spoiler,
   Badge,
   Tooltip,
+  Avatar,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -158,13 +159,42 @@ export default function Task(props: TaskProps) {
           />
           {extraActionsVisible && (
             <Group spacing={5} ml={35}>
-              {props.assigned_to.map((user) => (
-                <Tooltip key={user.id} position="bottom" label="Assignee">
-                  <Badge variant="outline" key={user.id}>
-                    {user.first_name} {user.last_name}
+              {props.assigned_to.length && (
+                <Tooltip position="bottom" label="Assignees">
+                  <Badge
+                    variant="light"
+                    size="lg"
+                    styles={{
+                      inner: {
+                        textTransform: "none",
+                      },
+                    }}
+                    leftSection={
+                      <Avatar.Group ml={-10}>
+                        {props.assigned_to.map((user) => (
+                          <Avatar
+                            variant="gradient"
+                            key={user.id}
+                            size={20}
+                            src={user.avatar}
+                            sx={{
+                              border: 0,
+                            }}
+                          />
+                        ))}
+                      </Avatar.Group>
+                    }
+                  >
+                    <Group spacing={5}>
+                      {props.assigned_to.map((user) => (
+                        <Text weight={500} key={user.id}>
+                          {user.first_name} {user.last_name}
+                        </Text>
+                      ))}
+                    </Group>
                   </Badge>
                 </Tooltip>
-              ))}
+              )}
               {props.deadline && (
                 <Tooltip position="bottom" label={props.deadline.toString()}>
                   <Badge
