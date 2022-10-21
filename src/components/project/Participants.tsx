@@ -28,7 +28,11 @@ export const ParticipantsButton = forwardRef<
         <Avatar.Group>
           <Popover width={350}>
             <Popover.Target>
-              <Tooltip label={data.email}>
+              <Tooltip
+                label={
+                  data.id === project.owner.id ? "You" : project.owner.email
+                }
+              >
                 <Avatar
                   sx={{
                     transition: "200ms transform ease-out",
@@ -38,7 +42,7 @@ export const ParticipantsButton = forwardRef<
                   }}
                   radius="xl"
                   size="md"
-                  src={data.avatar}
+                  src={project.owner.avatar}
                 />
               </Tooltip>
             </Popover.Target>
@@ -47,7 +51,10 @@ export const ParticipantsButton = forwardRef<
             </Popover.Dropdown>
           </Popover>
           {project.participants.map((user) => (
-            <Tooltip key={user.id} label={user.email}>
+            <Tooltip
+              key={user.id}
+              label={data.id === user.id ? "You" : user.email}
+            >
               <Avatar
                 sx={{
                   transition: "200ms transform ease-out",
@@ -67,37 +74,43 @@ export const ParticipantsButton = forwardRef<
               </Avatar>
             </Tooltip>
           ))}
-          <Popover width={350}>
-            <Popover.Target>
-              <Tooltip label="Add user">
-                <Avatar
-                  component="button"
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  color={project.accent_color || theme.primaryColor}
-                  radius="xl"
-                  size="md"
-                >
-                  <Plus
-                    size={25}
+          {project.owner.id === data.id && (
+            <Popover width={350}>
+              <Popover.Target>
+                <Tooltip label="Add user">
+                  <Avatar
+                    component="button"
+                    sx={{
+                      cursor: "pointer",
+                    }}
                     color={project.accent_color || theme.primaryColor}
-                  />
-                </Avatar>
-              </Tooltip>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <ProjectShareComponent />
-            </Popover.Dropdown>
-          </Popover>
+                    radius="xl"
+                    size="md"
+                  >
+                    <Plus
+                      size={25}
+                      color={project.accent_color || theme.primaryColor}
+                    />
+                  </Avatar>
+                </Tooltip>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <ProjectShareComponent />
+              </Popover.Dropdown>
+            </Popover>
+          )}
         </Avatar.Group>
       </Box>
     )
   else
     return (
-      <ActionIcon variant="transparent">
-        <Users size={25} />
-      </ActionIcon>
+      <>
+        {data && project.owner.id === data.id && (
+          <ActionIcon variant="transparent">
+            <Users size={25} />
+          </ActionIcon>
+        )}
+      </>
     )
 })
 

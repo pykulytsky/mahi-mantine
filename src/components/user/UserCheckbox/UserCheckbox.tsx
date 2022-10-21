@@ -40,7 +40,7 @@ export default function UserCheckbox({
       <Avatar size="sm" src={avatar} />
       <div className={classes.body}>
         <Text weight={300} size="sm" sx={{ lineHeight: 1 }}>
-          {isCurrentUser ? "Assign yourself" : name}
+          {isCurrentUser ? "You" : name}
         </Text>
       </div>
 

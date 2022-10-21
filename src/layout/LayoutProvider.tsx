@@ -5,6 +5,9 @@ import Sidebar from "./Sidebar/Sidebar"
 import { useIsFetching } from "@tanstack/react-query"
 import DetailAside from "./Aside/TaskEditAside"
 import { LocationGenerics } from "../router"
+import { acceptInvitation } from "../api/projects.api"
+import { showNotification } from "@mantine/notifications"
+import { Alert } from "../components/icons"
 
 export interface SelectedTask {
   id: number | string
@@ -28,7 +31,24 @@ export default function AppProvider() {
 
   useEffect(() => {
     if (search.share) {
-      navigate({ to: "/app/projects/1", replace: true })
+      acceptInvitation(search.share)
+        .then((response) => {
+          navigate({ to: `/app/projects/${response.id}`, replace: true })
+          showNotification({
+            title: "Project invitation",
+            message: `You successfully joined project ${response.name}`,
+          })
+        })
+        .catch(() => {
+          navigate({ to: "/error-page", replace: true })
+          showNotification({
+            title: "Project invitation",
+            message: `This invitation link is invalid or it's duration has been gone, ask an owner of the project tp generate new link.`,
+            color: "red",
+            icon: <Alert size={20} />,
+          })
+        })
+      return
     }
   }, [])
 

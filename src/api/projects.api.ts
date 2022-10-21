@@ -41,3 +41,9 @@ export const generateInvitationCode = async (
 
   return data
 }
+
+export const acceptInvitation = async (code: string): Promise<Project> => {
+  const { data } = await http.get<Project>(`${BASE_URL}invitation/${code}`)
+
+  return data
+}
