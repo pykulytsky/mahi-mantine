@@ -5,6 +5,8 @@ import {
   LoadingOverlay,
   MantineProvider,
   useMantineTheme,
+  Button,
+  Center,
 } from "@mantine/core"
 import ProjectHeader from "../components/project/ProjectHeader/ProjectHeader"
 import {
@@ -23,6 +25,7 @@ import SectionCreateForm from "../components/section/SectionCreateForm"
 import DividerAction from "../components/section/Divider/DividerAction"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProjectErrorPlaceholder } from "../components/project/ProjectErrorPlaceholder/ProjectErrorPlaceholder"
+import { Task } from "../components/icons"
 
 export default function ProjectRoot() {
   const {
@@ -85,6 +88,20 @@ export default function ProjectRoot() {
         toggleSectionForm={toggleSectionForm}
       />
       <Container>
+        <Center>
+          {!taskFormVisible && (
+            <Button
+              compact
+              leftIcon={<Task size={20} />}
+              variant="subtle"
+              onClick={() => {
+                toggleTaskForm()
+              }}
+            >
+              Add task
+            </Button>
+          )}
+        </Center>
         <AnimatePresence>
           {taskFormVisible && (
             <motion.div

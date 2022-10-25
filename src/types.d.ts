@@ -133,3 +133,13 @@ export declare interface Assignee {
 export declare interface InvitationCode {
   code: str
 }
+
+export declare interface DirectInvitation {
+  id: number
+  email: str
+}
+
+export declare interface UserProjectRemove {
+  id: number
+  email: string
+}

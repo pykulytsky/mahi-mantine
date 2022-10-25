@@ -14,7 +14,6 @@ import { useStyles } from "./ProjectShareComponent.styles"
 import { useMatch } from "@tanstack/react-location"
 import { Link } from "../../icons"
 import { generateInvitationCode } from "../../../api/projects.api"
-import { showNotification } from "@mantine/notifications"
 
 export default function LinkPanel() {
   const {
@@ -40,9 +39,6 @@ export default function LinkPanel() {
         toggleGenerating()
       })
       .catch(() => {
-        showNotification({
-          message: "Can not generate new invitation code",
-        })
         toggleGenerating()
       })
   }
@@ -93,20 +89,9 @@ export default function LinkPanel() {
                 onClick={() => clipboard.copy(`${url}${code}`)}
                 className={classes.button}
               >
-                Copy
+                Share
               </Button>
             </Tooltip>
-          </Group>
-          <Group my="sm" position="right">
-            <Button
-              onClick={generateCode}
-              loading={isGenerating}
-              leftIcon={<Link size={15} />}
-              compact
-              variant="subtle"
-            >
-              Generate new link
-            </Button>
           </Group>
         </Box>
       ) : (

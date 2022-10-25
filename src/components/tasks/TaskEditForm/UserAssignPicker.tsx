@@ -36,7 +36,6 @@ export default function UserAssignPicker(props: UserAssignPickerProps) {
       })
     }
   }
-
   return (
     <Stack spacing={5}>
       {props.owner && (

@@ -28,26 +28,35 @@ export const ParticipantsButton = forwardRef<
         <Avatar.Group>
           <Popover width={350}>
             <Popover.Target>
-              <Tooltip
-                label={
-                  data.id === project.owner.id ? "You" : project.owner.email
-                }
-              >
-                <Avatar
-                  sx={{
-                    transition: "200ms transform ease-out",
-                    "&:hover": {
-                      transform: "translate(-10%, 0)",
-                    },
-                  }}
-                  radius="xl"
-                  size="md"
-                  src={project.owner.avatar}
-                />
-              </Tooltip>
+              {project.participants.length > 0 ? (
+                <Tooltip
+                  label={
+                    data.id === project.owner.id ? "You" : project.owner.email
+                  }
+                >
+                  <Avatar
+                    sx={{
+                      transition: "200ms transform ease-out",
+                      "&:hover": {
+                        transform: "translate(-10%, 0)",
+                      },
+                    }}
+                    radius="xl"
+                    size="md"
+                    src={project.owner.avatar}
+                  />
+                </Tooltip>
+              ) : (
+                <ActionIcon variant="transparent">
+                  <Users size={25} />
+                </ActionIcon>
+              )}
             </Popover.Target>
             <Popover.Dropdown>
-              <ProjectShareComponent />
+              <ProjectShareComponent
+                owner={project.owner}
+                participants={project.participants}
+              />
             </Popover.Dropdown>
           </Popover>
           {project.participants.map((user) => (
@@ -95,7 +104,10 @@ export const ParticipantsButton = forwardRef<
                 </Tooltip>
               </Popover.Target>
               <Popover.Dropdown>
-                <ProjectShareComponent />
+                <ProjectShareComponent
+                  participants={project.participants}
+                  owner={project.owner}
+                />
               </Popover.Dropdown>
             </Popover>
           )}
@@ -106,9 +118,21 @@ export const ParticipantsButton = forwardRef<
     return (
       <>
         {data && project.owner.id === data.id && (
-          <ActionIcon variant="transparent">
-            <Users size={25} />
-          </ActionIcon>
+          <Popover width={350}>
+            <Popover.Target>
+              <Tooltip label="Share project">
+                <ActionIcon variant="transparent">
+                  <Users size={25} />
+                </ActionIcon>
+              </Tooltip>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <ProjectShareComponent
+                participants={project.participants}
+                owner={project.owner}
+              />
+            </Popover.Dropdown>
+          </Popover>
         )}
       </>
     )

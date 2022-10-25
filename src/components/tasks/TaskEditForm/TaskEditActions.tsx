@@ -53,13 +53,15 @@ export default function TaskEditActions(props: TaskEditActions) {
   function onTaskDelete() {
     openConfirmModal({
       title: "Are you shure you want to delete this task?",
+      centered: true,
       children: (
         <Text>
           If you delete task, it will be
           <span style={{ color: "red" }}> impossible to restore </span> it.
         </Text>
       ),
-      labels: { confirm: "Confirm", cancel: "Cancel" },
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
       onCancel: () => {},
       onConfirm: () => {
         remove.mutate(

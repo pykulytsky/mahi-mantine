@@ -18,7 +18,7 @@ import { useMatch } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
-import { Task as TaskType } from "../../../types"
+import type { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { Drag, Task as IconTask, Calendar, Plus } from "../../icons"
@@ -84,7 +84,8 @@ export default function Task(props: TaskProps) {
   function toggleDetailAside(event: any) {
     if (
       event.target.classList.contains("mantine-Stack-root") ||
-      event.target.classList.contains("mantine-Text-root")
+      (event.target.classList.contains("mantine-Text-root") &&
+        !event.target.classList.contains("mantine-Spoiler-control"))
     ) {
       setSelectedTask({
         id: props.id,
@@ -173,9 +174,10 @@ export default function Task(props: TaskProps) {
                       <Avatar.Group ml={-10}>
                         {props.assigned_to.map((user) => (
                           <Avatar
+                            radius="lg"
                             variant="gradient"
                             key={user.id}
-                            size={20}
+                            size={22}
                             src={user.avatar}
                             sx={{
                               border: 0,

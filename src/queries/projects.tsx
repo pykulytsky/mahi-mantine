@@ -6,6 +6,8 @@ import {
   fetchProject,
   fetchUserProjects,
   createProject,
+  sendDirectInvitation,
+  removeUserFromProject,
 } from "../api/projects.api"
 import { reorder } from "../api/tasks.api"
 import { queryClient } from "../router"
@@ -87,5 +89,19 @@ export const useProjectCreateMutation = () =>
   useMutation(createProject, {
     onSuccess: () => {
       queryClient.invalidateQueries(["projects", "user"])
+    },
+  })
+
+export const useAddUserMutation = (id: string | number) =>
+  useMutation(sendDirectInvitation, {
+    onSuccess: (data: Project) => {
+      queryClient.setQueryData(["projects", { id: Number(id) }], data)
+    },
+  })
+
+export const useUserRemoveMutation = (id: string | number) =>
+  useMutation(removeUserFromProject, {
+    onSuccess: (data: Project) => {
+      queryClient.setQueryData(["projects", { id: Number(id) }], data)
     },
   })

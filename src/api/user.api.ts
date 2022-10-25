@@ -25,3 +25,8 @@ export const getUser = async (ID: number | string): Promise<User> => {
   const { data } = await http.get(BASE_URL + ID)
   return data
 }
+
+export const getUsersByEmail = async (email: string): Promise<User[]> => {
+  const { data } = await http.get<User[]>(`${BASE_URL}email/${email}`)
+  return data
+}

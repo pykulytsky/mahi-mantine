@@ -2,11 +2,19 @@ import { Box, Tabs } from "@mantine/core"
 import { Email, Link } from "../../icons"
 import ParticipantsList from "./ParticipantsList"
 import LinkPanel from "./LinkPanel"
+import EmailPanel from "./EmailPanel"
+import { User } from "../../../types"
 
-export default function ProjectShareComponent() {
+type ProjectShareComponentProps = {
+  participants: User[]
+  owner: User
+}
+
+export default function ProjectShareComponent(
+  props: ProjectShareComponentProps
+) {
   return (
     <Box>
-      <ParticipantsList participants={[]} />
       <Tabs defaultValue="link">
         <Tabs.List grow>
           <Tabs.Tab icon={<Link size={20} />} value="link">
@@ -17,12 +25,13 @@ export default function ProjectShareComponent() {
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="email">
-          <h1>Email</h1>
+          <EmailPanel />
         </Tabs.Panel>
         <Tabs.Panel value="link">
           <LinkPanel />
         </Tabs.Panel>
       </Tabs>
+      <ParticipantsList owner={props.owner} participants={props.participants} />
     </Box>
   )
 }

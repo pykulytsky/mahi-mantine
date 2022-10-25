@@ -1,8 +1,6 @@
 import {
   Group,
   Paper,
-  useMantineTheme,
-  Button,
   Popover,
   MediaQuery,
   TextInput,
@@ -18,8 +16,8 @@ import ProjectActions from "../ProjectActions"
 import { useEffect, useState } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
-import { Task } from "../../icons"
 import { ProjectButton } from "../ProjectButton"
+import ProjectViewSelect from "../ProjectViewSelect/ProjectViewSelect"
 
 interface ProjectHeaderProps {
   project: Project
@@ -35,8 +33,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   const { focused, ref: refFocus } = useFocusWithin()
   const previousFocusedState = usePrevious(focused)
   const [nameError, setNameError] = useState<string>("")
-  const theme = useMantineTheme()
-  const { classes, cx } = useStyles(hovered)
+  const { classes, theme } = useStyles(hovered)
   const isFetching = useIsFetching([
     "projects",
     { id: props.project.id.toString() },
@@ -67,7 +64,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
 
   return (
     <Paper radius="lg" ref={ref} className={classes.root}>
-      <Group position="apart">
+      <Group noWrap position="apart">
         <Group spacing="md">
           <Popover position="right-end">
             <Popover.Target>
@@ -111,20 +108,7 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
             </MediaQuery>
           </Stack>
         </Group>
-
-        {!props.formVisible && (
-          <Button
-            className={cx(classes.shownOnHover, classes.addBtnGroup)}
-            compact
-            leftIcon={
-              <Task size={20} color={theme.colors[theme.primaryColor][3]} />
-            }
-            variant="subtle"
-            onClick={props.toggleTaskForm}
-          >
-            Add task
-          </Button>
-        )}
+        <ProjectViewSelect />
         <ProjectActions
           updateProject={updateProject}
           hovered={hovered}

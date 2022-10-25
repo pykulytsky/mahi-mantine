@@ -1,5 +1,12 @@
 import http from "./axios"
-import { Project, ProjectCreate, ProjectEdit, InvitationCode } from "../types"
+import type {
+  Project,
+  ProjectCreate,
+  ProjectEdit,
+  InvitationCode,
+  DirectInvitation,
+  UserProjectRemove,
+} from "../types"
 
 const BASE_URL: string = "/projects/"
 
@@ -44,6 +51,26 @@ export const generateInvitationCode = async (
 
 export const acceptInvitation = async (code: string): Promise<Project> => {
   const { data } = await http.get<Project>(`${BASE_URL}invitation/${code}`)
+
+  return data
+}
+
+export const sendDirectInvitation = async (
+  payload: DirectInvitation
+): Promise<Project> => {
+  const { data } = await http.get<Project>(
+    `${BASE_URL}${payload.id}/direct-invite/${payload.email}`
+  )
+
+  return data
+}
+
+export const removeUserFromProject = async (
+  payload: UserProjectRemove
+): Promise<Project> => {
+  const { data } = await http.post<Project>(
+    `${BASE_URL}${payload.id}/remove-user/${payload.email}`
+  )
 
   return data
 }
