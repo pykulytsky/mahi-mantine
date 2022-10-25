@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
 import { useMatch } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState, memo } from "react"
 import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import type { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
@@ -32,7 +32,7 @@ export interface TaskProps extends TaskType {
   disableAnimation?: boolean
 }
 
-export default function Task(props: TaskProps) {
+export default memo(function Task(props: TaskProps) {
   const { classes, cx, theme } = useStyles(!!props.draggableHandleProps)
   const { hovered, ref } = useHover()
   const queryClient = useQueryClient()
@@ -247,4 +247,4 @@ export default function Task(props: TaskProps) {
       </Group>
     </Container>
   )
-}
+})

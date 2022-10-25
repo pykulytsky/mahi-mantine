@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type { Project as ProjectType, Reorder } from "../../types"
@@ -45,7 +45,8 @@ import type {
 import { sortableTreeKeyboardCoordinates } from "./keyboardCoordinates"
 import { SortableTreeItem, TreeItem } from "../dnd"
 import { CSS } from "@dnd-kit/utilities"
-import { getProject, reorder } from "./api"
+import { reorderTask } from "../../api/tasks.api"
+import { fetchProject } from "../../api/projects.api"
 
 const initialItems: TreeItems = []
 
@@ -90,7 +91,7 @@ export function SortableTree({
   collapsible,
   defaultItems = initialItems,
   indicator = false,
-  indentationWidth = 50,
+  indentationWidth = 30,
   removable,
 }: Props) {
   const queryClient = useQueryClient()
@@ -105,16 +106,18 @@ export function SortableTree({
 
   const { data } = useQuery(
     ["projects", { id: 1 }],
-    async () => getProject(1),
+    async () => fetchProject(1),
     {
       onSuccess: (data: ProjectType) => {
         const tasks: TreeItems = data.tasks.map((task) => ({
           id: `task_${task.id}`,
           isTask: true,
+          task,
           name: task.name,
           children: task.tasks.map((subtask) => ({
             id: `task_${subtask.id}`,
             isTask: true,
+            task: subtask,
             name: subtask.name,
             children: [],
           })),
@@ -124,7 +127,7 @@ export function SortableTree({
     }
   )
 
-  const { mutate } = useMutation(reorder)
+  const { mutate } = useMutation(reorderTask)
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
@@ -209,24 +212,27 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, children, collapsed, depth, name }) => (
-          <SortableTreeItem
-            key={id}
-            id={id}
-            value={id}
-            name={name}
-            depth={id === activeId && projected ? projected.depth : depth}
-            indentationWidth={indentationWidth}
-            indicator={indicator}
-            collapsed={Boolean(collapsed && children.length)}
-            onCollapse={
-              collapsible && children.length
-                ? () => handleCollapse(id)
-                : undefined
-            }
-            onRemove={removable ? () => handleRemove(id) : undefined}
-          />
-        ))}
+        {flattenedItems.map(
+          ({ id, children, collapsed, depth, name, task }) => (
+            <SortableTreeItem
+              key={id}
+              id={id}
+              value={id}
+              name={name}
+              task={task}
+              depth={id === activeId && projected ? projected.depth : depth}
+              indentationWidth={indentationWidth}
+              indicator={indicator}
+              collapsed={Boolean(collapsed && children.length)}
+              onCollapse={
+                collapsible && children.length
+                  ? () => handleCollapse(id)
+                  : undefined
+              }
+              onRemove={removable ? () => handleRemove(id) : undefined}
+            />
+          )
+        )}
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
@@ -237,6 +243,7 @@ export function SortableTree({
                 id={activeId}
                 depth={activeItem.depth}
                 name="test"
+                task={activeItem.task}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
                 value={activeId.toString()}
@@ -321,18 +328,11 @@ export function SortableTree({
         container_type: parent === "root" ? "root" : parent.split("_")[0],
         order: siblingOrder,
       }
-      console.log(data)
       mutate(data, {
         onError: () => {
           queryClient.invalidateQueries(["projects", { id: 1 }])
         },
       })
-      /* mutate({
-       *         id: Number(taskID),
-       *                 container_id: 1,
-       *                         container_type: "root",
-       *                                 order: overIndex,
-       *                                       }); */
     }
   }
 

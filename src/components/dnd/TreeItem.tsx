@@ -3,11 +3,15 @@ import classNames from "classnames"
 
 import { Action, Handle } from "../../components/dnd"
 import styles from "./TreeItem.module.css"
+import type { Section, Task as TaskType } from "../../types"
+import Task from "../tasks/Task/Task"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   name: string
   isTask?: boolean
   isSection?: boolean
+  task?: TaskType
+  section?: Section
   childCount?: number
   clone?: boolean
   collapsed?: boolean
@@ -43,6 +47,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       value,
       wrapperRef,
       name,
+      task,
+      section,
       ...props
     },
     ref
@@ -66,25 +72,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         {...props}
       >
         {/*replace this div*/}
-        <div className={styles.TreeItem} ref={ref} style={style}>
-          <Handle {...handleProps} />
-          {onCollapse && (
-            <Action
-              onClick={onCollapse}
-              className={classNames(
-                styles.Collapse,
-                collapsed && styles.collapsed
-              )}
-            >
-              {collapseIcon}
-            </Action>
-          )}
-          <span className={styles.Text}>
-            {value} {name}
-          </span>
-          {clone && childCount && childCount > 1 ? (
-            <span className={styles.Count}>{childCount}</span>
-          ) : null}
+        <div ref={ref} style={style}>
+          {task && <Task draggableHandleProps={handleProps} {...task} />}
         </div>
       </li>
     )

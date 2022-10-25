@@ -5,6 +5,7 @@ import type {
   TaskEdit,
   TaskReorder,
   Assignee,
+  Reorder,
 } from "../types"
 import http from "./axios"
 
@@ -84,5 +85,12 @@ export const removeAssign = async (assignee: Assignee): Promise<Task> => {
     `${BASE_URL}${assignee.task_id}/assign/${assignee.user_id}/remove`
   )
 
+  return data
+}
+
+export const reorderTask = async (reorderData: Reorder): Promise<Task> => {
+  const { data } = await http.post<Task>(`/tasks/${reorderData.id}/reorder/`, {
+    ...reorderData,
+  })
   return data
 }
