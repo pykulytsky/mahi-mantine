@@ -65,6 +65,7 @@ export declare interface Task {
   updated?: Date
   is_important: boolean
   remind_at?: Date
+  tasks: Task[]
   tags: Tag[]
   reactions: Reaction[]
   owner?: User
@@ -142,4 +143,11 @@ export declare interface DirectInvitation {
 export declare interface UserProjectRemove {
   id: number
   email: string
+}
+
+export type Reorder = {
+  id: number
+  container_type: "root" | "task"
+  container_id: number
+  order: number
 }
