@@ -39,6 +39,9 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
       background:
         theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     },
+    "&:focus-visible": {
+      outline: `3px solid ${theme.colors[theme.primaryColor][6]}`,
+    },
   },
   task: {
     label: {
@@ -87,6 +90,16 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
     },
     "&::before": {
       marginRight: 3,
+    },
+  },
+  collapse: {
+    svg: {
+      transition: "transform 250ms ease",
+    },
+  },
+  collapsed: {
+    svg: {
+      transform: "rotate(-90deg)",
     },
   },
 }))

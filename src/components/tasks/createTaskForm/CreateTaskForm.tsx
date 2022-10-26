@@ -1,7 +1,12 @@
-import { Container, Group, Transition, ActionIcon } from "@mantine/core"
+import {
+  Container,
+  Group,
+  Transition,
+  ActionIcon,
+  Checkbox,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useToggle } from "@mantine/hooks"
-import ActionsGroup from "./ActionsGroup"
 import TaskNameInputRTE from "./TaskNameInputRTE"
 import RichTextEditor from "@mantine/rte"
 import { CreateTaskFormType, Tag, Task } from "../../../types"
@@ -92,9 +97,18 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   }
 
   return (
-    <Container style={props.style} m="md" ml={0} mr={0} p="sm">
+    <Container style={props.style} m={0} ml={40}>
       <form>
-        <Group position="apart" spacing={0}>
+        <Group noWrap position="apart" spacing={0}>
+          <Checkbox
+            size="md"
+            radius={10}
+            sx={{
+              input: {
+                border: `2px solid gray`,
+              },
+            }}
+          />
           <TaskNameInputRTE
             onSubmit={() => {
               if (form.values.name.length > 1) handleAddTask()
@@ -124,14 +138,6 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             />
           )}
         </Transition>
-        <Group mt="xs" position="apart">
-          <ActionsGroup
-            noteIsShown={noteIsShown}
-            toggleNote={() => {
-              toggleNote()
-            }}
-          />
-        </Group>
       </form>
     </Container>
   )

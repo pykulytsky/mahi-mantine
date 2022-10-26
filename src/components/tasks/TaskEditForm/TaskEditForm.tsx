@@ -126,7 +126,7 @@ export default function TaskEditForm(props: SelectedTask) {
 
   if (isLoading)
     return (
-      <Center>
+      <Center mt={150}>
         <Loader />
       </Center>
     )

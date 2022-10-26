@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import type { Project as ProjectType, Reorder } from "../../types"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import type { Reorder } from "../../types"
 import {
   Announcements,
   DndContext,
@@ -43,10 +43,9 @@ import type {
   TreeItem as TreeItemType,
 } from "./types"
 import { sortableTreeKeyboardCoordinates } from "./keyboardCoordinates"
-import { SortableTreeItem, TreeItem } from "../dnd"
+import { SortableTreeItem } from "../dnd"
 import { CSS } from "@dnd-kit/utilities"
 import { reorderTask } from "../../api/tasks.api"
-import { fetchProject } from "../../api/projects.api"
 
 const initialItems: TreeItems = []
 
@@ -103,31 +102,19 @@ export function SortableTree({
     parentId: UniqueIdentifier | null
     overId: UniqueIdentifier
   } | null>(null)
-
-  const { data } = useQuery(
-    ["projects", { id: 1 }],
-    async () => fetchProject(1),
-    {
-      onSuccess: (data: ProjectType) => {
-        const tasks: TreeItems = data.tasks.map((task) => ({
-          id: `task_${task.id}`,
-          isTask: true,
-          task,
-          name: task.name,
-          children: task.tasks.map((subtask) => ({
-            id: `task_${subtask.id}`,
-            isTask: true,
-            task: subtask,
-            name: subtask.name,
-            children: [],
-          })),
-        }))
-        setItems(() => [...tasks])
-      },
-    }
-  )
-
   const { mutate } = useMutation(reorderTask)
+  const hash = document.location.hash
+
+  useEffect(() => {
+    setItems(defaultItems)
+    if (hash) {
+      let task = document.querySelector(hash)
+      if (task) {
+        task.focus()
+        task.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+    }
+  }, [defaultItems])
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
@@ -136,7 +123,6 @@ export function SortableTree({
         collapsed && children.length ? [...acc, id] : acc,
       []
     )
-
     return removeChildrenOf(
       flattenedTree,
       activeId ? [activeId, ...collapsedItems] : collapsedItems

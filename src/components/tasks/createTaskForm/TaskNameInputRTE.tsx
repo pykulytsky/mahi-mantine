@@ -114,6 +114,8 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
       }}
       styles={{
         root: {
+          border: 0,
+          backgroundColor: "transparent",
           minHeight: 46,
           zIndex: 9999,
           padding: 0,

@@ -73,7 +73,14 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       >
         {/*replace this div*/}
         <div ref={ref} style={style}>
-          {task && <Task draggableHandleProps={handleProps} {...task} />}
+          {task && (
+            <Task
+              draggableHandleProps={handleProps}
+              {...task}
+              onCollapse={onCollapse}
+              collapsed={collapsed}
+            />
+          )}
         </div>
       </li>
     )

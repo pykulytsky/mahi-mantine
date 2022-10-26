@@ -36,7 +36,6 @@ export function SortableTreeItem({ id, depth, ...props }: Props) {
     transform: CSS.Translate.toString(transform),
     transition,
   }
-
   return (
     <TreeItem
       ref={setDraggableNodeRef}

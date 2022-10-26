@@ -15,6 +15,7 @@ export type LocationGenerics = MakeGenerics<{
   }
   Search: {
     share?: string
+    task?: number
   }
 }>
 

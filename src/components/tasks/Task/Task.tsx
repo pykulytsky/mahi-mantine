@@ -10,6 +10,7 @@ import {
   Badge,
   Tooltip,
   Avatar,
+  Space,
 } from "@mantine/core"
 import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -21,7 +22,7 @@ import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
 import type { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
 import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { Drag, Task as IconTask, Calendar, Plus } from "../../icons"
+import { Drag, Task as IconTask, Calendar, Plus, ArrowDown } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
 import ReactionList from "../../tags/Reaction/ReactionList"
@@ -29,6 +30,8 @@ import ReactionList from "../../tags/Reaction/ReactionList"
 export interface TaskProps extends TaskType {
   draggableHandleProps: DraggableProvidedDragHandleProps | null
   isDragging?: boolean
+  onCollapse?(): void
+  collapsed?: boolean
   disableAnimation?: boolean
 }
 
@@ -105,10 +108,14 @@ export default memo(function Task(props: TaskProps) {
       })}
       fluid
       onClick={toggleDetailAside}
+      ml={props.onCollapse ? 0 : 28}
+      id={`task_${props.id}`}
+      tabIndex={-1}
     >
-      <Group noWrap spacing={0}>
+      <Group noWrap spacing={0} align="flex-start">
         {props.draggableHandleProps && (
           <ActionIcon
+            mt={3}
             aria-label="drag handle"
             variant="transparent"
             {...props.draggableHandleProps}
@@ -117,6 +124,17 @@ export default memo(function Task(props: TaskProps) {
             })}
           >
             <Drag size={20} />
+          </ActionIcon>
+        )}
+        {props.onCollapse && (
+          <ActionIcon
+            mt={3}
+            onClick={props.onCollapse}
+            className={cx(classes.collapse, {
+              [classes.collapsed]: props.collapsed,
+            })}
+          >
+            <ArrowDown size={20} />
           </ActionIcon>
         )}
 
@@ -243,7 +261,9 @@ export default memo(function Task(props: TaskProps) {
             </Spoiler>
           )}
         </Stack>
-        <TaskMenu hovered={hovered} taskID={props.id} projectID={id} />
+        <Group mt={3}>
+          <TaskMenu hovered={hovered} taskID={props.id} projectID={id} />
+        </Group>
       </Group>
     </Container>
   )
