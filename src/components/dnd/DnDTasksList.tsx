@@ -108,7 +108,7 @@ export function SortableTree({
   useEffect(() => {
     setItems(defaultItems)
     if (hash) {
-      let task = document.querySelector(hash)
+      const task = document.querySelector(hash)
       if (task) {
         task.focus()
         task.scrollIntoView({ behavior: "smooth", block: "center" })

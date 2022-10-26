@@ -10,10 +10,8 @@ import {
   Loader,
 } from "@mantine/core"
 import ProjectHeader from "../components/project/ProjectHeader/ProjectHeader"
-import { DraggableLocation, DropResult } from "@hello-pangea/dnd"
 import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlaceholder/ProjectEmptyPlaceholder"
 import useTasksHelper from "../hooks/tasksHelpers"
-import { useReorderMutation } from "../queries/projects"
 import { useHotkeys, useToggle } from "@mantine/hooks"
 import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
 import { AnimatePresence, motion } from "framer-motion"
@@ -64,35 +62,12 @@ export default function ProjectRoot() {
     return data?.accent_color ? data.accent_color : theme.primaryColor
   }, [data?.accent_color])
 
-  const reorderMutation = useReorderMutation(id)
-
   const { isEmpty, projectTasksCount } = useTasksHelper(data)
 
   useHotkeys([
     ["mod+A", () => toggleTaskForm()],
     ["mod+Shift+A", () => toggleSectionForm()],
   ])
-
-  async function orderProject(
-    source: DraggableLocation,
-    destination: DraggableLocation | null
-  ): Promise<DropResult | void> {
-    if (destination && Number.isInteger(+destination?.droppableId)) {
-      reorderMutation.mutate({
-        sourceOrder: Number(source.index),
-        sourceID:
-          Number(source.droppableId) > 0 ? Number(source.droppableId) : id,
-        destinationID:
-          Number(destination.droppableId) > 0
-            ? Number(destination.droppableId)
-            : id,
-        destinationType:
-          Number(destination.droppableId) >= 0 ? "section" : "project",
-        destinationOrder: Number(destination.index),
-        sourceType: Number(source.droppableId) >= 0 ? "section" : "project",
-      })
-    }
-  }
 
   if (isLoading) return <LoadingOverlay visible />
   if (isError) return <ProjectErrorPlaceholder />
