@@ -3,8 +3,8 @@ import {
   Draggable,
   DraggableProvidedDragHandleProps,
 } from "@hello-pangea/dnd"
-import { useId, useToggle } from "@mantine/hooks"
-import { Collapse, ActionIcon, Transition } from "@mantine/core"
+import { useToggle } from "@mantine/hooks"
+import { Collapse, ActionIcon } from "@mantine/core"
 import SectionHeader from "./SectionHeader/SectionHeader"
 import { useMemo, useState } from "react"
 import DraggableTaskList from "./DraggableTaskList"
@@ -33,7 +33,6 @@ export type SectionProps = CustomSectionProps | DefaultSectionProps
 export default function SectionComponent(props: SectionProps) {
   const [opened, setOpened] = useState(true)
   const [taskFormVisible, toggleTaskForm] = useToggle()
-  const uuid = useId()
   const isCustomSection = "section" in props
 
   const tasksList = useMemo<Task[]>((): Task[] => {
@@ -45,7 +44,7 @@ export default function SectionComponent(props: SectionProps) {
     }
   }, [props])
 
-  let tasks = DraggableTaskList(tasksList, uuid)
+  let tasks = DraggableTaskList(tasksList)
 
   let sectionID = isCustomSection ? props.section.id : -1
   const { tasksCount } = useTasksHelper(

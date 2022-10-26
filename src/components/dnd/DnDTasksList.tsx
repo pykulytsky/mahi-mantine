@@ -110,6 +110,7 @@ export function SortableTree({
     if (hash) {
       const task = document.querySelector(hash)
       if (task) {
+        // @ts-ignore
         task.focus()
         task.scrollIntoView({ behavior: "smooth", block: "center" })
       }
@@ -120,11 +121,13 @@ export function SortableTree({
     const flattenedTree = flattenTree(items)
     const collapsedItems = flattenedTree.reduce<string[]>(
       (acc, { children, collapsed, id }) =>
+        // @ts-ignore
         collapsed && children.length ? [...acc, id] : acc,
       []
     )
     return removeChildrenOf(
       flattenedTree,
+      // @ts-ignore
       activeId ? [activeId, ...collapsedItems] : collapsedItems
     )
   }, [activeId, items])
@@ -203,6 +206,7 @@ export function SortableTree({
             <SortableTreeItem
               key={id}
               id={id}
+              // @ts-ignore
               value={id}
               name={name}
               task={task}
@@ -268,7 +272,7 @@ export function SortableTree({
   }
 
   function findParent(item: TreeItemType, items: TreeItems) {
-    let parentContainer: string | undefined
+    let parentContainer: UniqueIdentifier = -1
     let previousSibling: number = -1
     for (const parent of items) {
       if (item.id === parent.id) {
@@ -306,13 +310,16 @@ export function SortableTree({
       const newItems = buildTree(sortedItems)
 
       setItems(newItems)
-      const taskID = activeTreeItem.id.split("_")[1]
+      const taskID = activeTreeItem.id.toString().split("_")[1]
       const [parent, siblingOrder] = findParent(activeTreeItem, newItems)
       const data: Reorder = {
         id: Number(taskID),
-        container_id: parent === "root" ? 1 : Number(parent.split("_")[1]),
-        container_type: parent === "root" ? "root" : parent.split("_")[0],
-        order: siblingOrder,
+        container_id:
+          parent === "root" ? 1 : Number(parent?.toString().split("_")[1]),
+        // @ts-ignore
+        container_type:
+          parent === "root" ? "root" : parent?.toString().split("_")[0],
+        order: Number(siblingOrder),
       }
       mutate(data, {
         onError: () => {
