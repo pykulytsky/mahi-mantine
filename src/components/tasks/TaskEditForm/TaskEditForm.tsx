@@ -17,8 +17,8 @@ import { useFocusWithin, usePrevious, useToggle } from "@mantine/hooks"
 import RichTextEditor from "@mantine/rte"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-location"
-import { useEffect, useMemo } from "react"
-import { SelectedTask } from "../../../layout/LayoutProvider"
+import { useEffect, useMemo, memo } from "react"
+import { SelectedTask } from "../../../store/taskContext"
 import { useTaskEditMutation, useTaskQuery } from "../../../queries/tasks"
 import { Task, TaskEdit } from "../../../types"
 import {
@@ -38,7 +38,7 @@ import { useStyles } from "./TaskEditForm.styles"
 import UserAssignPicker from "./UserAssignPicker"
 import { useProject } from "../../../queries/projects"
 
-export default function TaskEditForm(props: SelectedTask) {
+export default memo(function TaskEditForm(props: SelectedTask) {
   const queryClient = useQueryClient()
   const { data, isError, isLoading } = useTaskQuery(props.id)
   const { data: project } = useProject(props.projectID)
@@ -289,4 +289,4 @@ export default function TaskEditForm(props: SelectedTask) {
       )}
     </form>
   )
-}
+})

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Outlet, useNavigate, useSearch } from "@tanstack/react-location"
 import { AppShell, Box, LoadingOverlay } from "@mantine/core"
 import Sidebar from "./Sidebar/Sidebar"
@@ -8,22 +8,7 @@ import { LocationGenerics } from "../router"
 import { acceptInvitation } from "../api/projects.api"
 import { showNotification } from "@mantine/notifications"
 import { Alert } from "../components/icons"
-
-export interface SelectedTask {
-  id: number | string
-  projectID: number | string
-  color?: string
-}
-
-type SelectedTaskContextType = {
-  selectedTask: SelectedTask | null
-  setSelectedTask: (data: SelectedTask | null) => void
-}
-
-export const SelectedTaskContext = createContext<SelectedTaskContextType>({
-  selectedTask: null,
-  setSelectedTask: (data: SelectedTask | null) => {},
-})
+import { TaskProvider } from "../store/taskContext"
 
 export default function AppProvider() {
   const navigate = useNavigate()
@@ -53,9 +38,8 @@ export default function AppProvider() {
   }, [])
 
   const isFetching = useIsFetching(["projects", "user"])
-  const [selectedTask, setSelectedTask] = useState<SelectedTask | null>(null)
   return (
-    <SelectedTaskContext.Provider value={{ selectedTask, setSelectedTask }}>
+    <TaskProvider>
       <AppShell
         styles={{
           main: {
@@ -80,10 +64,9 @@ export default function AppProvider() {
             visible={isFetching > 0}
             overlayBlur={2}
           />
-
           <Outlet />
         </Box>
       </AppShell>
-    </SelectedTaskContext.Provider>
+    </TaskProvider>
   )
 }

@@ -107,6 +107,9 @@ export function SortableTree({
 
   useEffect(() => {
     setItems(defaultItems)
+  }, [defaultItems])
+
+  useEffect(() => {
     if (hash) {
       const task = document.querySelector(hash)
       if (task) {
@@ -115,7 +118,7 @@ export function SortableTree({
         task.scrollIntoView({ behavior: "smooth", block: "center" })
       }
     }
-  }, [defaultItems])
+  }, [])
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)

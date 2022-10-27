@@ -1,34 +1,33 @@
 import { ActionIcon, Badge, useMantineTheme } from "@mantine/core"
 import { useNavigate } from "@tanstack/react-location"
 import { useQueryClient } from "@tanstack/react-query"
-import { useContext } from "react"
-import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { useTagRemoveMutation } from "../../../queries/tags"
 import { Tag as TagType } from "../../../types"
 import { Close } from "../../icons"
+import { useStore } from "../../../store/taskContext"
 
 interface TagProps extends TagType {
   editable: boolean
 }
 
 export default function Tag(props: TagProps) {
+  const [taskStore, _] = useStore()
   const navigate = useNavigate()
   const theme = useMantineTheme()
-  const { selectedTask } = useContext(SelectedTaskContext)
   const queryClient = useQueryClient()
 
-  const tagRemoveMutation = useTagRemoveMutation(selectedTask?.projectID || 0)
+  const tagRemoveMutation = useTagRemoveMutation(taskStore?.projectID || 0)
   const removeButton = (
     <ActionIcon
       onClick={() => {
-        if (selectedTask) {
+        if (taskStore) {
           tagRemoveMutation.mutate(
-            { tag_id: props.id, task_id: Number(selectedTask.id) },
+            { tag_id: props.id, task_id: Number(taskStore.id) },
             {
               onSuccess: () => {
                 queryClient.invalidateQueries([
                   "tasks",
-                  { id: Number(selectedTask.id) },
+                  { id: Number(taskStore.id) },
                 ])
               },
             }

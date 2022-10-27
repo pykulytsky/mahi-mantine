@@ -40,11 +40,13 @@ export default function ProjectRoot() {
           isTask: true,
           task,
           name: task.name,
+          collapsed: task.is_collapsed,
           children: task.tasks.map((subtask) => ({
             id: `task_${subtask.id}`,
             isTask: true,
             task: subtask,
             name: subtask.name,
+            collapsed: task.is_collapsed,
             children: [],
           })),
         }))
@@ -55,7 +57,6 @@ export default function ProjectRoot() {
   )
 
   const [taskFormVisible, toggleTaskForm] = useToggle()
-  const [sectionFormVisible, toggleSectionForm] = useToggle()
 
   const theme = useMantineTheme()
   const accentColor = useMemo(() => {
@@ -64,10 +65,7 @@ export default function ProjectRoot() {
 
   const { isEmpty, projectTasksCount } = useTasksHelper(data)
 
-  useHotkeys([
-    ["mod+A", () => toggleTaskForm()],
-    ["mod+Shift+A", () => toggleSectionForm()],
-  ])
+  useHotkeys([["mod+A", () => toggleTaskForm()]])
 
   if (isLoading) return <LoadingOverlay visible />
   if (isError) return <ProjectErrorPlaceholder />
@@ -83,7 +81,6 @@ export default function ProjectRoot() {
         project={data}
         formVisible={taskFormVisible}
         toggleTaskForm={toggleTaskForm}
-        toggleSectionForm={toggleSectionForm}
       />
       <Container>
         <Center>

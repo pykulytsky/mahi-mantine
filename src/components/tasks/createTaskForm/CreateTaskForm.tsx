@@ -97,7 +97,7 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   }
 
   return (
-    <Container style={props.style} m={0} ml={40}>
+    <Container style={props.style} m={0} ml={13}>
       <form>
         <Group noWrap position="apart" spacing={0}>
           <Checkbox

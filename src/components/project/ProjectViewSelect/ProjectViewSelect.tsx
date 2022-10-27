@@ -3,9 +3,7 @@ import { useState } from "react"
 import { Board, Calendar, List } from "../../icons"
 import { useStyles } from "./ProjectViewSelect.styles"
 
-type ProjectViewSelectProps = {}
-
-export default function ProjectViewSelect(props: ProjectViewSelectProps) {
+export default function ProjectViewSelect() {
   const { classes } = useStyles()
   const [value, setValue] = useState("list")
   const views = [
@@ -13,7 +11,7 @@ export default function ProjectViewSelect(props: ProjectViewSelectProps) {
       value: "list",
       label: (
         <Center>
-          <List size={25} color={value === "list" ? "white" : undefined} />
+          <List size={20} color={value === "list" ? "white" : undefined} />
           <Box ml={10}>List</Box>
         </Center>
       ),
@@ -22,7 +20,7 @@ export default function ProjectViewSelect(props: ProjectViewSelectProps) {
       value: "board",
       label: (
         <Center>
-          <Board size={25} color={value === "board" ? "white" : undefined} />
+          <Board size={20} color={value === "board" ? "white" : undefined} />
           <Box ml={10}>Board</Box>
         </Center>
       ),
@@ -32,7 +30,7 @@ export default function ProjectViewSelect(props: ProjectViewSelectProps) {
       label: (
         <Center>
           <Calendar
-            size={25}
+            size={20}
             color={value === "calendar" ? "white" : undefined}
           />
           <Box ml={10}>Calendar</Box>
@@ -45,7 +43,7 @@ export default function ProjectViewSelect(props: ProjectViewSelectProps) {
       radius="xl"
       value={value}
       onChange={setValue}
-      size="md"
+      size="sm"
       data={views}
       classNames={classes}
     />

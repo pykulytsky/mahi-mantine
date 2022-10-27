@@ -125,3 +125,6 @@
     transform: rotate(-90deg);
   }
 }
+.Container {
+  display: flex;
+}

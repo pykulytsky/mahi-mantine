@@ -30,18 +30,11 @@ export const jelly = keyframes({
   },
 })
 
-export const useStyles = createStyles((theme, isDraggable: boolean) => ({
+export const useStyles = createStyles((theme) => ({
   root: {
-    borderRadius: theme.radius.md,
-    cursor: "pointer",
-    transition: "0.2s background-color ease-in-out",
-    "&:hover": {
-      background:
-        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-    },
-    "&:focus-visible": {
-      outline: `3px solid ${theme.colors[theme.primaryColor][6]}`,
-    },
+    padding: 5,
+    paddingLeft: 0,
+    width: "100%",
   },
   task: {
     label: {

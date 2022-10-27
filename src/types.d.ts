@@ -59,6 +59,7 @@ export declare interface Task {
   name: string
   description?: string
   is_completed: boolean
+  is_collapsed: boolean
   deadline?: Date | null
   done_at?: Date
   created?: Date
@@ -79,6 +80,7 @@ export declare type TaskEdit = {
   name?: string
   description?: string | null
   is_completed?: boolean
+  is_collapsed?: boolean
   deadline?: Date | number | string | null
   is_important?: boolean
   remind_at?: Date | null

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import {
   Group,
   Popover,
@@ -26,7 +26,7 @@ type TaskEditActions = {
   toggle: () => void
 }
 
-export default function TaskEditActions(props: TaskEditActions) {
+export default memo(function TaskEditActions(props: TaskEditActions) {
   const [opened, setOpened] = useState(false)
 
   const theme = useMantineTheme()
@@ -127,4 +127,4 @@ export default function TaskEditActions(props: TaskEditActions) {
       </Tooltip>
     </Group>
   )
-}
+})

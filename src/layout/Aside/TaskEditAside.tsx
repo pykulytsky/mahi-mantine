@@ -1,37 +1,41 @@
-import { useContext } from "react"
-import { SelectedTaskContext } from "../LayoutProvider"
+import { memo } from "react"
 import TaskEditForm from "../../components/tasks/TaskEditForm/TaskEditForm"
 import Aside from "./Aside"
 import { MantineProvider } from "@mantine/core"
 import TaskEditActions from "../../components/tasks/TaskEditForm/TaskEditActions"
+import { useStore } from "../../store/taskContext"
 
-export default function DetailAside() {
-  const { selectedTask, setSelectedTask } = useContext(SelectedTaskContext)
+export default memo(function DetailAside() {
+  const [taskStore, setTaskStore] = useStore()
   return (
     <MantineProvider
       inherit
       theme={{
-        primaryColor: selectedTask?.color || "indigo",
+        primaryColor: taskStore?.color || "indigo",
       }}
     >
       <Aside
-        opened={!!selectedTask}
+        opened={!!taskStore}
         toggle={() => {
-          setSelectedTask(null)
+          setTaskStore({
+            id: undefined,
+          })
         }}
-        content={selectedTask && <TaskEditForm {...selectedTask} />}
+        content={taskStore && <TaskEditForm {...taskStore} />}
         actions={
-          selectedTask && (
+          taskStore && (
             <TaskEditActions
               toggle={() => {
-                setSelectedTask(null)
+                setTaskStore({
+                  id: undefined,
+                })
               }}
-              taskID={selectedTask.id}
-              projectID={selectedTask.projectID}
+              taskID={taskStore.id}
+              projectID={taskStore.projectID}
             />
           )
         }
       />
     </MantineProvider>
   )
-}
+})

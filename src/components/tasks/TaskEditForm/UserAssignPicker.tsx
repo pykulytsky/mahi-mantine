@@ -1,4 +1,6 @@
+import { memo } from "react"
 import { Stack } from "@mantine/core"
+import { useToggle } from "@mantine/hooks"
 import {
   useTaskAssignMutation,
   useTaskAssignRemoveMutation,
@@ -15,8 +17,9 @@ type UserAssignPickerProps = {
   projectID: number | string
 }
 
-export default function UserAssignPicker(props: UserAssignPickerProps) {
+export default memo(function UserAssignPicker(props: UserAssignPickerProps) {
   const { data: currentUser } = useUser()
+  const [loading, toggle] = useToggle()
   const assign = useTaskAssignMutation(props.projectID, props.taskID)
   const removeAssign = useTaskAssignRemoveMutation(
     props.projectID,
@@ -24,16 +27,45 @@ export default function UserAssignPicker(props: UserAssignPickerProps) {
   )
 
   function onAssignChange(id: number) {
+    toggle()
     if (props.assignedTo.map((user) => user.id).includes(id)) {
-      removeAssign.mutate({
-        task_id: Number(props.taskID),
-        user_id: id,
-      })
+      removeAssign.mutate(
+        {
+          task_id: Number(props.taskID),
+          user_id: id,
+        },
+        {
+          onSuccess: () => {
+            setTimeout(() => {
+              toggle()
+            }, 100)
+          },
+          onError: () => {
+            setTimeout(() => {
+              toggle()
+            }, 100)
+          },
+        }
+      )
     } else {
-      assign.mutate({
-        task_id: Number(props.taskID),
-        user_id: id,
-      })
+      assign.mutate(
+        {
+          task_id: Number(props.taskID),
+          user_id: id,
+        },
+        {
+          onSuccess: () => {
+            setTimeout(() => {
+              toggle()
+            }, 100)
+          },
+          onError: () => {
+            setTimeout(() => {
+              toggle()
+            }, 100)
+          },
+        }
+      )
     }
   }
   return (
@@ -41,6 +73,7 @@ export default function UserAssignPicker(props: UserAssignPickerProps) {
       {props.owner && (
         <UserCheckbox
           name={`${props.owner.first_name} ${props.owner.last_name}`}
+          loading={loading}
           avatar={props.owner.avatar}
           isCurrentUser={
             currentUser !== undefined && props.owner.id == currentUser.id
@@ -58,6 +91,7 @@ export default function UserAssignPicker(props: UserAssignPickerProps) {
           key={user.id}
           name={`${user.first_name} ${user.last_name}`}
           isCurrentUser={currentUser !== undefined && user.id == currentUser.id}
+          loading={loading}
           avatar={user.avatar}
           onChange={() => {
             onAssignChange(user.id)
@@ -67,4 +101,4 @@ export default function UserAssignPicker(props: UserAssignPickerProps) {
       ))}
     </Stack>
   )
-}
+})

@@ -1,23 +1,21 @@
 import { Menu, ActionIcon, useMantineTheme, Text } from "@mantine/core"
 import { openConfirmModal } from "@mantine/modals"
-import { useContext, useEffect } from "react"
-import { SelectedTaskContext } from "../../../layout/LayoutProvider"
 import { useTaskDeleteMutation } from "../../../queries/tasks"
 import { Menu as MenuIcon, Pen } from "../../icons"
 import SimpleArrowDown from "../../icons/SimpleArrowDown"
 import SimpleArrowTop from "../../icons/SimpleArrowTop"
 import Subtask from "../../icons/Subtask"
 import Trash from "../../icons/Trash"
+import { useStore } from "../../../store/taskContext"
 
 type TaskMenuProps = {
   taskID: number
   projectID: number | string
-  hovered: boolean
 }
 
 export default function TaskMenu(props: TaskMenuProps) {
   const theme = useMantineTheme()
-  const { setSelectedTask } = useContext(SelectedTaskContext)
+  const [_, setTaskStore] = useStore()
   const { mutate } = useTaskDeleteMutation(props.projectID)
 
   function onTaskDelete() {
@@ -42,9 +40,10 @@ export default function TaskMenu(props: TaskMenuProps) {
     <Menu width={200}>
       <Menu.Target>
         <ActionIcon
+          className="hover-control"
           sx={{
-            opacity: props.hovered ? 1 : 0,
-            transition: "opacity .2s ease-in-out",
+            visibility: "hidden",
+            transition: "200ms visibility ease-in",
           }}
         >
           <MenuIcon size={20} />
@@ -53,7 +52,7 @@ export default function TaskMenu(props: TaskMenuProps) {
       <Menu.Dropdown>
         <Menu.Item
           onClick={() => {
-            setSelectedTask({
+            setTaskStore({
               id: props.taskID,
               projectID: props.projectID,
             })

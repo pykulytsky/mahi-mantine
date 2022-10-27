@@ -5,7 +5,6 @@ import ParticipantsButton from "./Participants"
 import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
-  hovered: boolean
   project: Project
   updateProject: (project: ProjectEdit) => void
 }

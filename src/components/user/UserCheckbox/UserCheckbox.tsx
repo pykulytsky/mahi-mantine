@@ -1,4 +1,4 @@
-import { UnstyledButton, Checkbox, Text, Avatar } from "@mantine/core"
+import { UnstyledButton, Checkbox, Text, Avatar, Loader } from "@mantine/core"
 import { useUncontrolled } from "@mantine/hooks"
 import { useStyles } from "./UserCeckbox.styles"
 
@@ -9,6 +9,7 @@ interface UserCheckboxProps {
   name?: string
   avatar?: string
   isCurrentUser: boolean
+  loading?: boolean
 }
 
 export default function UserCheckbox({
@@ -19,6 +20,7 @@ export default function UserCheckbox({
   className,
   avatar,
   isCurrentUser,
+  loading,
   ...others
 }: UserCheckboxProps &
   Omit<React.ComponentPropsWithoutRef<"button">, keyof UserCheckboxProps>) {
@@ -43,13 +45,16 @@ export default function UserCheckbox({
           {isCurrentUser ? "You" : name}
         </Text>
       </div>
-
-      <Checkbox
-        checked={value}
-        onChange={() => {}}
-        tabIndex={-1}
-        styles={{ input: { cursor: "pointer" } }}
-      />
+      {loading ? (
+        <Loader size="xs" />
+      ) : (
+        <Checkbox
+          checked={value}
+          onChange={() => {}}
+          tabIndex={-1}
+          styles={{ input: { cursor: "pointer" } }}
+        />
+      )}
     </UnstyledButton>
   )
 }

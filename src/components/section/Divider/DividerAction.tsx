@@ -1,5 +1,4 @@
 import { Button, Divider, useMantineTheme } from "@mantine/core"
-import { useHover } from "@mantine/hooks"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import SectionCreateForm from "../SectionCreateForm"
@@ -12,16 +11,17 @@ type DividerActionProps = {
 export default function DividerAction(props: DividerActionProps) {
   const theme = useMantineTheme()
   const [formVisible, setFormVisible] = useState(false)
-  const { hovered, ref } = useHover()
   return (
     <>
       <Divider
         my={0}
-        ref={ref}
         size="sm"
         color={theme.colors[theme.primaryColor][4]}
         sx={{
-          opacity: hovered ? 1 : 0,
+          opacity: 0,
+          "&:hover": {
+            opacity: 1,
+          },
           display: formVisible ? "none" : "inherit",
           transition: ".2s opacity linear",
         }}
@@ -51,7 +51,7 @@ export default function DividerAction(props: DividerActionProps) {
               order={props.order}
               projectID={props.projectID}
               toggleForm={() => {
-                setFormVisible(value => !value)
+                setFormVisible((value) => !value)
               }}
             />
           </motion.div>
