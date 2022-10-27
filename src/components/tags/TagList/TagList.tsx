@@ -17,7 +17,7 @@ type TagListProps = {
 export default function TagList(props: TagListProps) {
   const [taskStore, _] = useStore()
   const [tagSelectOpened, toggle] = useToggle()
-  const { data, isLoading, isError } = useTags()
+  const { data } = useTags()
   const { mutate } = useApplyTagMutation()
   const tagCreateMutation = useTagCreateMutation()
   const queryClient = useQueryClient()

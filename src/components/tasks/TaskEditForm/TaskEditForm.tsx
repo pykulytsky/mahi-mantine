@@ -40,9 +40,9 @@ import { useProject } from "../../../queries/projects"
 
 export default memo(function TaskEditForm(props: SelectedTask) {
   const queryClient = useQueryClient()
-  const { data, isError, isLoading } = useTaskQuery(props.id)
-  const { data: project } = useProject(props.projectID)
-  const { mutate } = useTaskEditMutation(props.projectID)
+  const { data, isError, isLoading } = useTaskQuery(props.id || -1)
+  const { data: project } = useProject(props.projectID || -1)
+  const { mutate } = useTaskEditMutation(props.projectID || -1)
   const form = useForm<TaskEdit>({
     initialValues: {
       ...data,
@@ -147,7 +147,7 @@ export default memo(function TaskEditForm(props: SelectedTask) {
         <ProjectSelect
           id={data.id}
           order={data.order}
-          project_id={props.projectID.toString()}
+          project_id={props.projectID?.toString() || "-1"}
           section_id={data.section_id}
         />
         <Button
@@ -251,7 +251,7 @@ export default memo(function TaskEditForm(props: SelectedTask) {
                 assignedTo={data.assigned_to}
                 participants={project?.participants || []}
                 owner={project?.owner}
-                projectID={props.projectID}
+                projectID={props.projectID || -1}
               />
             </td>
           </tr>

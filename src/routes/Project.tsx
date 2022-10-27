@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchProject } from "../api/projects.api"
 import { Project as ProjectType } from "../types"
 import { TreeItems } from "../components/dnd/types"
+import { flattenRawTasks, flattenTasks } from "../components/dnd/utilities"
 
 export default function ProjectRoot() {
   const {
@@ -35,22 +36,7 @@ export default function ProjectRoot() {
     {
       onSuccess: (data: ProjectType) => {
         toggle()
-        const tasks: TreeItems = data.tasks.map((task) => ({
-          id: `task_${task.id}`,
-          isTask: true,
-          task,
-          name: task.name,
-          collapsed: task.is_collapsed,
-          children: task.tasks.map((subtask) => ({
-            id: `task_${subtask.id}`,
-            isTask: true,
-            task: subtask,
-            name: subtask.name,
-            collapsed: task.is_collapsed,
-            children: [],
-          })),
-        }))
-        setTasks(() => [...tasks])
+        setTasks(() => flattenTasks(data.tasks))
         toggle()
       },
     }

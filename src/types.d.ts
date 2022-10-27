@@ -66,6 +66,7 @@ export declare interface Task {
   updated?: Date
   is_important: boolean
   remind_at?: Date
+  parent_task_id?: number
   tasks: Task[]
   tags: Tag[]
   reactions: Reaction[]

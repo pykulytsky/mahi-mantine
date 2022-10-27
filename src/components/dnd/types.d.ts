@@ -14,8 +14,15 @@ export interface TreeItem {
 }
 
 export type TreeItems = TreeItem[]
+export type Tasks = Task[]
 
 export interface FlattenedItem extends TreeItem {
+  parentId: UniqueIdentifier | null
+  depth: number
+  index: number
+}
+
+export interface FlattenedTask extends Task {
   parentId: UniqueIdentifier | null
   depth: number
   index: number

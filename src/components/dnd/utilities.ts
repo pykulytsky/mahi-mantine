@@ -1,7 +1,13 @@
 import type { UniqueIdentifier } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 
-import type { FlattenedItem, TreeItem, TreeItems } from "./types"
+import type {
+  FlattenedItem,
+  FlattenedTask,
+  Tasks,
+  TreeItem,
+  TreeItems,
+} from "./types"
 
 export const iOS = /iPad|iPhone|iPod/.test(navigator.platform)
 
@@ -97,6 +103,72 @@ function flatten(
       ...flatten(item.children, item.id, depth + 1),
     ]
   }, [])
+}
+
+export function flattenRawTasks(
+  items: Tasks,
+  parentId: UniqueIdentifier | null = null,
+  depth = 0
+): FlattenedTask[] {
+  return items.reduce<FlattenedTask[]>((acc, item, index) => {
+    return [
+      ...acc,
+      { ...item, parentId, depth, index },
+      ...flattenRawTasks(item.tasks, item.id, depth + 1),
+    ]
+  }, [])
+}
+
+function findNestedObj(
+  entireObj: TreeItems,
+  keyToFind: string,
+  valToFind: any
+): TreeItem[] | undefined {
+  let foundObj: TreeItem[] = []
+  JSON.stringify(entireObj, (_, nestedValue) => {
+    if (nestedValue && nestedValue[keyToFind] === valToFind) {
+      foundObj = nestedValue
+    }
+    foundObj.push(nestedValue)
+  })
+  return foundObj
+}
+
+export function getTasksTreeList(items: FlattenedTask[]) {
+  let taskList: TreeItems = []
+  items.forEach((item) => {
+    const { parentId, ...omitedTask } = item
+    if (item.parentId) {
+      flatten(taskList).forEach((flatItem) => {
+        if (flatItem.id === `task_${item.parentId}`) {
+          flatItem.children.push({
+            id: `task_${item.id}`,
+            collapsed: item.is_collapsed,
+            isTask: true,
+            task: omitedTask,
+            name: item.name,
+            children: [],
+          })
+        }
+      })
+    } else {
+      taskList.push({
+        id: `task_${item.id}`,
+        collapsed: item.is_collapsed,
+        isTask: true,
+        task: omitedTask,
+        name: item.name,
+        children: [],
+      })
+    }
+  })
+
+  return taskList
+}
+
+export function flattenTasks(tasks: Tasks) {
+  const flat = flattenRawTasks(tasks)
+  return getTasksTreeList(flat)
 }
 
 export function flattenTree(items: TreeItems): FlattenedItem[] {

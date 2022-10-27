@@ -313,15 +313,26 @@ export function SortableTree({
       const newItems = buildTree(sortedItems)
 
       setItems(newItems)
+
       const taskID = activeTreeItem.id.toString().split("_")[1]
       const [parent, siblingOrder] = findParent(activeTreeItem, newItems)
+
+      const newClonedItems: FlattenedItem[] = JSON.parse(
+        JSON.stringify(flattenTree(newItems))
+      )
+      const newActiveIndex = newClonedItems.findIndex(
+        ({ id }) => id === active.id
+      )
+      const newActiveTreeItem = newClonedItems[newActiveIndex]
+
+      const parentTaskID = newActiveTreeItem?.parentId?.toString().split("_")[1]
       const data: Reorder = {
         id: Number(taskID),
-        container_id:
-          parent === "root" ? 1 : Number(parent?.toString().split("_")[1]),
+        container_id: Number(parentTaskID) || 1,
+        // parent === "root" ? 1 : Number(parent?.toString().split("_")[1]),
         // @ts-ignore
-        container_type:
-          parent === "root" ? "root" : parent?.toString().split("_")[0],
+        container_type: parentTaskID ? "task" : "root",
+        //parent === "root" ? "root" : parent?.toString().split("_")[0],
         order: Number(siblingOrder),
       }
       mutate(data, {
