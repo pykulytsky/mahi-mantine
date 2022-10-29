@@ -13,7 +13,7 @@ import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
 import ProjectActions from "../ProjectActions"
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
 import { ProjectButton } from "../ProjectButton"
@@ -26,7 +26,7 @@ interface ProjectHeaderProps {
   toggleTaskForm: () => void
 }
 
-export default function ProjectHeader(props: ProjectHeaderProps) {
+export default memo(function ProjectHeader(props: ProjectHeaderProps) {
   const [name, setName] = useState<string>(props.project.name)
   const { focused, ref: refFocus } = useFocusWithin()
   const previousFocusedState = usePrevious(focused)
@@ -111,4 +111,4 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
       </Group>
     </Paper>
   )
-}
+})

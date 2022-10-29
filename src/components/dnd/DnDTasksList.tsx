@@ -274,26 +274,23 @@ export function SortableTree({
     setOverId(over?.id ?? null)
   }
 
-  function findParent(item: TreeItemType, items: TreeItems) {
-    let parentContainer: UniqueIdentifier = -1
+  function fintPreviousSibling(item: TreeItemType, items: TreeItems) {
     let previousSibling: number = -1
     for (const parent of items) {
       if (item.id === parent.id) {
-        parentContainer = "root"
         previousSibling = items.indexOf(parent)
         break
       }
       if (parent.children) {
         for (const subparent of parent.children) {
           if (item.id === subparent.id) {
-            parentContainer = parent.id
             previousSibling = parent.children.indexOf(subparent)
             break
           }
         }
       }
     }
-    return [parentContainer, previousSibling]
+    return previousSibling
   }
 
   function handleDragEnd({ active, over }: DragEndEvent) {
@@ -315,7 +312,7 @@ export function SortableTree({
       setItems(newItems)
 
       const taskID = activeTreeItem.id.toString().split("_")[1]
-      const [parent, siblingOrder] = findParent(activeTreeItem, newItems)
+      const siblingOrder = fintPreviousSibling(activeTreeItem, newItems)
 
       const newClonedItems: FlattenedItem[] = JSON.parse(
         JSON.stringify(flattenTree(newItems))

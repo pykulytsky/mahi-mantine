@@ -1,26 +1,26 @@
-import { useMemo } from "react"
+import { useMemo, memo } from "react"
 import { Group } from "@mantine/core"
 import { useToggle } from "@mantine/hooks"
 import { Tag as TagType } from "../../../types"
 import Tag from "../Tag/Tag"
 import TagSelect from "../TagSelect/TagSelect"
 import { useQueryClient } from "@tanstack/react-query"
-import { useTagCreateMutation, useTags } from "../../../queries/tags"
+import { useTagCreateMutation } from "../../../queries/tags"
 import { useApplyTagMutation } from "../../../queries/tasks"
 import { useStore } from "../../../store/taskContext"
 
 type TagListProps = {
   tags: TagType[]
-  editable: boolean
+  editable?: boolean
 }
 
-export default function TagList(props: TagListProps) {
+export default memo(function TagList(props: TagListProps) {
   const [taskStore, _] = useStore()
   const [tagSelectOpened, toggle] = useToggle()
-  const { data } = useTags()
+  const queryClient = useQueryClient()
+  const data: TagType[] | undefined = queryClient.getQueryData(["tags", "user"])
   const { mutate } = useApplyTagMutation()
   const tagCreateMutation = useTagCreateMutation()
-  const queryClient = useQueryClient()
   const tags = useMemo(() => {
     return (
       data
@@ -96,8 +96,4 @@ export default function TagList(props: TagListProps) {
       )}
     </Group>
   )
-}
-
-TagList.defaultProps = {
-  editable: false,
-}
+})

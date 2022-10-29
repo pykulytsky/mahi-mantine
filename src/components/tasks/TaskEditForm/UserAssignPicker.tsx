@@ -5,9 +5,9 @@ import {
   useTaskAssignMutation,
   useTaskAssignRemoveMutation,
 } from "../../../queries/tasks"
-import { useUser } from "../../../queries/user"
 import { User } from "../../../types"
 import UserCheckbox from "../../user/UserCheckbox/UserCheckbox"
+import { useQueryClient } from "@tanstack/react-query"
 
 type UserAssignPickerProps = {
   taskID: number | string
@@ -18,7 +18,11 @@ type UserAssignPickerProps = {
 }
 
 export default memo(function UserAssignPicker(props: UserAssignPickerProps) {
-  const { data: currentUser } = useUser()
+  const queryClient = useQueryClient()
+  const currentUser: User | undefined = queryClient.getQueryData([
+    "users",
+    "me",
+  ])
   const [loading, toggle] = useToggle()
   const assign = useTaskAssignMutation(props.projectID, props.taskID)
   const removeAssign = useTaskAssignRemoveMutation(

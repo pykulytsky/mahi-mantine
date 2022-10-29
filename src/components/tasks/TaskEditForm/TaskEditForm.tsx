@@ -36,12 +36,14 @@ import TagList from "../../tags/TagList/TagList"
 import DeadlinePicker from "./DeadlinePicker"
 import { useStyles } from "./TaskEditForm.styles"
 import UserAssignPicker from "./UserAssignPicker"
-import { useProject } from "../../../queries/projects"
 
 export default memo(function TaskEditForm(props: SelectedTask) {
   const queryClient = useQueryClient()
   const { data, isError, isLoading } = useTaskQuery(props.id || -1)
-  const { data: project } = useProject(props.projectID || -1)
+  const project = queryClient.getQueryData([
+    "projects",
+    { id: Number(props.projectID) },
+  ])
   const { mutate } = useTaskEditMutation(props.projectID || -1)
   const form = useForm<TaskEdit>({
     initialValues: {

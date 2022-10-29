@@ -1,7 +1,7 @@
 import { Popover, ActionIcon, Select, Group, Text } from "@mantine/core"
-import { IconPlus } from "@tabler/icons"
 import { forwardRef } from "react"
 import { Tag } from "../../../types"
+import { Plus } from "../../icons"
 
 export interface TagSelectItemProps
   extends React.ComponentPropsWithoutRef<"div"> {
@@ -56,7 +56,7 @@ export default function TagSelect(props: TagSelectProps) {
           size="sm"
           variant="subtle"
         >
-          <IconPlus size={15} />
+          <Plus size={15} />
         </ActionIcon>
       </Popover.Target>
       <Popover.Dropdown p={5}>

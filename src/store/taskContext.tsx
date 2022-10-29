@@ -62,6 +62,14 @@ export function useStore(): [
   return [state, store.set]
 }
 
+export function useStoreSetter(): (value: Partial<SelectedTask>) => void {
+  const store = useContext(StoreContext)
+  if (!store) {
+    throw new Error("Store not found")
+  }
+  return store.set
+}
+
 export function TaskProvider({ children }: { children: React.ReactNode }) {
   return (
     <StoreContext.Provider value={useStoreData()}>

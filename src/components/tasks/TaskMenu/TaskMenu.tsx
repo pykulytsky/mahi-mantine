@@ -6,7 +6,7 @@ import SimpleArrowDown from "../../icons/SimpleArrowDown"
 import SimpleArrowTop from "../../icons/SimpleArrowTop"
 import Subtask from "../../icons/Subtask"
 import Trash from "../../icons/Trash"
-import { useStore } from "../../../store/taskContext"
+import { useStoreSetter } from "../../../store/taskContext"
 
 type TaskMenuProps = {
   taskID: number
@@ -15,7 +15,7 @@ type TaskMenuProps = {
 
 export default function TaskMenu(props: TaskMenuProps) {
   const theme = useMantineTheme()
-  const [_, setTaskStore] = useStore()
+  const setTaskStore = useStoreSetter()
   const { mutate } = useTaskDeleteMutation(props.projectID)
 
   function onTaskDelete() {

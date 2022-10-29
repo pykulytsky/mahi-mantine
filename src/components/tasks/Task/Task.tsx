@@ -22,7 +22,7 @@ import { Task as IconTask, Calendar, Plus, ArrowDown } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
 import ReactionList from "../../tags/Reaction/ReactionList"
-import { useStore } from "../../../store/taskContext"
+import { useStoreSetter } from "../../../store/taskContext"
 
 export interface TaskProps extends TaskType {
   onCollapse?(): void
@@ -30,7 +30,7 @@ export interface TaskProps extends TaskType {
 }
 
 export default memo(function Task(props: TaskProps) {
-  const [_, setTaskStore] = useStore()
+  const setTaskStore = useStoreSetter()
   const { classes, cx, theme } = useStyles()
   const queryClient = useQueryClient()
   const {

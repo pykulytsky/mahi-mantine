@@ -8,6 +8,7 @@ import Test from "./routes/Test"
 import { ownProjectsQuery } from "./queries/projects"
 import { userQuery } from "./queries/user"
 import NotFound from "./routes/NotFound"
+import { ownTagsQuery } from "./queries/tags"
 
 export type LocationGenerics = MakeGenerics<{
   Params: {
@@ -51,6 +52,9 @@ export const routes: Route<LocationGenerics>[] = [
         children: [
           {
             path: ":projectID",
+            loader: () =>
+              queryClient.getQueryData(["tags", "user"]) ??
+              queryClient.fetchQuery(ownTagsQuery()),
             element: <ProjectRoot />,
           },
         ],

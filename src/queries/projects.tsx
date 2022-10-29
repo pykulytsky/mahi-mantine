@@ -1,5 +1,4 @@
 import { showNotification } from "@mantine/notifications"
-import { IconArrowsSort } from "@tabler/icons"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import {
   editProject,
@@ -33,11 +32,10 @@ export function useProject(id: number | string) {
 
 export const useReorderMutation = (id: string) =>
   useMutation(reorder, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       showNotification({
         title: "Project was successfully reordered.",
         message: undefined,
-        icon: <IconArrowsSort size={18} />,
       })
     },
     onMutate: async (reorderData: TaskReorder) => {
@@ -67,13 +65,13 @@ export const useReorderMutation = (id: string) =>
       }
       return { project, oldProject }
     },
-    onError: (error, newProject, context) => {
+    onError: (_, __, context) => {
       queryClient.setQueryData(
         ["projects", { id: Number(id) }],
         context?.oldProject
       )
     },
-    onSettled: (data) => {
+    onSettled: () => {
       queryClient.invalidateQueries(["projects", { id: Number(id) }])
     },
   })

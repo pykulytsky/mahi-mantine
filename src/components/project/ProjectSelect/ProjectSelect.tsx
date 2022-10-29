@@ -1,7 +1,8 @@
-import { Group, Loader, Select, Text } from "@mantine/core"
+import { Group, Select, Text } from "@mantine/core"
 import { useQueryClient } from "@tanstack/react-query"
 import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react"
-import { useOwnProjects, useReorderMutation } from "../../../queries/projects"
+import { useReorderMutation } from "../../../queries/projects"
+import { Project as ProjectType } from "../../../types"
 import { Project } from "../../icons"
 
 export type SelectItemProps = {
@@ -31,7 +32,10 @@ type ProjectSelect = {
 
 export default function ProjectSelect(props: ProjectSelect) {
   const queryClient = useQueryClient()
-  const { data: projects, isLoading, isError } = useOwnProjects()
+  const projects: ProjectType[] | undefined = queryClient.getQueryData([
+    "projects",
+    "user",
+  ])
   const [value, setValue] = useState<string>(
     props.section_id
       ? `section-${props.section_id}`
@@ -101,8 +105,6 @@ export default function ProjectSelect(props: ProjectSelect) {
     )
   }
 
-  if (isLoading) return <Loader size="xs" />
-  if (isError) return <span>error</span>
   return (
     <Select
       size="xs"

@@ -8,6 +8,7 @@ import {
   Calendar,
   Project as ProjectIcon,
   User,
+  Plus,
 } from "../../components/icons"
 
 import { UserSidebarMenuDropdown } from "../../components/sidebar/UserSidebarMenuDropdown"
@@ -21,15 +22,15 @@ import {
   useOwnProjects,
   useProjectCreateMutation,
 } from "../../queries/projects"
-import { IconPlus } from "@tabler/icons"
 import { openModal } from "@mantine/modals"
 import ProjectCreateForm from "../../components/project/ProjectCreateForm/ProjectCreateForm"
 import { useNavigate } from "@tanstack/react-location"
 import { ProjectCreate, Project } from "../../types"
 import { closeAllModals } from "@mantine/modals"
 import { showNotification } from "@mantine/notifications"
+import { memo } from "react"
 
-export default function Sidebar() {
+export default memo(function Sidebar() {
   const { mutate } = useProjectCreateMutation()
   const navigate = useNavigate()
   const [opened, setOpened] = useLocalStorage({
@@ -154,7 +155,7 @@ export default function Sidebar() {
           rightSection={
             <Tooltip label="New project">
               <ActionIcon onClick={onProjectCreate}>
-                <IconPlus size={15} />
+                <Plus size={15} />
               </ActionIcon>
             </Tooltip>
           }
@@ -167,4 +168,4 @@ export default function Sidebar() {
       </Box>
     </motion.div>
   )
-}
+})

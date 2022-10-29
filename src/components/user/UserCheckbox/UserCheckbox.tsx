@@ -46,7 +46,7 @@ export default function UserCheckbox({
         </Text>
       </div>
       {loading ? (
-        <Loader size="xs" />
+        <Loader my={6} size="xs" />
       ) : (
         <Checkbox
           checked={value}
