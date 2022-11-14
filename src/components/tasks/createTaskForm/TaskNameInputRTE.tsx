@@ -22,6 +22,7 @@ export type TaskNameInputTREProps = {
   onTagApply: (tag: Tag) => void
   onSubmit: () => void
   toggleForm: () => void
+  appliedTags: string[]
 }
 
 export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
@@ -29,16 +30,18 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
   const [value, onChange] = useState("")
   const tags = useMemo(() => {
     if (tagsData.data) {
-      let value: DisplayTag[] = tagsData.data.map((tag) => ({
-        id: tag.id,
-        value: tag.name,
-      }))
-
+      let value: DisplayTag[] = tagsData.data
+        .filter((tag) => !props.appliedTags.includes(tag.name))
+        .map((tag) => ({
+          id: tag.id,
+          value: tag.name,
+        }))
       return value
     } else {
       return []
     }
-  }, [tagsData.data])
+  }, [tagsData.data, props.appliedTags])
+
   const mentions = useMemo(
     () => ({
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
@@ -72,6 +75,7 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
     }),
     []
   )
+
   useEffect(() => {
     props.onChange(value)
   }, [value])
@@ -114,6 +118,8 @@ export default function TaskNameInputRTE(props: TaskNameInputTREProps) {
       }}
       styles={{
         root: {
+          border: 0,
+          backgroundColor: "transparent",
           minHeight: 46,
           zIndex: 9999,
           padding: 0,

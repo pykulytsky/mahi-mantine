@@ -1,19 +1,19 @@
 import {
   ActionIcon,
   Group,
-  Loader,
   Tooltip,
   Popover,
   useMantineTheme,
+  Transition,
 } from "@mantine/core"
-import { useUser } from "../../../queries/user"
-import { Reaction } from "../../../types"
-import { FaceAdd, Plus } from "../../icons"
+import { Reaction, User } from "../../../types"
+import { FaceAdd } from "../../icons"
 import ReactionTag from "./Reaction"
 // @ts-ignore
 import Picker from "@emoji-mart/react"
 import data from "@emoji-mart/data"
 import { useReactionAddMutation } from "../../../queries/tasks"
+import { useQueryClient } from "@tanstack/react-query"
 
 type ReactionListProps = {
   reactions: Reaction[]
@@ -21,7 +21,8 @@ type ReactionListProps = {
 }
 
 export default function ReactionList(props: ReactionListProps) {
-  const { data: user, isLoading, isError } = useUser()
+  const queryClient = useQueryClient()
+  const user: User | undefined = queryClient.getQueryData(["users", "me"])
   const theme = useMantineTheme()
   const add = useReactionAddMutation(props.projectID)
 
@@ -38,18 +39,29 @@ export default function ReactionList(props: ReactionListProps) {
     }
   }
 
-  if (isLoading) return <Loader size="xs" />
-  if (isError) return <p>Error</p>
   return (
     <Group spacing={3}>
-      {props.reactions.map((reaction) => (
-        <ReactionTag
-          projectID={props.projectID}
-          key={reaction.id}
-          {...reaction}
-          userID={user.id}
-        />
-      ))}
+      <Transition
+        mounted={!!props.reactions}
+        transition="pop"
+        duration={400}
+        timingFunction="ease-in"
+      >
+        {(style) => (
+          <>
+            {props.reactions.map((reaction) => (
+              <ReactionTag
+                style={style}
+                projectID={props.projectID}
+                key={reaction.id}
+                {...reaction}
+                userID={user?.id || -1}
+              />
+            ))}
+          </>
+        )}
+      </Transition>
+
       <Popover>
         <Popover.Target>
           <Tooltip label="Add reaction">

@@ -1,7 +1,12 @@
-import { Container, Group, Transition, ActionIcon } from "@mantine/core"
+import {
+  Container,
+  Group,
+  Transition,
+  ActionIcon,
+  Checkbox,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useToggle } from "@mantine/hooks"
-import ActionsGroup from "./ActionsGroup"
 import TaskNameInputRTE from "./TaskNameInputRTE"
 import RichTextEditor from "@mantine/rte"
 import { CreateTaskFormType, Tag, Task } from "../../../types"
@@ -18,7 +23,7 @@ export type CreateTaskFormProps = {
 }
 
 export default function CreateTaskForm(props: CreateTaskFormProps) {
-  const [noteIsShown, toggleNote] = useToggle()
+  const [noteIsShown, _] = useToggle()
   const { data } = useUser()
   const tasksAddMutation = useTaskAddMutation()
   const applyTagMutation = useApplyTagMutation()
@@ -58,6 +63,8 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
     form.insertListItem("tags", tag)
   }
 
+  const appliedTags: string[] = form.values.tags.map((tag) => tag.value)
+
   function handleAddTask(): void {
     tasksAddMutation.mutate(
       {
@@ -92,10 +99,24 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   }
 
   return (
-    <Container style={props.style} m="md" ml={0} mr={0} p="sm">
+    <Container style={props.style} m={0} ml={13}>
       <form>
-        <Group position="apart" spacing={0}>
+        <Group noWrap position="apart" spacing={0}>
+          <Checkbox
+            size="md"
+            radius={10}
+            sx={(theme) => ({
+              input: {
+                border: `2px solid ${
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[4]
+                    : theme.colors.gray[5]
+                }`,
+              },
+            })}
+          />
           <TaskNameInputRTE
+            appliedTags={appliedTags}
             onSubmit={() => {
               if (form.values.name.length > 1) handleAddTask()
             }}
@@ -124,14 +145,6 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
             />
           )}
         </Transition>
-        <Group mt="xs" position="apart">
-          <ActionsGroup
-            noteIsShown={noteIsShown}
-            toggleNote={() => {
-              toggleNote()
-            }}
-          />
-        </Group>
       </form>
     </Container>
   )

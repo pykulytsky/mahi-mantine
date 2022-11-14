@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Avatar,
   Box,
+  Indicator,
   Popover,
   Tooltip,
   useMantineTheme,
@@ -11,6 +12,7 @@ import { useUser } from "../../queries/user"
 import { Project } from "../../types"
 import { Plus, User, Users } from "../icons"
 import ProjectShareComponent from "./ProjectShareComponent/ProjectShareComponent"
+import { useStore } from "../../store/project"
 
 type ParticipantsButtonProps = {
   project: Project
@@ -22,6 +24,7 @@ export const ParticipantsButton = forwardRef<
 >(({ project }: ParticipantsButtonProps, ref) => {
   const theme = useMantineTheme()
   const { data } = useUser()
+  const [members, _] = useStore()
   if (project.participants.length > 0 && data)
     return (
       <Box>
@@ -34,17 +37,21 @@ export const ParticipantsButton = forwardRef<
                     data.id === project.owner.id ? "You" : project.owner.email
                   }
                 >
-                  <Avatar
+                  <Indicator
+                    inline
+                    offset={3}
+                    processing
+                    position="bottom-start"
+                    disabled={!members?.members.includes(project.owner.id)}
                     sx={{
                       transition: "200ms transform ease-out",
                       "&:hover": {
                         transform: "translate(-10%, 0)",
                       },
                     }}
-                    radius="xl"
-                    size="md"
-                    src={project.owner.avatar}
-                  />
+                  >
+                    <Avatar radius="xl" size="md" src={project.owner.avatar} />
+                  </Indicator>
                 </Tooltip>
               ) : (
                 <ActionIcon variant="transparent">
@@ -64,23 +71,31 @@ export const ParticipantsButton = forwardRef<
               key={user.id}
               label={data.id === user.id ? "You" : user.email}
             >
-              <Avatar
+              <Indicator
+                processing
+                inline
+                offset={3}
+                position="bottom-start"
+                disabled={!members?.members.includes(user.id)}
                 sx={{
                   transition: "200ms transform ease-out",
                   "&:hover": {
                     transform: "translate(-10%, 0)",
                   },
                 }}
-                color={project.accent_color || theme.primaryColor}
-                radius="xl"
-                size="md"
-                src={user.avatar}
               >
-                <User
-                  size={25}
+                <Avatar
                   color={project.accent_color || theme.primaryColor}
-                />
-              </Avatar>
+                  radius="xl"
+                  size="md"
+                  src={user.avatar}
+                >
+                  <User
+                    size={25}
+                    color={project.accent_color || theme.primaryColor}
+                  />
+                </Avatar>
+              </Indicator>
             </Tooltip>
           ))}
           {project.owner.id === data.id && (

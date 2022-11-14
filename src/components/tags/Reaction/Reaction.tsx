@@ -10,6 +10,7 @@ import { useStyles } from "./Reaction.styles"
 interface ReactionTagProps extends Reaction {
   userID: number
   projectID: number
+  style?: React.CSSProperties
 }
 
 export default function ReactionTag(props: ReactionTagProps) {
@@ -45,6 +46,7 @@ export default function ReactionTag(props: ReactionTagProps) {
   return (
     <Tooltip label={<>{userReactionInfo}</>}>
       <Badge
+        style={props.style}
         onClick={onReactionClick}
         className={cx(classes.root, { [classes.active]: active })}
         variant="outline"

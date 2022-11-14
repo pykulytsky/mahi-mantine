@@ -5,14 +5,13 @@ import ParticipantsButton from "./Participants"
 import ProjectMenu from "./ProjectMenu"
 
 type ProjectActionsProps = {
-  hovered: boolean
   project: Project
   updateProject: (project: ProjectEdit) => void
 }
 
 export default function ProjectActions(props: ProjectActionsProps) {
   return (
-    <Group spacing="xs">
+    <Group spacing="xs" noWrap>
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
         <ParticipantsButton project={props.project} />
       </MediaQuery>

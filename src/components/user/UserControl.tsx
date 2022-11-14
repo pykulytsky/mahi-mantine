@@ -1,4 +1,3 @@
-import { IconSelector } from "@tabler/icons"
 import {
   Group,
   Avatar,
@@ -9,7 +8,7 @@ import {
   Stack,
   MediaQuery,
 } from "@mantine/core"
-import { ForwardedRef, forwardRef, Ref } from "react"
+import { forwardRef } from "react"
 import { useUser } from "../../queries/user"
 
 const useStyles = createStyles((theme) => ({
@@ -53,7 +52,6 @@ export function UserControlComponent(props: UserButtonProps, ref) {
         <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
           {data.first_name} {data.last_name}
         </Text>
-        <IconSelector size={12} stroke={1.5} />
       </Group>
     </UnstyledButton>
   )
@@ -89,7 +87,6 @@ export const UserControl = forwardRef<HTMLButtonElement, UserButtonProps>(
               </Text>
             </Stack>
           </MediaQuery>
-          <IconSelector size={12} stroke={1.5} />
         </Group>
       </UnstyledButton>
     )

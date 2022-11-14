@@ -1,11 +1,7 @@
-import { Popover, ActionIcon, Select, Loader, Group, Text } from "@mantine/core"
-import { IconPlus } from "@tabler/icons"
-import { useQueryClient } from "@tanstack/react-query"
-import { forwardRef, useContext, useMemo, useState } from "react"
-import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { useTagCreateMutation, useTags } from "../../../queries/tags"
-import { useApplyTagMutation } from "../../../queries/tasks"
+import { Popover, ActionIcon, Select, Group, Text } from "@mantine/core"
+import { forwardRef } from "react"
 import { Tag } from "../../../types"
+import { Plus } from "../../icons"
 
 export interface TagSelectItemProps
   extends React.ComponentPropsWithoutRef<"div"> {
@@ -33,73 +29,14 @@ export const TagSelectItem = forwardRef<HTMLDivElement, TagSelectItemProps>(
 
 type TagSelectProps = {
   tags: Tag[]
+  applyTag: (value: any) => void
+  createTag: (query: string) => string
+  opened: boolean
+  toggle: () => void
+  tagsSelectList: any
 }
 
 export default function TagSelect(props: TagSelectProps) {
-  const { selectedTask } = useContext(SelectedTaskContext)
-  const [opened, setOpened] = useState(false)
-  const { data, isLoading, isError } = useTags()
-  const { mutate } = useApplyTagMutation()
-  const tagCreateMutation = useTagCreateMutation()
-  const queryClient = useQueryClient()
-  const tags = useMemo(() => {
-    return (
-      data
-        ?.filter((tag) => {
-          return !props.tags.map((tag) => tag.id).includes(tag.id)
-        })
-        .map((tag) => ({
-          value: tag.id.toString(),
-          label: tag.name,
-          color: tag.color,
-        })) || []
-    )
-  }, [data, props.tags])
-
-  function onTagApply(value: any) {
-    if (selectedTask && value) {
-      mutate(
-        {
-          task_id: Number(selectedTask.id),
-          tag_id: value,
-        },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries([
-              "tasks",
-              { id: Number(selectedTask.id) },
-            ])
-            queryClient.invalidateQueries([
-              "projects",
-              { id: Number(selectedTask.projectID) },
-            ])
-            setOpened(false)
-          },
-        }
-      )
-    }
-  }
-
-  function onTagCreate(query: string): string {
-    if (query.length > 1) {
-      if (query.split(":").length == 1) {
-        tagCreateMutation.mutate({
-          name: query,
-        })
-      } else if (query.split(":").length == 2) {
-        const [name, color] = query.split(":")
-        if (props.tags.map((tag) => tag.name).includes(name)) {
-          return ""
-        }
-        tagCreateMutation.mutate({
-          name,
-          color: color.length > 2 ? color : undefined,
-        })
-      }
-    }
-    return ""
-  }
-
   function getCreateLabel(query: string): string {
     if (query.split(":").length == 2) {
       const [name, color] = query.split(":")
@@ -109,19 +46,17 @@ export default function TagSelect(props: TagSelectProps) {
     return "+ Create " + query
   }
 
-  if (isLoading) return <Loader size="xs" />
-  if (isError) return <p>Error</p>
   return (
-    <Popover opened={opened} onChange={setOpened}>
+    <Popover opened={props.opened} onChange={props.toggle}>
       <Popover.Target>
         <ActionIcon
           onClick={() => {
-            setOpened(value => !value)
+            props.toggle()
           }}
           size="sm"
           variant="subtle"
         >
-          <IconPlus size={15} />
+          <Plus size={15} />
         </ActionIcon>
       </Popover.Target>
       <Popover.Dropdown p={5}>
@@ -130,11 +65,11 @@ export default function TagSelect(props: TagSelectProps) {
           placeholder="Search tags"
           searchable
           itemComponent={TagSelectItem}
-          data={tags}
+          data={props.tagsSelectList}
           creatable
-          onChange={onTagApply}
+          onChange={props.applyTag}
           getCreateLabel={getCreateLabel}
-          onCreate={onTagCreate}
+          onCreate={props.createTag}
         />
       </Popover.Dropdown>
     </Popover>

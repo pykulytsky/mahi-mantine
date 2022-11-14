@@ -11,7 +11,6 @@ export default function useEmojis() {
       .then((response) => {
         setEmojis(response.data)
       })
-    console.log(emojis)
   }, [])
 
   return {

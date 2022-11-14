@@ -7,8 +7,8 @@ import {
   Loader,
   Text,
 } from "@mantine/core"
-import { useToggle } from "@mantine/hooks"
-import { useState } from "react"
+import { useDebouncedState, useToggle } from "@mantine/hooks"
+import { useEffect, useState } from "react"
 import { getUsersByEmail } from "../../../api/user.api"
 import { useAddUserMutation } from "../../../queries/projects"
 import { useMatch } from "@tanstack/react-location"
@@ -20,14 +20,14 @@ export default function EmailPanel() {
     params: { projectID },
   } = useMatch()
 
-  const [value, setValue] = useState<string>("")
+  const [value, setValue] = useDebouncedState<string>("", 300)
   const [users, setUsers] = useState<string[]>([])
   const [isFetching, toggle] = useToggle()
 
   const { mutate } = useAddUserMutation(projectID)
 
-  function onInput(value: string) {
-    if (value.length > 3) {
+  useEffect(() => {
+    if (value.length > 2) {
       toggle()
       getUsersByEmail(value)
         .then((data) => {
@@ -38,8 +38,7 @@ export default function EmailPanel() {
           toggle()
         })
     }
-    setValue(value)
-  }
+  }, [value])
 
   function onDirectInvite() {
     if (users.includes(value)) {
@@ -85,8 +84,8 @@ export default function EmailPanel() {
       </Text>
       <Group noWrap spacing={5}>
         <Autocomplete
-          value={value}
-          onChange={onInput}
+          defaultValue={value}
+          onChange={(value) => setValue(value)}
           data={users}
           limit={3}
           nothingFound="No users found"

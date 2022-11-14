@@ -30,15 +30,11 @@ export const jelly = keyframes({
   },
 })
 
-export const useStyles = createStyles((theme, isDraggable: boolean) => ({
+export const useStyles = createStyles((theme) => ({
   root: {
-    borderRadius: theme.radius.md,
-    cursor: "pointer",
-    transition: "0.2s background-color ease-in-out",
-    "&:hover": {
-      background:
-        theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-    },
+    padding: 5,
+    paddingLeft: 0,
+    width: "100%",
   },
   task: {
     label: {
@@ -87,6 +83,16 @@ export const useStyles = createStyles((theme, isDraggable: boolean) => ({
     },
     "&::before": {
       marginRight: 3,
+    },
+  },
+  collapse: {
+    svg: {
+      transition: "transform 250ms ease",
+    },
+  },
+  collapsed: {
+    svg: {
+      transform: "rotate(-90deg)",
     },
   },
 }))

@@ -11,36 +11,32 @@ import {
   Tooltip,
   Avatar,
 } from "@mantine/core"
-import { useHover } from "@mantine/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTask } from "../../../api/tasks.api"
 import { useMatch } from "@tanstack/react-location"
 import { showNotification } from "@mantine/notifications"
-import { useContext, useEffect, useMemo, useState } from "react"
-import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd"
+import { useEffect, useMemo, useState, memo } from "react"
 import type { Task as TaskType } from "../../../types"
 import { useStyles } from "./Task.styles"
-import { SelectedTaskContext } from "../../../layout/LayoutProvider"
-import { Drag, Task as IconTask, Calendar, Plus } from "../../icons"
+import { Task as IconTask, Calendar, Plus, ArrowDown } from "../../icons"
 import TagList from "../../tags/TagList/TagList"
 import TaskMenu from "../TaskMenu/TaskMenu"
 import ReactionList from "../../tags/Reaction/ReactionList"
+import { useStoreSetter } from "../../../store/taskContext"
 
 export interface TaskProps extends TaskType {
-  draggableHandleProps: DraggableProvidedDragHandleProps | null
-  isDragging?: boolean
-  disableAnimation?: boolean
+  onCollapse?(): void
+  collapsed?: boolean
 }
 
-export default function Task(props: TaskProps) {
-  const { classes, cx, theme } = useStyles(!!props.draggableHandleProps)
-  const { hovered, ref } = useHover()
+export default memo(function Task(props: TaskProps) {
+  const setTaskStore = useStoreSetter()
+  const { classes, cx, theme } = useStyles()
   const queryClient = useQueryClient()
   const {
     params: { projectID: id },
   } = useMatch()
   const [isDone, setDone] = useState<boolean>(props.is_completed)
-  const { setSelectedTask } = useContext(SelectedTaskContext)
 
   useEffect(() => {
     setDone(props.is_completed)
@@ -87,7 +83,7 @@ export default function Task(props: TaskProps) {
       (event.target.classList.contains("mantine-Text-root") &&
         !event.target.classList.contains("mantine-Spoiler-control"))
     ) {
-      setSelectedTask({
+      setTaskStore({
         id: props.id,
         projectID: props.project_id || id,
         color: theme.primaryColor,
@@ -96,27 +92,23 @@ export default function Task(props: TaskProps) {
   }
 
   return (
-    <Container
-      ref={ref}
-      p={5}
-      pl={!!props.draggableHandleProps ? 0 : "xs"}
-      className={cx(classes.root, {
-        [classes.draggingRoot]: props.isDragging,
-      })}
-      fluid
-      onClick={toggleDetailAside}
-    >
-      <Group noWrap spacing={0}>
-        {props.draggableHandleProps && (
+    <Container className={classes.root} fluid onClick={toggleDetailAside}>
+      <Group noWrap spacing={0} align="flex-start">
+        {props.onCollapse && (
           <ActionIcon
-            aria-label="drag handle"
-            variant="transparent"
-            {...props.draggableHandleProps}
-            className={cx(classes.dragControl, {
-              [classes.dragControlUnvisible]: !hovered && !props.isDragging,
+            mt={3}
+            onClick={() => {
+              if (props.onCollapse) props.onCollapse()
+              taskMutation.mutate({
+                id: props.id,
+                is_collapsed: !props.collapsed,
+              })
+            }}
+            className={cx(classes.collapse, {
+              [classes.collapsed]: props.collapsed,
             })}
           >
-            <Drag size={20} />
+            <ArrowDown size={20} />
           </ActionIcon>
         )}
 
@@ -243,8 +235,10 @@ export default function Task(props: TaskProps) {
             </Spoiler>
           )}
         </Stack>
-        <TaskMenu hovered={hovered} taskID={props.id} projectID={id} />
+        <Group mt={3}>
+          <TaskMenu taskID={props.id} projectID={id} />
+        </Group>
       </Group>
     </Container>
   )
-}
+})

@@ -17,6 +17,7 @@ test("is task draggable", () => {
         draggableHandleProps={null}
         reactions={[]}
         assigned_to={[]}
+        tasks={[]}
       />
     </QueryClientProvider>
   )

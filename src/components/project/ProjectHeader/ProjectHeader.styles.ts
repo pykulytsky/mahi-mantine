@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core"
 
-export const useStyles = createStyles((theme, hovered: boolean) => ({
+export const useStyles = createStyles((theme) => ({
   root: {
     boxShadow: theme.shadows.sm,
     margin: theme.spacing.xl,
@@ -18,10 +18,6 @@ export const useStyles = createStyles((theme, hovered: boolean) => ({
       margin: 0,
       borderRadius: 0,
     },
-  },
-  shownOnHover: {
-    opacity: hovered ? 1 : 0,
-    transition: "opacity .2s ease-out",
   },
   title: {
     cursor: "pointer",

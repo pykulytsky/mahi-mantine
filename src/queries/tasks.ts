@@ -28,7 +28,7 @@ export const useTaskAddMutation = () => useMutation(addTask)
 
 export const useTaskEditMutation = (id: number | string) =>
   useMutation(editTask, {
-    onSuccess: () => {
+    onSuccess: (data: Task) => {
       queryClient.invalidateQueries(["projects", { id: Number(id) }])
     },
   })

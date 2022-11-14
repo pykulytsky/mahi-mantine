@@ -8,12 +8,12 @@ import {
   Tooltip,
   Stack,
 } from "@mantine/core"
-import { useFocusWithin, useHover, usePrevious } from "@mantine/hooks"
+import { useFocusWithin, usePrevious } from "@mantine/hooks"
 import ColorEmojiPicker from "../projectEditForms/ColorEmojiPicker"
 import { useIsFetching, useIsMutating } from "@tanstack/react-query"
 import { Project, ProjectEdit } from "../../../types"
 import ProjectActions from "../ProjectActions"
-import { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 import { useStyles } from "./ProjectHeader.styles"
 import { useProjectMutation } from "../../../queries/projects"
 import { ProjectButton } from "../ProjectButton"
@@ -24,16 +24,14 @@ interface ProjectHeaderProps {
   tasksCount?: [number, number]
   formVisible: boolean
   toggleTaskForm: () => void
-  toggleSectionForm: () => void
 }
 
-export default function ProjectHeader(props: ProjectHeaderProps) {
+export default memo(function ProjectHeader(props: ProjectHeaderProps) {
   const [name, setName] = useState<string>(props.project.name)
-  const { hovered, ref } = useHover()
   const { focused, ref: refFocus } = useFocusWithin()
   const previousFocusedState = usePrevious(focused)
   const [nameError, setNameError] = useState<string>("")
-  const { classes, theme } = useStyles(hovered)
+  const { classes, theme } = useStyles()
   const isFetching = useIsFetching([
     "projects",
     { id: props.project.id.toString() },
@@ -63,9 +61,9 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
   }, [props.project.name])
 
   return (
-    <Paper radius="lg" ref={ref} className={classes.root}>
+    <Paper radius="lg" className={classes.root}>
       <Group noWrap position="apart">
-        <Group spacing="md">
+        <Group spacing="md" noWrap>
           <Popover position="right-end">
             <Popover.Target>
               <ProjectButton
@@ -109,12 +107,8 @@ export default function ProjectHeader(props: ProjectHeaderProps) {
           </Stack>
         </Group>
         <ProjectViewSelect />
-        <ProjectActions
-          updateProject={updateProject}
-          hovered={hovered}
-          project={props.project}
-        />
+        <ProjectActions updateProject={updateProject} project={props.project} />
       </Group>
     </Paper>
   )
-}
+})

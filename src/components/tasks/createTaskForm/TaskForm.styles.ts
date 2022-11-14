@@ -1,8 +1,6 @@
 import { createStyles, MantineTheme } from "@mantine/core"
 
 export const mentionStyles = (theme: MantineTheme) => ({
-  marginTop: 10,
-  marginBottom: 10,
   height: 36,
   backgroundColor:
     theme.colorScheme === "dark" ? theme.colors.dark[6] : "white",

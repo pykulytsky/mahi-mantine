@@ -59,12 +59,15 @@ export declare interface Task {
   name: string
   description?: string
   is_completed: boolean
+  is_collapsed: boolean
   deadline?: Date | null
   done_at?: Date
   created?: Date
   updated?: Date
   is_important: boolean
   remind_at?: Date
+  parent_task_id?: number
+  tasks: Task[]
   tags: Tag[]
   reactions: Reaction[]
   owner?: User
@@ -78,6 +81,7 @@ export declare type TaskEdit = {
   name?: string
   description?: string | null
   is_completed?: boolean
+  is_collapsed?: boolean
   deadline?: Date | number | string | null
   is_important?: boolean
   remind_at?: Date | null
@@ -142,4 +146,11 @@ export declare interface DirectInvitation {
 export declare interface UserProjectRemove {
   id: number
   email: string
+}
+
+export type Reorder = {
+  id: number
+  container_type: "root" | "task"
+  container_id: number
+  order: number
 }
