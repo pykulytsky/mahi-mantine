@@ -5,7 +5,7 @@ import { Tag as TagType } from "../../../types"
 import Tag from "../Tag/Tag"
 import TagSelect from "../TagSelect/TagSelect"
 import { useQueryClient } from "@tanstack/react-query"
-import { useTagCreateMutation } from "../../../queries/tags"
+import { useTagCreateMutation, useTags } from "../../../queries/tags"
 import { useApplyTagMutation } from "../../../queries/tasks"
 import { useStore } from "../../../store/taskContext"
 
@@ -18,7 +18,7 @@ export default memo(function TagList(props: TagListProps) {
   const [taskStore, _] = useStore()
   const [tagSelectOpened, toggle] = useToggle()
   const queryClient = useQueryClient()
-  const data: TagType[] | undefined = queryClient.getQueryData(["tags", "user"])
+  const { data } = useTags()
   const { mutate } = useApplyTagMutation()
   const tagCreateMutation = useTagCreateMutation()
   const tags = useMemo(() => {

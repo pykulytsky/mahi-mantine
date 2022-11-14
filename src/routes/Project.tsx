@@ -13,7 +13,7 @@ import ProjectHeader from "../components/project/ProjectHeader/ProjectHeader"
 import { ProjectEmptyPlaceholder } from "../components/project/ProjectEmptyPlaceholder/ProjectEmptyPlaceholder"
 import useTasksHelper from "../hooks/tasksHelpers"
 import { useHotkeys, useToggle } from "@mantine/hooks"
-import CreateTaskForm from "../components/tasks/createTaskForm/CreateTaskForm"
+import { CreateTaskForm } from "../components/tasks/createTaskForm"
 import { AnimatePresence, motion } from "framer-motion"
 import { ProjectErrorPlaceholder } from "../components/project/ProjectErrorPlaceholder/ProjectErrorPlaceholder"
 import { Task } from "../components/icons"
@@ -22,12 +22,14 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchProject } from "../api/projects.api"
 import { Project as ProjectType } from "../types"
 import { TreeItems } from "../components/dnd/types"
-import { flattenRawTasks, flattenTasks } from "../components/dnd/utilities"
+import { flattenTasks } from "../components/dnd/utilities"
+import useProjectSSE from "../sse/project"
 
-export default function ProjectRoot() {
+export default function Project() {
   const {
     params: { projectID: id },
   } = useMatch()
+  useProjectSSE(id)
   const [tasks, setTasks] = useState<TreeItems>([])
   const [tasksLoading, toggle] = useToggle()
   const { data, isLoading, isError } = useQuery(

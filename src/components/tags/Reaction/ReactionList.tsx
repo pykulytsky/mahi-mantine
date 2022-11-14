@@ -4,6 +4,7 @@ import {
   Tooltip,
   Popover,
   useMantineTheme,
+  Transition,
 } from "@mantine/core"
 import { Reaction, User } from "../../../types"
 import { FaceAdd } from "../../icons"
@@ -40,14 +41,27 @@ export default function ReactionList(props: ReactionListProps) {
 
   return (
     <Group spacing={3}>
-      {props.reactions.map((reaction) => (
-        <ReactionTag
-          projectID={props.projectID}
-          key={reaction.id}
-          {...reaction}
-          userID={user?.id || -1}
-        />
-      ))}
+      <Transition
+        mounted={!!props.reactions}
+        transition="pop"
+        duration={400}
+        timingFunction="ease-in"
+      >
+        {(style) => (
+          <>
+            {props.reactions.map((reaction) => (
+              <ReactionTag
+                style={style}
+                projectID={props.projectID}
+                key={reaction.id}
+                {...reaction}
+                userID={user?.id || -1}
+              />
+            ))}
+          </>
+        )}
+      </Transition>
+
       <Popover>
         <Popover.Target>
           <Tooltip label="Add reaction">

@@ -1,7 +1,6 @@
 import {
   useMantineTheme,
   Container,
-  Title,
   ColorSwatch,
   Group,
   CheckIcon,

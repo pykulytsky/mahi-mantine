@@ -11,7 +11,7 @@ import {
   Center,
 } from "@mantine/core"
 import { useUser } from "../../queries/user"
-import UserMenuDropdown from "../user/UserMenuDropdown"
+import { UserMenuDropdown } from "../user"
 import { Config } from "../icons"
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {

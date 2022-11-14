@@ -63,7 +63,7 @@ export default memo(function ProjectHeader(props: ProjectHeaderProps) {
   return (
     <Paper radius="lg" className={classes.root}>
       <Group noWrap position="apart">
-        <Group spacing="md">
+        <Group spacing="md" noWrap>
           <Popover position="right-end">
             <Popover.Target>
               <ProjectButton

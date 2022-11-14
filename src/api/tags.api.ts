@@ -1,4 +1,4 @@
-import { Tag, TagCreate, TagItem, TagItemCreate, Task } from "../types"
+import { Tag, TagCreate, TagItemCreate, Task } from "../types"
 import http from "./axios"
 
 const BASE_URL: string = "/tags/"

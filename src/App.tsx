@@ -3,6 +3,7 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core"
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { QueryClientProvider } from "@tanstack/react-query"
 import { Outlet, Router } from "@tanstack/react-location"

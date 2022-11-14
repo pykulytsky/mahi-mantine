@@ -11,7 +11,7 @@ type ProjectActionsProps = {
 
 export default function ProjectActions(props: ProjectActionsProps) {
   return (
-    <Group spacing="xs">
+    <Group spacing="xs" noWrap>
       <MediaQuery smallerThan="md" styles={{ display: "none" }}>
         <ParticipantsButton project={props.project} />
       </MediaQuery>

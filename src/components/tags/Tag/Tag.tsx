@@ -5,12 +5,13 @@ import { useTagRemoveMutation } from "../../../queries/tags"
 import { Tag as TagType } from "../../../types"
 import { Close } from "../../icons"
 import { useStore } from "../../../store/taskContext"
+import { memo } from "react"
 
 interface TagProps extends TagType {
-  editable: boolean
+  editable?: boolean
 }
 
-export default function Tag(props: TagProps) {
+export default memo(function Tag(props: TagProps) {
   const [taskStore, _] = useStore()
   const navigate = useNavigate()
   const theme = useMantineTheme()
@@ -61,8 +62,4 @@ export default function Tag(props: TagProps) {
       {props.name}
     </Badge>
   )
-}
-
-Tag.defaultProps = {
-  editable: false,
-}
+})

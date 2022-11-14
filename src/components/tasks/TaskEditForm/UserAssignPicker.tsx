@@ -6,7 +6,7 @@ import {
   useTaskAssignRemoveMutation,
 } from "../../../queries/tasks"
 import { User } from "../../../types"
-import UserCheckbox from "../../user/UserCheckbox/UserCheckbox"
+import { UserCheckbox } from "../../user"
 import { useQueryClient } from "@tanstack/react-query"
 
 type UserAssignPickerProps = {

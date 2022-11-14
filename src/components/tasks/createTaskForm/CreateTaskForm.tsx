@@ -23,7 +23,7 @@ export type CreateTaskFormProps = {
 }
 
 export default function CreateTaskForm(props: CreateTaskFormProps) {
-  const [noteIsShown, toggleNote] = useToggle()
+  const [noteIsShown, _] = useToggle()
   const { data } = useUser()
   const tasksAddMutation = useTaskAddMutation()
   const applyTagMutation = useApplyTagMutation()
@@ -62,6 +62,8 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
   function applyTag(tag: Tag): void {
     form.insertListItem("tags", tag)
   }
+
+  const appliedTags: string[] = form.values.tags.map((tag) => tag.value)
 
   function handleAddTask(): void {
     tasksAddMutation.mutate(
@@ -103,13 +105,18 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
           <Checkbox
             size="md"
             radius={10}
-            sx={{
+            sx={(theme) => ({
               input: {
-                border: `2px solid gray`,
+                border: `2px solid ${
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[4]
+                    : theme.colors.gray[5]
+                }`,
               },
-            }}
+            })}
           />
           <TaskNameInputRTE
+            appliedTags={appliedTags}
             onSubmit={() => {
               if (form.values.name.length > 1) handleAddTask()
             }}

@@ -8,39 +8,27 @@ import {
   Textarea,
   CheckIcon,
   Space,
-  Avatar,
-  Text,
-  Anchor,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useFocusWithin, usePrevious, useToggle } from "@mantine/hooks"
 import RichTextEditor from "@mantine/rte"
 import { useQueryClient } from "@tanstack/react-query"
-import { Link } from "@tanstack/react-location"
 import { useEffect, useMemo, memo } from "react"
 import { SelectedTask } from "../../../store/taskContext"
 import { useTaskEditMutation, useTaskQuery } from "../../../queries/tasks"
-import { Task, TaskEdit } from "../../../types"
-import {
-  Tag,
-  Alert,
-  Deadline,
-  Alarm,
-  Attach,
-  File,
-  User,
-  Users,
-} from "../../icons"
+import { Project, Task, TaskEdit } from "../../../types"
+import { Tag, Alert, Deadline, Alarm, Attach, File, Users } from "../../icons"
 import ProjectSelect from "../../project/ProjectSelect/ProjectSelect"
 import TagList from "../../tags/TagList/TagList"
 import DeadlinePicker from "./DeadlinePicker"
 import { useStyles } from "./TaskEditForm.styles"
 import UserAssignPicker from "./UserAssignPicker"
+import Footer from "./Footer"
 
 export default memo(function TaskEditForm(props: SelectedTask) {
   const queryClient = useQueryClient()
   const { data, isError, isLoading } = useTaskQuery(props.id || -1)
-  const project = queryClient.getQueryData([
+  const project: Project | undefined = queryClient.getQueryData([
     "projects",
     { id: Number(props.projectID) },
   ])
@@ -270,24 +258,12 @@ export default memo(function TaskEditForm(props: SelectedTask) {
         </tbody>
       </Table>
       {data.owner && (
-        <Group position="apart" my="sm" noWrap>
-          <Center inline>
-            <Avatar size="xs" src={data.owner.avatar}>
-              <User size={15} />
-            </Avatar>
-            <Text ml={3} size="xs">
-              Created by{" "}
-              <Anchor component={Link} to={`/app/profiles/${data.owner.id}`}>
-                {data.owner.first_name} {data.owner.last_name}
-              </Anchor>
-            </Text>
-          </Center>
-          {data.updated && (
-            <Text align="right" size="xs">
-              Last modified {new Date(data.updated).toDateString()}
-            </Text>
-          )}
-        </Group>
+        <Footer
+          ownerId={data.owner.id}
+          ownerAvatar={data.owner.avatar}
+          ownerName={data.owner.first_name + " " + data.owner.last_name}
+          lastModified={data.updated}
+        />
       )}
     </form>
   )
